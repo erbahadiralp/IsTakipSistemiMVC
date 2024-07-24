@@ -418,6 +418,66 @@ namespace IsTakipSistemiMVC.Controllers
         //}
 
 
+        //[AuthFilter(1)]
+        //public ActionResult DuyuruEkle()
+        //{
+        //    int currentBirimId = Convert.ToInt32(Session["BirimId"]);
+
+        //    // Fetch the current unit
+        //    var birimler = entity.Birimler.Where(b => b.birimId == currentBirimId).ToList();
+
+        //    // Fetch users with yetkiTurId of 1
+        //    var yetkiTurBirimler = entity.Personeller
+        //                                .Where(p => p.personelYetkiTurId == 1)
+        //                                .Select(p => p.personelBirimId)
+        //                                .Distinct()
+        //                                .ToList();
+
+        //    // Combine the current unit and yetkiTurId 1 units
+        //    var allBirimler = birimler.Union(entity.Birimler.Where(b => yetkiTurBirimler.Contains(b.birimId))).ToList();
+
+        //    ViewBag.Birimler = new SelectList(allBirimler, "birimId", "birimAd");
+        //    return View();
+        //}
+
+
+        //[HttpPost, ActFilter("Yeni Duyuru Eklendi")]
+        //public ActionResult DuyuruEkle(Duyurular duyuru)
+        //{
+
+        //    int currentBirimId;
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        duyuru.duyuruTarih = DateTime.Now;
+        //        duyuru.duyuruOlusturanId = Convert.ToInt32(Session["PersonelId"]);
+        //        duyuru.aktiflik = true;
+
+        //        // Save the current unit and units of users with yetkiTurId of 1
+        //        currentBirimId = Convert.ToInt32(Session["BirimId"]);
+        //        duyuru.goruntuleyenBirimId = currentBirimId;
+
+        //        entity.Duyurular.Add(duyuru);
+        //        entity.SaveChanges();
+
+        //        TempData["bilgi"] = "Duyuru başarıyla eklendi.";
+        //        return RedirectToAction("Duyurular");
+        //    }
+
+        //    // If ModelState is not valid, repopulate ViewBag.Birimler
+        //    currentBirimId = Convert.ToInt32(Session["BirimId"]);
+        //    var birimler = entity.Birimler.Where(b => b.birimId == currentBirimId).ToList();
+        //    var yetkiTurBirimler = entity.Personeller
+        //                                .Where(p => p.personelYetkiTurId == 1)
+        //                                .Select(p => p.personelBirimId)
+        //                                .Distinct()
+        //                                .ToList();
+        //    var allBirimler = birimler.Union(entity.Birimler.Where(b => yetkiTurBirimler.Contains(b.birimId))).ToList();
+
+        //    ViewBag.Birimler = new SelectList(allBirimler, "birimId", "birimAd");
+        //    return View(duyuru);
+        //}
+
         [AuthFilter(1)]
         public ActionResult DuyuruEkle()
         {
@@ -426,25 +486,23 @@ namespace IsTakipSistemiMVC.Controllers
             // Fetch the current unit
             var birimler = entity.Birimler.Where(b => b.birimId == currentBirimId).ToList();
 
-            // Fetch users with yetkiTurId of 1
+            // Fetch users with yetkiTurId of 1 and 2
             var yetkiTurBirimler = entity.Personeller
-                                        .Where(p => p.personelYetkiTurId == 1)
+                                        .Where(p => p.personelYetkiTurId == 1 || p.personelYetkiTurId == 2)
                                         .Select(p => p.personelBirimId)
                                         .Distinct()
                                         .ToList();
 
-            // Combine the current unit and yetkiTurId 1 units
+            // Combine the current unit and yetkiTurId 1 and 2 units
             var allBirimler = birimler.Union(entity.Birimler.Where(b => yetkiTurBirimler.Contains(b.birimId))).ToList();
 
             ViewBag.Birimler = new SelectList(allBirimler, "birimId", "birimAd");
             return View();
         }
 
-
         [HttpPost, ActFilter("Yeni Duyuru Eklendi")]
         public ActionResult DuyuruEkle(Duyurular duyuru)
         {
-
             int currentBirimId;
 
             if (ModelState.IsValid)
@@ -453,9 +511,11 @@ namespace IsTakipSistemiMVC.Controllers
                 duyuru.duyuruOlusturanId = Convert.ToInt32(Session["PersonelId"]);
                 duyuru.aktiflik = true;
 
-                // Save the current unit and units of users with yetkiTurId of 1
+                // Save the current unit and units of users with yetkiTurId of 1 and 2
                 currentBirimId = Convert.ToInt32(Session["BirimId"]);
                 duyuru.goruntuleyenBirimId = currentBirimId;
+
+                // No need to save users with yetkiTurId of 2 separately
 
                 entity.Duyurular.Add(duyuru);
                 entity.SaveChanges();
@@ -468,7 +528,7 @@ namespace IsTakipSistemiMVC.Controllers
             currentBirimId = Convert.ToInt32(Session["BirimId"]);
             var birimler = entity.Birimler.Where(b => b.birimId == currentBirimId).ToList();
             var yetkiTurBirimler = entity.Personeller
-                                        .Where(p => p.personelYetkiTurId == 1)
+                                        .Where(p => p.personelYetkiTurId == 1 || p.personelYetkiTurId == 2)
                                         .Select(p => p.personelBirimId)
                                         .Distinct()
                                         .ToList();

@@ -56,7 +56,7 @@
                     <div id="selectedBirimler" class="mt-2"></div>
                 </div>
 
-                @Html.HiddenFor(model => model.goruntuleyenBirimId, new { id = "selectedBirimIds" })
+                @Html.HiddenFor(model => model.goruntuleyenBirimId, new { id = "selectedBirimIds", name = "goruntuleyenBirimId" })
 
                 <div class="d-flex justify-content-center">
                     <button type="submit" class="btn btn-primary">Duyuru Ekle</button>
