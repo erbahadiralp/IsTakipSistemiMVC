@@ -183,5 +183,17 @@ namespace IsTakipSistemiMVC.Controllers
 
             return View(duyurular);
         }
+
+        // Duyuru detayları
+        [AuthFilter(2)]
+        public ActionResult DuyuruDetay(int id)
+        {
+            var duyuru = entity.Duyurular.Find(id);
+            if (duyuru == null)
+            {
+                return HttpNotFound();
+            }
+            return View(duyuru);
+        }
     }
 }

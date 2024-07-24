@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "Error";
+    Layout = "~/Views/Shared/_LayoutYonetici.cshtml";
+}
+
+
+
+<div class="container mt-5">
+    <div class="alert alert-danger">
+        <h4 class="alert-heading">Hata</h4>
+        <p>@ViewBag.ErrorMessage</p>
+    </div>
+</div>
+
+<script>
+    // Display the alert message
+    alert("@ViewBag.ErrorMessage");
+
+    // Redirect to the Duyurular page after 5 seconds
+    setTimeout(function() {
+        window.location.href = '@Url.Action("Duyurular", "Yonetici")';
+    }, 5000);
+</script>
+
+

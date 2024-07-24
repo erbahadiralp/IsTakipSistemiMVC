@@ -1,8 +1,10 @@
-﻿using IsTakipSistemiMVC.Models;
+﻿using IsTakipSistemiMVC.Filters;
+using IsTakipSistemiMVC.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Web;
 using System.Web.Mvc;
@@ -324,7 +326,7 @@ namespace IsTakipSistemiMVC.Controllers
         //    {
         //        int birimId = Convert.ToInt32(Session["PersonelBirimId"]);
 
-                
+
 
         //        var birim = (from b in entity.Birimler where b.birimId == birimId select b).FirstOrDefault();
 
@@ -337,7 +339,200 @@ namespace IsTakipSistemiMVC.Controllers
         //        return RedirectToAction("Index", "Login");
         //    }
         //}
-      
+        //DUYURULAR KISMI
+
+        // Duyuruların listelenmesi
+        [AuthFilter(1)]
+        public ActionResult Duyurular()
+        {
+            int personelId = Convert.ToInt32(Session["PersonelId"]);
+            var personel = entity.Personeller.Find(personelId);
+            var personelBirimId = personel.personelBirimId;
+
+            var duyurular = entity.Duyurular
+                .Where(d => d.aktiflik == true && (d.goruntuleyenBirimId == personelBirimId))
+                .ToList();
+
+            return View(duyurular);
+        }
+
+
+
+        // Duyuru detayları
+        [AuthFilter(1)]
+        public ActionResult DuyuruDetay(int id)
+        {
+            var duyuru = entity.Duyurular.Find(id);
+            if (duyuru == null)
+            {
+                return HttpNotFound();
+            }
+            return View(duyuru);
+        }
+
+        [AuthFilter(1)]
+        public ActionResult DuyuruEkle()
+        {
+            int currentBirimId = Convert.ToInt32(Session["BirimId"]);
+
+            // Sadece currentBirimId'yi ViewBag'e ekle
+            var birimler = entity.Birimler.Where(b => b.birimId == currentBirimId).ToList();
+
+            ViewBag.Birimler = new SelectList(birimler, "birimId", "birimAd");
+            return View();
+        }
+
+        [HttpPost, AuthFilter(1)]
+        public ActionResult DuyuruEkle(Duyurular duyuru)
+        {
+            if (ModelState.IsValid)
+            {
+                duyuru.duyuruTarih = DateTime.Now;
+                duyuru.duyuruOlusturanId = Convert.ToInt32(Session["PersonelId"]);
+                duyuru.aktiflik = true;
+                duyuru.goruntuleyenBirimId = Convert.ToInt32(Session["BirimId"]); // Duyurunun birimini currentBirimId olarak ayarla
+
+                entity.Duyurular.Add(duyuru);
+                entity.SaveChanges();
+
+                TempData["bilgi"] = "Duyuru başarıyla eklendi.";
+                return RedirectToAction("Duyurular");
+            }
+
+            // Eğer ModelState geçerli değilse, ViewBag.Birimler nesnesini tekrar doldurmanız gerekir.
+            int currentBirimId = Convert.ToInt32(Session["BirimId"]);
+
+            var birimler = entity.Birimler.Where(b => b.birimId == currentBirimId).ToList();
+
+            ViewBag.Birimler = new SelectList(birimler, "birimId", "birimAd");
+            return View(duyuru);
+        }
+
+
+        [AuthFilter(1)]
+        public ActionResult DuyuruGuncelle(int id)
+        {
+            var duyuru = entity.Duyurular.Find(id);
+            if (duyuru == null)
+            {
+                return HttpNotFound();
+            }
+
+            int currentPersonelId = Convert.ToInt32(Session["PersonelId"]);
+            int currentBirimId = Convert.ToInt32(Session["BirimId"]);
+
+            // Check if the current user has permission to update the announcement
+            if (duyuru.duyuruOlusturanId != currentPersonelId &&
+                !entity.Personeller.Any(p => p.personelBirimId == currentBirimId && p.personelYetkiTurId == 1 && p.personelId == currentPersonelId))
+            {
+                return RedirectToAction("Error", "Yonetici", new { message = "Bu duyuruyu güncellemeye yetkiniz yok." });
+            }
+
+            var birimler = entity.Birimler.Where(b => b.birimId == currentBirimId ||
+                entity.Personeller.Any(p => p.personelBirimId == b.birimId && p.personelYetkiTurId == 1 && p.personelId != currentPersonelId)).ToList();
+
+            ViewBag.Birimler = new SelectList(birimler, "birimId", "birimAd", duyuru.goruntuleyenBirimId);
+
+            return View(duyuru);
+        }
+
+        [HttpPost, AuthFilter(1)]
+        public ActionResult DuyuruGuncelle(Duyurular duyuru)
+        {
+            var mevcutDuyuru = entity.Duyurular.Find(duyuru.duyuruId);
+            if (mevcutDuyuru == null)
+            {
+                return HttpNotFound();
+            }
+
+            int currentPersonelId = Convert.ToInt32(Session["PersonelId"]);
+
+            // Check if the current user has permission to update the announcement
+            if (mevcutDuyuru.duyuruOlusturanId != currentPersonelId &&
+                !entity.Personeller.Any(p => p.personelBirimId == mevcutDuyuru.goruntuleyenBirimId && p.personelYetkiTurId == 1 && p.personelId == currentPersonelId))
+            {
+                return RedirectToAction("Error", "Yonetici", new { message = "Bu duyuruyu güncellemeye yetkiniz yok." });
+            }
+
+            mevcutDuyuru.duyuruBaslik = duyuru.duyuruBaslik;
+            mevcutDuyuru.duyuruIcerik = duyuru.duyuruIcerik;
+            mevcutDuyuru.goruntuleyenBirimId = duyuru.goruntuleyenBirimId;
+            mevcutDuyuru.duyuruTarih = DateTime.Now; // Tarihi güncelle
+            entity.SaveChanges();
+            return RedirectToAction("Duyurular");
+        }
+
+
+
+        //[AuthFilter(1)]
+        //public ActionResult DuyuruGuncelle(int id)
+        //{
+        //    var duyuru = entity.Duyurular.Find(id);
+        //    if (duyuru == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+
+        //    int currentPersonelId = Convert.ToInt32(Session["PersonelId"]);
+        //    int currentBirimId = Convert.ToInt32(Session["BirimId"]);
+
+        //    var birimler = entity.Birimler.Where(b => b.birimId == currentBirimId || entity.Personeller.Any(p => p.personelBirimId == b.birimId && p.personelYetkiTurId == 1 && p.personelId != currentPersonelId)).ToList();
+
+        //    ViewBag.Birimler = new SelectList(birimler, "birimId", "birimAd", duyuru.goruntuleyenBirimId);
+        //    return View(duyuru);
+        //}
+
+        //[HttpPost, AuthFilter(1)]
+        //public ActionResult DuyuruGuncelle(Duyurular duyuru)
+        //{
+        //    var mevcutDuyuru = entity.Duyurular.Find(duyuru.duyuruId);
+        //    if (mevcutDuyuru == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+
+        //    mevcutDuyuru.duyuruBaslik = duyuru.duyuruBaslik;
+        //    mevcutDuyuru.duyuruIcerik = duyuru.duyuruIcerik;
+        //    mevcutDuyuru.goruntuleyenBirimId = duyuru.goruntuleyenBirimId;
+        //    mevcutDuyuru.duyuruTarih = DateTime.Now; // Tarihi güncelle
+        //    entity.SaveChanges();
+        //    return RedirectToAction("Duyurular");
+        //}
+
+
+        // Duyuru silme işlemi (aktifliğini false yapar)
+        [AuthFilter(1)]
+        public ActionResult DuyuruSil(int id)
+        {
+            var duyuru = entity.Duyurular.Find(id);
+            if (duyuru == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Retrieve the current session's personelId
+            int currentPersonelId = (int)Session["personelId"];
+
+            // Check if the announcement was created by the current person
+            if (duyuru.duyuruOlusturanId != currentPersonelId)
+            {
+                // Redirect to the custom error page with a message
+                return RedirectToAction("Error", "Yonetici", new { message = "Bu duyuruyu silmeye yetkiniz yok." });
+            }
+
+            duyuru.aktiflik = false;
+            entity.SaveChanges();
+            return RedirectToAction("Duyurular");
+        }
+
+        public ActionResult Error(string message)
+        {
+            ViewBag.ErrorMessage = message;
+            ViewBag.ErrorMessage = message;
+            return View();
+        }
+
+
 
 
     }

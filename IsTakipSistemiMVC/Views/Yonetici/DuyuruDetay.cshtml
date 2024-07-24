@@ -1,12 +1,12 @@
 ﻿@{
     ViewBag.Title = "DuyuruDetay";
-    Layout = "~/Views/Shared/_LayoutSistemYoneticisi.cshtml";
+    Layout = "~/Views/Shared/_LayoutYonetici.cshtml";
 }
 
 @model IsTakipSistemiMVC.Models.Duyurular
 
 <div class="container mt-5">
-    <a href="@Url.Action("Duyurular", "SistemYoneticisi")" class="btn btn-secondary mb-3">Geri</a>
+    <a href="@Url.Action("Duyurular", "Yonetici")" class="btn btn-secondary mb-3">Geri</a>
     <div class="card shadow-sm">
         <div class="card-body">
             <h2 class="card-title text-center">@Model.duyuruBaslik</h2>
@@ -16,8 +16,29 @@
 
             <footer class="duyuru-footer d-flex justify-content-between mt-4">
                 <a href="@Url.Action("DuyuruGuncelle", new { id = Model.duyuruId })" class="btn btn-primary">Güncelle</a>
-                <a href="@Url.Action("DuyuruSil", new { id = Model.duyuruId })" class="btn btn-danger">Sil</a>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Sil</button>
             </footer>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Silme Onayı</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bu duyuruyu silmek istediğinize emin misiniz?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">İptal</button>
+                <a href="@Url.Action("DuyuruSil", new { id = Model.duyuruId })" class="btn btn-danger">Sil</a>
+            </div>
         </div>
     </div>
 </div>

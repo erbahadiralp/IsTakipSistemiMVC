@@ -1,26 +1,25 @@
-﻿@{
+﻿
+@{
     ViewBag.Title = "DuyuruDetay";
-    Layout = "~/Views/Shared/_LayoutSistemYoneticisi.cshtml";
+    Layout = "~/Views/Shared/_LayoutCalisan.cshtml";
 }
+
 
 @model IsTakipSistemiMVC.Models.Duyurular
 
 <div class="container mt-5">
-    <a href="@Url.Action("Duyurular", "SistemYoneticisi")" class="btn btn-secondary mb-3">Geri</a>
+    <a href="@Url.Action("Duyurular", "Calisan")" class="btn btn-secondary mb-3">Geri</a>
     <div class="card shadow-sm">
         <div class="card-body">
             <h2 class="card-title text-center">@Model.duyuruBaslik</h2>
             <hr />
             <p class="card-text">@Model.duyuruIcerik</p>
-            <p class="card-text"><small class="text-muted">Oluşturulma Tarihi: @Model.duyuruTarih</small></p>
-
-            <footer class="duyuru-footer d-flex justify-content-between mt-4">
-                <a href="@Url.Action("DuyuruGuncelle", new { id = Model.duyuruId })" class="btn btn-primary">Güncelle</a>
-                <a href="@Url.Action("DuyuruSil", new { id = Model.duyuruId })" class="btn btn-danger">Sil</a>
-            </footer>
+            <p class="card-text"><small class="text-muted">Oluşturulma Tarihi: @Model.duyuruTarih</small></p>       
         </div>
     </div>
 </div>
+
+
 
 <style>
     body {
