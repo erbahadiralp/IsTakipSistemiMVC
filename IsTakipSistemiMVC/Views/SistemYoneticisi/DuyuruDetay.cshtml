@@ -1,0 +1,90 @@
+﻿@{
+    ViewBag.Title = "DuyuruDetay";
+    Layout = "~/Views/Shared/_LayoutSistemYoneticisi.cshtml";
+}
+
+@model IsTakipSistemiMVC.Models.Duyurular
+
+<div class="container mt-5">
+    <a href="@Url.Action("Duyurular", "SistemYoneticisi")" class="btn btn-secondary mb-3">Geri</a>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h2 class="card-title text-center">@Model.duyuruBaslik</h2>
+            <hr />
+            <p class="card-text">@Model.duyuruIcerik</p>
+            <p class="card-text"><small class="text-muted">Tarih: @Model.duyuruTarih</small></p>
+
+            <footer class="duyuru-footer d-flex justify-content-between mt-4">
+                <a href="@Url.Action("DuyuruGuncelle", new { id = Model.duyuruId })" class="btn btn-primary">Güncelle</a>
+                <a href="@Url.Action("DuyuruSil", new { id = Model.duyuruId })" class="btn btn-danger">Sil</a>
+            </footer>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .container {
+        max-width: 600px;
+    }
+
+    .card {
+        border-radius: 15px;
+    }
+
+    .card-title {
+        font-weight: bold;
+    }
+
+    .card-text {
+        font-size: 16px;
+    }
+
+    .text-muted {
+        font-size: 14px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+    .duyuru-footer {
+        border-top: 1px solid #dee2e6;
+        padding-top: 10px;
+    }
+</style>

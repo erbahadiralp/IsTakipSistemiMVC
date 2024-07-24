@@ -1,0 +1,125 @@
+﻿@{
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+
+    <title>İŞ TAKİP SİSTEMİ GİRİŞ</title>
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #2c2e33; /* Arka plan rengi */
+        }
+
+        .container {
+            text-align: center;
+            background-color: #1f2023; /* Kutu arka plan rengi */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            color: #ffffff; /* Metin rengi */
+        }
+
+            .container img {
+                width: 230px;
+                height: 77px;
+                margin-bottom: 20px;
+            }
+
+            .container h1 {
+                margin-bottom: 20px;
+                font-size: 24px;
+                font-weight: bold;
+            }
+
+            .container .form-floating {
+                margin-bottom: 15px;
+            }
+
+            .container .form-control {
+                background-color: #3a3b3e; /* Input arka plan rengi */
+                color: #ffffff; /* Input metin rengi */
+                border: 1px solid #555555; /* Input sınır rengi */
+            }
+
+                .container .form-control::placeholder {
+                    color: #a0a0a0; /* Placeholder rengi */
+                }
+
+            .container button {
+                width: 100%;
+                padding: 10px;
+                color: white;
+                background-color: #007bff; /* Buton rengi */
+                border: none;
+                border-radius: 5px;
+                font-size: 16px;
+                cursor: pointer;
+            }
+
+                .container button:hover {
+                    background-color: #0056b3; /* Hover buton rengi */
+                }
+
+            .container .links {
+                margin-top: 20px;
+            }
+
+                .container .links a {
+                    color: #007bff;
+                    text-decoration: none;
+                    margin: 0 5px;
+                }
+
+                    .container .links a:hover {
+                        text-decoration: underline;
+                    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://www.icdas.com.tr/Images/siteImages/logo.png" alt="Logo">
+        <br />
+        <br />
+
+        <h1 class="h3 mb-3 fw-normal">İş Takip Sistemi Giriş</h1>
+        <br />
+        @using (Html.BeginForm("Index", "Login", FormMethod.Post))
+        {
+            <div class="form-floating">
+                <input type="text" class="form-control" id="kullaniciAd" name="kullaniciAd" placeholder="Kullanıcı Adınız">
+                <label for="kullaniciAd">Kullanıcı Adınız</label>
+            </div>
+            <br />
+            <div class="form-floating">
+                <input type="password" class="form-control" id="parola" name="parola" placeholder="Parola">
+                <label for="parola">Parola</label>
+            </div>
+            <br />
+            <button class="btn btn-primary w-100 py-2" type="submit">Giriş Yap</button>
+            <br />
+            <br />
+            if (ViewBag.mesaj != null)
+            {
+                <div class="alert alert-danger" role="alert">
+                    @ViewBag.mesaj
+                </div>
+            }
+        }
+    </div>
+</body>
+</html>

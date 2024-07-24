@@ -1,0 +1,161 @@
+﻿@model IsTakipSistemiMVC.Models.Personeller
+
+@{
+    ViewBag.Title = "Detay";
+    Layout = "~/Views/Shared/_LayoutSistemYoneticisi.cshtml";
+}
+
+<div class="container mt-4 custom-container">
+    <div class="row mb-4">
+        <div class="col text-end">
+            <a href="@Url.Action("Index", "Personel")" class="btn btn-secondary back-button">
+
+                <span class="mdi mdi-arrow-left"></span> 
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="card position-relative" style="margin-top: -30px;">
+                <div class="card-header">
+                    <h3>Personel Detayları</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3 custom-row">
+                        <div class="col-md-6 custom-col">
+                            <p><strong>Ad Soyad:</strong> @Model.personelAdSoyad</p>
+                            <p><strong>Birim:</strong> @Model.Birimler.birimAd</p>
+                            <p><strong>Dahili Numarası:</strong> @Model.personelDahili</p>
+                            <p><strong>İşe Giriş Tarihi:</strong> @Model.personelIseGiris</p>
+                            <p><strong>Kullanıcı Ad:</strong> @Model.personelKullaniciAd</p>
+                            <p><strong>Yetki Türü:</strong> @Model.YetkiTurler.yetkiTurAd</p>
+
+
+                        </div>
+                        <div class="col-md-6 custom-col2">
+                            <p><strong>Adres:</strong> @Model.personelAdres</p>
+                            <p><strong>Doğum Tarihi:</strong> @Model.personelDogumGunu</p>
+                            <p><strong>Mail Adresi:</strong> @Model.personelMail</p>
+                            <p><strong>Telefon Numarası:</strong> @Model.personelTelefon</p>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3 custom-row">
+                        <div class="col-md-6 custom-col3">
+                            <p><strong>Kalan İzin Gün Sayısı:</strong> @Model.personelIzın</p>
+                        </div>
+                        <div class="col-md-6 text-center profile-img-container custom-col">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHQ-5AFT61RZKko6Bncn8EgWPvLab4r4ZQyA&s" alt="Profil Fotoğrafı" class="profile-img">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-footer text-end">
+                    <a href="@Url.Action("Guncelle", new { id = Model.personelId })" class="btn btn-success me-2">
+                        <i class="fas fa-edit"></i> Güncelle
+                    </a>
+                    <button type="button" class="btn btn-danger" id="showDeleteModal">
+                        <i class="fas fa-trash"></i> Sil
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Personel Sil</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @Model.personelAdSoyad adlı personeli silmek istediğinizden emin misiniz?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelButton">İptal</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Sil</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<script>
+    document.getElementById('showDeleteModal').addEventListener('click', function () {
+        var deleteModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+        deleteModal.show();
+    });
+
+    document.getElementById('confirmDeleteButton').addEventListener('click', function () {
+        var form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '@Url.Action("Sil", "Personel")';
+
+        var hiddenField = document.createElement('input');
+        hiddenField.type = 'hidden';
+        hiddenField.name = 'personelId';
+        hiddenField.value = '@Model.personelId';
+        form.appendChild(hiddenField);
+
+        document.body.appendChild(form);
+        form.submit();
+    });
+
+    document.getElementById('cancelButton').addEventListener('click', function () {
+        window.location.href = '@Url.Action("Index", "Personel")';
+    });
+</script>
+
+<style>
+    .custom-container {
+        max-width: 70%;
+        margin: 0 auto;
+    }
+
+    .back-button {
+        position: relative;
+        z-index: 2;
+        top: -20px;
+    }
+
+    .profile-img-container {
+        position: absolute;
+        top: 90px;
+        right: 10px;
+    }
+
+    .profile-img {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border: 2px solid #ddd;
+    }
+
+    .custom-row {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .custom-col, .custom-col2, .custom-col3 {
+        padding: 0 1rem;
+    }
+
+    .card-body .row {
+        display: flex;
+        align-items: flex-start;
+        gap: 1.5rem;
+    }
+
+    .card-body p {
+        margin-bottom: 0.75rem;
+    }
+
+    .card-footer a {
+        margin-left: 0.5rem;
+    }
+</style>

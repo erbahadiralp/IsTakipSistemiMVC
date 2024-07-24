@@ -1,0 +1,98 @@
+﻿@model IsTakipSistemiMVC.Models.Personeller
+
+@{
+    ViewBag.Title = "Profil";
+    Layout = "~/Views/Shared/_LayoutCalisan.cshtml";
+}
+
+<div class="container mt-5 custom-container">
+    <div class="row mb-5">
+        <div class="col text-end">
+            <a href="@Url.Action("Index", "Calisan")" class="btn btn-secondary back-button">
+                <i class="fas fa-arrow-left"></i> Geri
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="card position-relative" style="margin-top: -30px;">
+                <div class="card-header">
+                    <h3>Bilgilerim</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3 custom-row">
+                        <div class="col-md-6 custom-col">
+                            <p><strong>Ad Soyad:</strong> @Model.personelAdSoyad</p>
+                            <p><strong>Birim:</strong> @Model.Birimler.birimAd</p>
+                            <p><strong>Yetki Türü:</strong> @Model.YetkiTurler.yetkiTurAd</p>
+                            <p><strong>Kullanıcı Ad:</strong> @Model.personelKullaniciAd</p>
+                        </div>
+                        <div class="col-md-6 custom-col2">
+                            <p><strong>Adres:</strong> @Model.personelAdres</p>
+                            <p><strong>Doğum Tarihi:</strong> @Model.personelDogumGunu</p>
+                            <p><strong>Mail Adresi:</strong> @Model.personelMail</p>
+                            <p><strong>Telefon Numarası:</strong> @Model.personelTelefon</p>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3 custom-row">
+                        <div class="col-md-6 custom-col3">
+                            <p><strong>İşe Giriş Tarihi:</strong> @Model.personelIseGiris</p>
+                            <p><strong>Kalan İzin Gün Sayısı:</strong> @Model.personelIzın</p>
+                        </div>
+                        <div class="col-md-6 text-center profile-img-container custom-col">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHQ-5AFT61RZKko6Bncn8EgWPvLab4r4ZQyA&s" alt="Profil Fotoğrafı" class="profile-img">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .custom-container {
+        max-width: 70%;
+        margin: 0 auto;
+    }
+
+    .back-button {
+        position: relative;
+        z-index: 2;
+        top: -20px;
+    }
+
+    .profile-img-container {
+        position: absolute;
+        top: 90px;
+        right: 10px;
+    }
+
+    .profile-img {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border: 2px solid #ddd;
+    }
+
+    .custom-row {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .custom-col, .custom-col2, .custom-col3 {
+        padding: 0 1rem;
+    }
+
+    .card-body .row {
+        display: flex;
+        align-items: flex-start;
+        gap: 1.5rem;
+    }
+
+    .card-body p {
+        margin-bottom: 0.75rem;
+    }
+</style>

@@ -1,0 +1,116 @@
+﻿@{
+    ViewBag.Title = "YemekEkle";
+    Layout = "~/Views/Shared/_LayoutSistemYoneticisi.cshtml";
+}
+
+<div class="container mt-3">
+    <div class="card shadow-sm w-75 mx-auto">
+        <div class="card-body">
+            <h3 class="card-title text-center mb-4">Menü Ekle</h3>
+            <hr />
+            @using (Html.BeginForm("YemekEkle", "SistemYoneticisi", FormMethod.Post, new { @class = "row g-3" }))
+            {
+                <div class="col-6">
+                    <label class="form-label" for="YemekAdi1">Yemek 1</label>
+                    <input type="text" class="form-control" id="YemekAdi1" name="YemekAdi1" />
+                </div>
+
+                <div class="col-6">
+                    <label class="form-label" for="YemekAdi2">Yemek 2</label>
+                    <input type="text" class="form-control" id="YemekAdi2" name="YemekAdi2" />
+                </div>
+
+                <div class="col-6">
+                    <label class="form-label" for="YemekAdi3">Yemek 3</label>
+                    <input type="text" class="form-control" id="YemekAdi3" name="YemekAdi3" />
+                </div>
+
+                <div class="col-6">
+                    <label class="form-label" for="YemekAdi4">Yemek 4</label>
+                    <input type="text" class="form-control" id="YemekAdi4" name="YemekAdi4" />
+                </div>
+
+                <div class="col-6">
+                    <label class="form-label" for="YemekAdi5">Yemek 5</label>
+                    <input type="text" class="form-control" id="YemekAdi5" name="YemekAdi5" />
+                </div>
+
+                <div class="col-6">
+                    <label class="form-label" for="YemekAdi6">Yemek 6</label>
+                    <input type="text" class="form-control" id="YemekAdi6" name="YemekAdi6" />
+                </div>
+
+                <div class="col-6">
+                    <label class="form-label" for="YemekAdi7">Yemek 7</label>
+                    <input type="text" class="form-control" id="YemekAdi7" name="YemekAdi7" />
+                </div>
+
+                <div class="col-6">
+                    <label class="form-label" for="YemekAdi8">Yemek 8</label>
+                    <input type="text" class="form-control" id="YemekAdi8" name="YemekAdi8" />
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label" for="Tarih">Tarih</label>
+                    <input type="date" class="form-control" id="Tarih" name="Tarih" />
+                </div>
+
+                <div class="col-12 d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary w-50 py-2">Menü Ekle</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@if (TempData["bilgi"] != null)
+{
+    <div class="alert alert-success mt-3 w-75 mx-auto">
+        @TempData["bilgi"]
+    </div>
+}
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .container {
+        max-width: 900px; /* Kart genişliğini artır */
+    }
+
+    .card {
+        border-radius: 15px;
+        border: none;
+    }
+
+    .card-title {
+        font-weight: bold;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        padding: 8px 15px; /* Buton boyutunu küçültmek için padding azaltıldı */
+        font-size: 0.875rem; /* Font boyutunu küçültmek için */
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    .form-control, .form-select {
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    .form-label {
+        margin-bottom: 10px; /* Etiketler ile metin kutuları arasındaki boşluğu artır */
+    }
+
+    .form-control, .form-select {
+        margin-bottom: 20px; /* Form elemanları arasındaki boşluğu artır */
+    }
+</style>

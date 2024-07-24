@@ -1,0 +1,92 @@
+﻿@{
+    ViewBag.Title = "Yap";
+    Layout = "~/Views/Shared/_LayoutCalisan.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center">İŞ TAMAMLA</h2>
+    <br />
+    <div class="row">
+        @foreach (var i in ViewBag.isler)
+        {
+            <div class="col-md-6 mb-4">
+                @using (Html.BeginForm("Yap", "Calisan", FormMethod.Post))
+                {
+                    <div class="card shadow-sm border-0 h-100 job-card">
+                        <div class="card-header bg-dark text-white text-center">
+                            <h5 class="card-title mb-0">@i.isBaslik</h5>
+                        </div>
+                        <div class="card-body">
+                            <input type="hidden" name="isId" value="@i.isId" />
+                            <div class="mb-3">
+                                <strong>İş Açıklaması:</strong> @i.isAciklama
+                            </div>
+                            <div class="mb-3">
+                                <label for="isYorum" class="form-label">Yorum Giriniz</label>
+                                <textarea class="form-control" id="isYorum" name="isYorum" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="card-footer text-end">
+                            <button type="submit" class="btn btn-success">Tamamla</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #343a40;
+        color: #f8f9fa;
+    }
+
+    .card {
+        border-radius: 15px;
+        background-color: #212529;
+        border: none;
+    }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+    .card-title {
+        font-weight: bold;
+        color: #f8f9fa;
+    }
+
+    .form-label {
+        color: #f8f9fa;
+    }
+
+    .job-card .card-header {
+        background-color: #495057;
+        color: #f8f9fa;
+    }
+
+    .job-card .card-body {
+        background-color: #212529;
+        color: #adb5bd;
+    }
+
+    .job-card .card-footer {
+        background-color: #343a40;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+
+        .btn-success:focus {
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
+        }
+</style>

@@ -1,0 +1,74 @@
+﻿@model IEnumerable<IsTakipSistemiMVC.Models.BirimViewModel>
+
+@{
+    ViewBag.Title = "Birim";
+    Layout = "~/Views/Shared/_LayoutSistemYoneticisi.cshtml";
+}
+
+<style>
+    .custom-button {
+        margin: 5px; /* Butonlar arasındaki boşluğu artır */
+        transition: background-color 0.3s ease; /* Geçiş efekti */
+    }
+
+        .custom-button:hover {
+            background-color: #0056b3; /* Hover rengi */
+            color: white; /* Yazı rengini beyaz yap */
+        }
+</style>
+
+<div class="container mt-4">
+    <div class="row mb-3">
+        <div class="col text-end">
+            <a href="@Url.Action("Olustur")" class="btn btn-primary custom-button">
+                <i class="fas fa-plus"></i> Yeni Birim Ekle
+            </a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr class="text-center table-dark">
+                            <th style="width: 30%;">Birim Adı</th>
+                            <th style="width: 40%;">Yöneticiler</th>
+                            <th style="width: 30%;">İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="text-center">
+                                <td>
+                                    @Html.DisplayFor(model => item.BirimAd)
+                                </td>
+                                <td>
+                                    @if (item.Yoneticiler == "Belirtilmemiş")
+                                    {
+                                        <span>@item.Yoneticiler</span>
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayFor(model => item.Yoneticiler)
+                                    }
+                                </td>
+                                <td class="d-flex justify-content-center">
+                                    <a href="@Url.Action("Guncelle", new { id = item.BirimId })" class="btn btn-success custom-button">
+                                        <i class="fas fa-edit"></i> Güncelle
+                                    </a>
+                                    <a href="@Url.Action("Sil", new { id = item.BirimId })" class="btn btn-danger custom-button">
+                                        <i class="fas fa-trash"></i> Sil
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>

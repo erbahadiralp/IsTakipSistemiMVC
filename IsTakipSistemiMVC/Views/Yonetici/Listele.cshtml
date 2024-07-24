@@ -1,0 +1,100 @@
+﻿@{
+    ViewBag.Title = "Listele";
+    Layout = "~/Views/Shared/_LayoutYonetici.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="mb-4 text-center">
+        <h3 class="text-primary">@ViewBag.personel.personelAdSoyad İşleri</h3>
+    </div>
+
+    @if (ViewBag.isSayisi != 0)
+    {
+        <div class="row">
+            @foreach (var i in ViewBag.Isler)
+            {
+                <div class="col-lg-6 col-md-12 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h4 class="card-title text-center">@i.isBaslik</h4>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <strong class="text-dark">Açıklama:</strong> <span class="text-dark">@i.isAciklama</span>
+                                </li>
+                                <li class="list-group-item">
+                                    <strong class="text-dark">İletilen Tarih:</strong> <span class="text-dark">@i.iletilenTarih.ToString("dd MMMM yyyy hh:mm")</span>
+                                </li>
+                                <li class="list-group-item">
+                                    <strong class="text-dark">Yapılan Tarih:</strong> <span class="text-dark">@(i.yapilanTarih != null ? @i.yapilanTarih.ToString("dd MMMM yyyy hh:mm") : "Henüz Girilmedi")</span>
+                                </li>
+                                <li class="list-group-item">
+                                    <strong class="text-dark">İş Durum:</strong> <span class="text-dark">@i.Durumlar.durumAd</span>
+                                </li>
+                                <li class="list-group-item">
+                                    <strong class="text-dark">İş Yorumu:</strong> <span class="text-dark">@i.isYorum</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-secondary text-center" role="alert">
+            Henüz İş Verilmemiş
+        </div>
+    }
+</div>
+
+<style>
+    .card {
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+    .card-title {
+        margin-bottom: 20px;
+        color: #007bff;
+    }
+
+    .list-group-item {
+        border: none;
+        padding: 15px 20px;
+        background-color: #ffffff;
+        transition: background-color 0.2s;
+    }
+
+        .list-group-item:hover {
+            background-color: #f1f1f1;
+        }
+
+        .list-group-item strong {
+            display: inline-block;
+            width: 150px;
+            color: #212529; /* Daha koyu renk */
+        }
+
+    .alert {
+        margin-top: 20px;
+    }
+
+    .text-primary {
+        color: #007bff !important;
+    }
+
+    .text-dark {
+        color: #212529 !important; /* Daha koyu renk */
+    }
+
+    .container {
+        max-width: 1200px;
+    }
+</style>

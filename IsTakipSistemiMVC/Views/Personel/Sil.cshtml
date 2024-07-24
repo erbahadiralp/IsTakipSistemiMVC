@@ -1,0 +1,46 @@
+﻿@model IsTakipSistemiMVC.Models.Personeller
+@{
+    ViewBag.Title = "Sil";
+    Layout = "~/Views/Shared/_LayoutSistemYoneticisi.cshtml";
+}
+
+<div class="container mt-5">
+    @using (Html.BeginForm("Sil", "Personel", FormMethod.Post))
+    {
+        @Html.HiddenFor(m => m.personelId)
+
+        <div class="h-100 p-5 text-dark bg-light rounded-3 shadow-sm">
+            <h2 class="display-5">@Model.personelAdSoyad isimli personel silinecek</h2>
+            <p class="lead">Bu işlemi geri alamayacağınızı unutmayın. Emin misiniz?</p>
+            <div class="row g-3 text-center mt-4">
+                <div class="col">
+                    <button class="btn btn-danger btn-lg px-4" type="submit">
+                        <i class="fas fa-trash-alt"></i> Sil
+                    </button>
+                </div>
+                <div class="col">
+                    @Html.ActionLink("Vazgeç", "Index", "Personel", new { }, new { @class = "btn btn-secondary btn-lg px-4" })
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- FontAwesome CSS for icons (include in your layout or here) -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
+<!-- Custom CSS (optional for further styling) -->
+<style>
+    .btn-lg {
+        font-size: 1.25rem;
+        padding: 0.75rem 1.5rem;
+    }
+
+    .shadow-sm {
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+    }
+
+    .display-5 {
+        font-size: 2.5rem;
+    }
+</style>

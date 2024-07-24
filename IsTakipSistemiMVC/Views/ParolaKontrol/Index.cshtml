@@ -1,0 +1,173 @@
+﻿@model IsTakipSistemiMVC.Models.Personeller
+
+@{
+    if (Model.personelYetkiTurId == 1)
+    {
+        Layout = "~/Views/Shared/_LayoutYonetici.cshtml";
+    }
+    if (Model.personelYetkiTurId == 2)
+    {
+        Layout = "~/Views/Shared/_LayoutCalisan.cshtml";
+    }
+}
+
+<div class="container mt-5">
+    <div class="h-100 p-5 text-white bg-dark rounded-3 shadow-sm">
+        <h2>Merhaba, @Model.personelAdSoyad</h2>
+        <p>Parolanızı değiştirmek için eski parolanızı ve yeni parolanızın tekrarını giriniz.</p>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="card bg-dark text-white border-0 rounded-3 shadow-sm">
+        <div class="card-body">
+            @using (Html.BeginForm("Index", "ParolaKontrol", FormMethod.Post))
+            {
+                @Html.HiddenFor(m => m.personelId)
+                <div class="form-group mb-3">
+                    <label for="eskiParola" class="form-label">Eski Parola</label>
+                    <input type="password" id="eskiParola" class="form-control highlighted-input" name="eskiParola" placeholder="Eski Parola" />
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="yeniParola" class="form-label">Yeni Parola</label>
+                    <input type="password" id="yeniParola" name="yeniParola" class="form-control highlighted-input" aria-describedby="passwordHelp" placeholder="Yeni Parola" />
+                    <small id="passwordHelp" class="form-text text-white">6 ile 15 karakter uzunluğunda olmalıdır.</small>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="yeniParolaKontrol" class="form-label">Yeni Parola Tekrar</label>
+                    <input type="password" id="yeniParolaKontrol" name="yeniParolaKontrol" class="form-control highlighted-input" placeholder="Yeni Parola Tekrar" />
+                </div>
+
+                <button type="submit" class="btn btn-primary rounded-pill shadow">Parola Değiştir</button>
+                <button type="button" class="btn btn-dark rounded-pill">İptal</button>
+
+                <br /><br />
+                if (ViewBag.mesaj != null)
+                {
+                    <div class="alert @ViewBag.sitil" role="alert">
+                        @ViewBag.mesaj
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #212529;
+        color: #f8f9fa;
+    }
+
+    .bg-dark {
+        background-color: #343a40 !important;
+    }
+
+    .text-white {
+        color: #f8f9fa !important;
+    }
+
+    .form-label {
+        color: #f8f9fa;
+        font-weight: bold;
+        font-size: 1.1rem; /* Daha büyük yazı boyutu */
+        font-family: 'Arial', sans-serif;
+        padding-bottom: 0.5rem; /* Alt boşluk */
+        display: block; /* Blok olarak göster */
+    }
+
+    .form-control {
+        background-color: #343a40;
+        color: #f8f9fa;
+        border: 2px solid #f8f9fa; /* Belirgin kenarlık */
+        border-radius: 0.25rem;
+        padding: 0.75rem; /* Daha büyük padding */
+        transition: all 0.3s ease; /* Geçiş efekti */
+    }
+
+    .highlighted-input {
+        border: 2px solid #f8f9fa; /* Belirgin kenarlık */
+    }
+
+    .form-control:focus {
+        border: 2px solid #007bff; /* Odaklanma durumunda mavi kenarlık */
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Hafif gölge efekti */
+        outline: none; /* Mavi dış çizgiyi kaldır */
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        border-radius: 50px;
+        padding: 0.5rem 1rem;
+        box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
+        transition: all 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+            box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, .25);
+        }
+
+        .btn-primary:focus {
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+        }
+
+    .btn-dark {
+        background-color: #212529;
+        border-color: #212529;
+        border-radius: 50px;
+        padding: 0.5rem 1rem;
+        box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
+        transition: all 0.3s ease;
+    }
+
+        .btn-dark:hover {
+            background-color: #1b1e21;
+            border-color: #1b1e21;
+            box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, .25);
+        }
+
+        .btn-dark:focus {
+            box-shadow: 0 0 0 0.2rem rgba(33, 37, 41, 0.5);
+        }
+
+    .rounded-pill {
+        border-radius: 50px !important;
+    }
+
+    .shadow {
+        box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
+    }
+
+        .shadow:hover {
+            box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, .25) !important;
+        }
+
+    .card {
+        border-radius: 15px;
+    }
+
+    .card-title {
+        font-weight: bold;
+    }
+
+    .card-description {
+        color: #adb5bd;
+    }
+</style>
+
+<script>
+    const myTimeOut = setTimeout(yonlendir, 3000);
+
+    function yonlendir() {
+        if (@ViewBag.yetkiTurId == 1) {
+            window.location.href = "/Yonetici/Index";
+        } else {
+            window.location.href = "/Calisan/Index";
+        }
+    }
+</script>

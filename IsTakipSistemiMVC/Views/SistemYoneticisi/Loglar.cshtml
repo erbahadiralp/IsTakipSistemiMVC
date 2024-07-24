@@ -1,0 +1,85 @@
+﻿@model IEnumerable<IsTakipSistemiMVC.Models.Loglar>
+@using GridMvc.Html
+
+@{
+    ViewBag.Title = "Loglar";
+    Layout = "~/Views/Shared/_LayoutSistemYoneticisi.cshtml";
+}
+
+<style>
+    .custom-button {
+        margin: 5px; /* Butonlar arasındaki boşluğu artır */
+        transition: background-color 0.3s ease; /* Geçiş efekti */
+    }
+
+        .custom-button:hover {
+            background-color: #0056b3; /* Hover rengi */
+            color: white; /* Yazı rengini beyaz yap */
+        }
+</style>
+
+<div class="container mt-4">
+    <div class="row mb-3">
+        <div class="col text-end">
+            <form method="post" action="@Url.Action("ExceleAktar")" class="d-inline-block">
+                <button type="submit" class="btn btn-primary custom-button">
+                    <i class="fas fa-file-excel"></i> Excel'e Aktar
+                </button>
+            </form>
+            <form method="post" action="@Url.Action("LogSil")" id="logSilForm" class="d-inline-block">
+                <button type="button" class="btn btn-danger custom-button" id="showDeleteModal">
+                    <i class="fas fa-trash"></i> Tüm Logları Sil
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                @Html.Grid(Model).Columns(column =>
+                {
+                    column.Add(m => m.Personeller.personelAdSoyad).Titled("Personel Ad Soyad").Filterable(true);
+                    column.Add(m => m.logAciklama).Titled("Açıklama");
+                    column.Add(m => m.actionAd).Titled("Action Adı");
+                    column.Add(m => m.controllerAd).Titled("Controller Adı");
+                    column.Add(m => m.tarih).Titled("Tarih").Sortable(true);
+                }).WithPaging(10) <!-- Sayfalama ekleyin ve sayfa başına 10 kayıt gösterin -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Logları Sil</h5>
+            </div>
+            <div class="modal-body">
+                Tüm logları silmek istediğinizden emin misiniz?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelButton">İptal</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Sil</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<script>
+    document.getElementById('showDeleteModal').addEventListener('click', function () {
+        var deleteModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+        deleteModal.show();
+    });
+
+    document.getElementById('confirmDeleteButton').addEventListener('click', function () {
+        document.getElementById('logSilForm').submit();
+    });
+
+    document.getElementById('cancelButton').addEventListener('click', function () {
+        window.location.href = '@Url.Action("Loglar", "SistemYoneticisi")';
+    });
+</script>

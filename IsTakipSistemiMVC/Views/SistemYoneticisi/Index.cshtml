@@ -1,0 +1,161 @@
+﻿@model IEnumerable<IsTakipSistemiMVC.Models.BirimViewModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutSistemYoneticisi.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="row g-4">
+        <div class="col-lg-6 col-md-12 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Birimlerin Toplam İşleri</h5>
+                    <canvas id="myChart" class="chart-canvas"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-12 mb-4">
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm small-card card-color-1">
+                        <div class="card-body">
+                            <h5 class="card-title">Toplam Çalışan Sayısı</h5>
+                            <p class="card-text">
+                                @ViewBag.TotalEmployees
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm small-card card-color-2">
+                        <div class="card-body">
+                            <h5 class="card-title">Son Eklenen Çalışan</h5>
+                            <p class="card-text">
+                                @if (ViewBag.LastAddedEmployee != null)
+                                {
+                                    <strong>Ad:</strong> @ViewBag.LastAddedEmployee.personelAdSoyad<br>
+                                    <strong>Pozisyon:</strong> @ViewBag.LastAddedEmployee.personelPozisyon<br>
+                                    <strong>Eklenme Tarihi:</strong> @ViewBag.LastAddedEmployee.eklenmeTarihi.ToShortDateString()
+                                }
+                                else
+                                {
+                                    <span>Son eklenen çalışan bilgisi mevcut değil.</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-4">
+                    <div class="card shadow-sm small-card card-color-3">
+                        <div class="card-body">
+                            <h5 class="card-title">En Yüksek Performans Gösteren Çalışan</h5>
+                            <p class="card-text">
+                                @if (ViewBag.TopPerformer != null)
+                                {
+                                    <strong>Ad:</strong> @ViewBag.TopPerformer.personelAdSoyad<br>
+                                    <strong>Pozisyon:</strong> @ViewBag.TopPerformer.personelPozisyon<br>
+                                    <strong>Performans Puanı:</strong> @ViewBag.TopPerformer.performansPuani
+                                }
+                                else
+                                {
+                                    <span>En yüksek performans gösteren çalışan bilgisi mevcut değil.</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-12 mb-4">
+            <div class="card shadow-sm announcement-card short-card">
+                <div class="card-body">
+                    <h5 class="card-title">Duyurular</h5>
+                    <p class="card-text">Duyurular burada yer alacak.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/chart.min.js"></script>
+<script>
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(ViewBag.labelBirim),
+            datasets: [{
+                label: 'Birimlerin Toplam İşleri',
+                data: @Html.Raw(ViewBag.dataIs),
+                backgroundColor: '#22333b',
+                borderColor: '#0a0908',
+                borderWidth: 2
+            }]
+        }
+    });
+</script>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .card {
+        border-radius: 15px;
+    }
+
+    .card-title {
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .container h2 {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .text-muted {
+        color: #6c757d;
+    }
+
+    .chart-canvas {
+        width: 100% !important;
+        height: 250px !important;
+    }
+
+    .short-card {
+        height: 200px;
+    }
+
+    .tall-card {
+        height: 400px;
+    }
+
+    .small-card {
+        height: 150px;
+    }
+
+    .announcement-card {
+        background-color: #007bff; /* Duyuru kartı rengi */
+        color: #212529; /* Duyuru kartı metin rengi */
+    }
+
+    .card-color-1 {
+        background-color: #ffd966; /* Açık turuncu */
+        color: #212529; /* Metin rengi */
+    }
+
+    .card-color-2 {
+        background-color: #ccffcc; /* Açık yeşil */
+        color: #212529; /* Metin rengi */
+    }
+
+    .card-color-3 {
+        background-color: #ccccff; /* Açık mavi */
+        color: #212529; /* Metin rengi */
+    }
+
+    .row.g-4 > .col-lg-6, .row.g-4 > .col-md-12 {
+        padding-bottom: 1rem; /* Kartlar arasında daha fazla boşluk eklemek için */
+    }
+</style>

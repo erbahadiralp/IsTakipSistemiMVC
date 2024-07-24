@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "Duyurular";
+    Layout = "~/Views/Shared/_LayoutCalisan.cshtml";
+}
+
+@model IEnumerable<IsTakipSistemiMVC.Models.Duyurular>
+
+@{
+    ViewBag.Title = "Duyurular";
+}
+
+<h2>Duyurular</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.duyuruBaslik)</th>
+            <th>@Html.DisplayNameFor(model => model.duyuruTarih)</th>
+            <th>@Html.DisplayNameFor(model => model.duyuruOlusturanId)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.duyuruBaslik)</td>
+                <td>@Html.DisplayFor(modelItem => item.duyuruTarih)</td>
+                <td>@Html.DisplayFor(modelItem => item.duyuruOlusturanId)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

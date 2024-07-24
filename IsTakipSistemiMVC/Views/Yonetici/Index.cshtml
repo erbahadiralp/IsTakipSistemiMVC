@@ -1,0 +1,290 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutYonetici.cshtml";
+}
+
+@model IEnumerable<IsTakipSistemiMVC.Models.ToplamIs>
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Duyurular, Çalışanlarım ve Ayın Elemanı Kartları Kapsayıcı Div -->
+        <div class="col-lg-6 mb-2">
+            <!-- Duyurular Kartı -->
+            <div class="card shadow-sm announcement-card mb-2">
+                <div class="card-body">
+                    <h5 class="card-title">Duyurular</h5>
+                    <p class="card-text">Duyurular burada yer alacak.</p>
+                </div>
+            </div>
+
+            <!-- Çalışanlarım Kartı -->
+            <div class="card shadow-sm personal-card mb-2">
+                <div class="card-body">
+                    <h6 class="card-title">Çalışanlarım</h6>
+                    <div class="table-responsive">
+                        <table class="table table-hover employee-table">
+                            <thead class="employee-table-header">
+                                <tr class="text-center">
+                                    <th>Ad Soyad</th>
+                                    <th>Dahili Telefon Numara</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var personel in ViewBag.personeller)
+                                {
+                                    <tr class="text-center">
+                                        <td>@personel.personelAdSoyad</td>
+                                        <td>@personel.personelDahili</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ayın Elemanı Kartı -->
+            <div class="card shadow-sm ayin-elemani-card mb-2" style="height: 250px">
+                <div class="card-body">
+                    <h6 class="card-title">Ayın Elemanı</h6>
+                    <div class="alert alert-dark" role="alert">
+                        @using (Html.BeginForm("AyinElemani", "Yonetici", FormMethod.Post, new { @class = "row g-3 align-items-center" }))
+                        {
+                            <div class="col-auto">
+                                @Html.Partial("_PartialAylarSelect")
+                            </div>
+
+                            <div class="col-auto">
+                                <select class="form-select" name="yillar">
+                                    @foreach (var yil in ViewBag.yillar)
+                                    {
+                                        <option value="@yil">@yil</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="col-auto">
+                                <button class="btn btn-primary">Ayın Elemanını Getir</button>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-md-12">
+                        @if (ViewBag.ayinElemani != null)
+                        {
+                            <div class="alert alert-success" role="alert">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        @ViewBag.ayinElemani.personelAdSoyad
+                                        <span class="badge bg-primary rounded-pill">Yapılan İş Toplamı: @ViewBag.ayinElemani.toplamIs</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-dark" role="alert">
+                                Herhangi bir çalışan bulunamadı
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sağ: Çalışan Performansı Çizelgesi ve Günün Yemeği Kartı -->
+        <div class="col-lg-6 mb-2" >
+            <!-- Çalışan Performansı Çizelgesi -->
+            <div class="card shadow-sm chart-card mb-2" style="height:368px" id="performanceCard">
+                <div class="card-body">
+                    <h6 class="card-title">Çalışan Performansı</h6>
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Günün Yemeği Kartı -->
+            <div class="card shadow-sm meal-card">
+                <div class="card-body">
+                    <h5 class="card-title">Günün Menüsü</h5>
+                    <p class="card-text">
+                        @{
+                            var bugunYemek = ViewBag.BugunYemek as IsTakipSistemiMVC.Models.YemekTablo;
+                        }
+                        @if (bugunYemek != null)
+                        {
+                            <ul class="list-group mb-2">
+                                <li class="list-group-item"> @bugunYemek.YemekAdi1</li>
+                                <li class="list-group-item"> @bugunYemek.YemekAdi2</li>
+                                <li class="list-group-item"> @bugunYemek.YemekAdi3</li>
+                                <li class="list-group-item"> @bugunYemek.YemekAdi4</li>
+                                <li class="list-group-item"> @bugunYemek.YemekAdi5</li>
+                                <li class="list-group-item"> @bugunYemek.YemekAdi6</li>
+                                <li class="list-group-item"> @bugunYemek.YemekAdi7</li>
+                                <li class="list-group-item"> @bugunYemek.YemekAdi8</li>
+                            </ul>
+                        }
+                        else
+                        {
+                        <p>Bugün için yemek menüsü bulunmamaktadır.</p>
+                    }
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        body {
+            background-color: #343a40;
+            color: #f8f9fa;
+        }
+
+        .card {
+            border-radius: 10px;
+            background-color: #212529;
+        }
+
+        .card-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #f8f9fa;
+            font-size: 1.25rem;
+        }
+
+        .card-text {
+            color: #f8f9fa;
+        }
+
+        .container h2 {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #f8f9fa;
+        }
+
+        
+
+        .profile-card {
+            height: auto;
+        }
+
+        .personal-card {
+            width: auto;
+        }
+
+        .announcement-card {
+            background-color: #007bff;
+            color: #212529;
+        }
+
+        .meal-card {
+            background-color: #28a745;
+            color: #f8f9fa;
+        }
+
+        .chart-card {
+            height: 100%;
+        }
+
+        .ayin-elemani-card {
+            height: 100%;
+        }
+
+        .list-group-item {
+            border: none;
+            color: #f8f9fa;
+        }
+
+        .list-group-item-primary {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            border-color: #007bff;
+        }
+
+        .btn-info {
+            font-size: 0.75rem;
+        }
+
+        .flex-column {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .flex-grow-1 {
+            flex-grow: 1;
+        }
+
+        .h-100 {
+            height: 100%;
+        }
+
+        .alert {
+            border-radius: 10px;
+        }
+
+        .btn-primary {
+            width: 100%;
+        }
+
+        .list-group-item {
+            border: none;
+            padding: 10px 15px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            color: #343a40;
+            font-size: 0.875rem;
+        }
+
+        .employee-table {
+            background-color: #ffffff;
+            color: #212529;
+            border: 1px solid #dee2e6;
+        }
+
+            .employee-table th, .employee-table td {
+                padding: 10px;
+                vertical-align: middle;
+                border: 1px solid #dee2e6;
+            }
+
+        .employee-table-header th {
+            background-color: #ffffff !important;
+            color: #212529 !important;
+            font-weight: bold !important;
+        }
+
+        .employee-table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .employee-table tbody tr:hover {
+            background-color: #e0e0e0 !important; /* Daha açık bir gri tonu */
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+var ctx = document.getElementById('performanceChart').getContext('2d');
+var performanceChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: @Html.Raw(Json.Encode(Model.Select(m => m.personelAdSoyad))),
+        datasets: [{
+            label: 'Toplam İş',
+            data: @Html.Raw(Json.Encode(Model.Select(m => m.toplamIs))),
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+    </script>

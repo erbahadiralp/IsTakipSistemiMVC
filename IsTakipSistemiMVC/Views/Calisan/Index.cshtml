@@ -1,0 +1,268 @@
+﻿@model IsTakipSistemiMVC.Models.Personeller
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCalisan.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="row">
+
+        <!-- Sol Kolon: Duyurular ve Ekip Arkadaşlarım Kartları -->
+        <div class="col-lg-4 mb-4">
+            <!-- Duyurular Kartı -->
+            <div class="card shadow-sm announcement-card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Duyurular</h5>
+                    <p class="card-text">Duyurular burada yer alacak.</p>
+                </div>
+            </div>
+
+            <!-- Çalışanlarım Kartı -->
+            <div class="card shadow-sm personal-card mb-4">
+                <div class="card-body">
+                    <h6 class="card-title">Ekip Arkadaşlarım</h6>
+                    <div class="table-responsive">
+                        <table class="table table-hover employee-table">
+                            <thead class="employee-table-header">
+                                <tr class="text-center">
+                                    <th>Ad Soyad</th>
+                                    <th>Dahili Telefon Numara</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var personel in ViewBag.personeller)
+                                {
+                                    <tr class="text-center">
+                                        <td>@personel.personelAdSoyad</td>
+                                        <td>@personel.personelDahili</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Günün Yemeği Kartı -->
+            <div class="card shadow-sm meal-card">
+                <div class="card-body">
+                    <h5 class="card-title">Günün Yemeği</h5>
+                    <p class="card-text">
+                        @{
+                            var bugunYemek = ViewBag.BugunYemek as IsTakipSistemiMVC.Models.YemekTablo;
+                        }
+                        @if (bugunYemek != null)
+                        {
+                            <ul class="list-group mb-2">
+                                <li class="list-group-item"> @bugunYemek.YemekAdi1</li>
+                                <li class="list-group-item"> @bugunYemek.YemekAdi2</li>
+                                <li class="list-group-item"> @bugunYemek.YemekAdi3</li>
+                                <li class="list-group-item"> @bugunYemek.YemekAdi4</li>
+                                <li class="list-group-item"> @bugunYemek.YemekAdi5</li>
+                                <li class="list-group-item"> @bugunYemek.YemekAdi6</li>
+                                <li class="list-group-item"> @bugunYemek.YemekAdi7</li>
+                                <li class="list-group-item"> @bugunYemek.YemekAdi8</li>
+                            </ul>
+                        }
+                        else
+                        {
+                        <p>Bugün için yemek menüsü bulunmamaktadır.</p>
+                    }
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sağ Kolon: İş Kartları -->
+            <div class="col-lg-8 mb-4">
+                <div class="row job-cards-container">
+                    @if (ViewBag.isler != null && ViewBag.isler.Count > 0)
+                    {
+                        foreach (var i in ViewBag.isler)
+                        {
+                            using (Html.BeginForm("Index", "Calisan", FormMethod.Post, new { @class = "col-md-6 mb-4" }))
+                            {
+                                if (i.isId != null)
+                                {
+                                    <div class="card border-info shadow-sm job-card">
+                                        <div class="card-header text-center">
+                                            Yeni İş!!!
+                                        </div>
+                                        <div class="card-body">
+                                            <input type="hidden" name="isId" value="@i.isId" />
+                                            <div class="mb-2 font-weight-bold">
+                                                @i.isBaslik
+                                            </div>
+                                        </div>
+                                        <div class="card-footer text-center">
+                                            <button type="submit" class="btn btn-outline-info">Okundu İşaretle</button>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <div class="col-12">
+                            <div class="card shadow-sm alert-warning">
+                                <div class="card-body">
+                                    <h5 class="card-title">İş</h5>
+                                    <p class="card-text">Yeni işiniz yok!</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        body {
+            background-color: #343a40;
+            color: #f8f9fa;
+        }
+
+        .card {
+            border-radius: 10px;
+            background-color: #212529;
+        }
+
+        .card-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #f8f9fa;
+            font-size: 1.25rem;
+        }
+
+        .card-text {
+            color: #f8f9fa;
+        }
+
+        .container h2 {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #f8f9fa;
+        }
+
+        .text-muted {
+            color: #6c757d;
+        }
+
+        .announcement-card {
+            background-color: #007bff;
+            color: #212529;
+        }
+
+        .tall-card {
+            height: 250px;
+        }
+
+        .meal-card {
+            background-color: #28a745;
+            color: #f8f9fa;
+        }
+
+        .job-card {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-width: 2px;
+            border-color: #e0e0e0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background-color: #f2f2f2;
+            color: #212529;
+        }
+
+            .job-card .card-header {
+                background-color: #00bcd4;
+                color: white;
+            }
+
+            .job-card .card-footer {
+                background-color: #1c2530;
+                color: #f8f9fa;
+            }
+
+            .job-card .btn-outline-info {
+                border-color: #00bcd4;
+                color: #00bcd4;
+            }
+
+                .job-card .btn-outline-info:hover {
+                    background-color: #00bcd4;
+                    color: #212529;
+                }
+
+        .alert-warning {
+            background-color: #ff4d4d;
+            color: #ffffff;
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .job-cards-container {
+            max-height: 500px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #007bff #343a40;
+        }
+
+            .job-cards-container::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            .job-cards-container::-webkit-scrollbar-track {
+                background: #343a40;
+                border-radius: 10px;
+            }
+
+            .job-cards-container::-webkit-scrollbar-thumb {
+                background-color: #007bff;
+                border-radius: 10px;
+                border: 2px solid #343a40;
+            }
+
+                .job-cards-container::-webkit-scrollbar-thumb:hover {
+                    background-color: #0056b3;
+                }
+
+        .list-group-item {
+            border: none;
+            padding: 10px 15px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            color: #343a40;
+            font-size: 0.875rem;
+        }
+
+        .employee-table {
+            background-color: #ffffff;
+            color: #212529;
+            border: 1px solid #dee2e6;
+        }
+
+            .employee-table th, .employee-table td {
+                padding: 10px;
+                vertical-align: middle;
+                border: 1px solid #dee2e6;
+            }
+
+        .employee-table-header th {
+            background-color: #ffffff !important;
+            color: #212529 !important;
+            font-weight: bold !important;
+        }
+
+        .employee-table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .employee-table tbody tr:hover {
+            background-color: #e0e0e0 !important;
+        }
+
+    </style>

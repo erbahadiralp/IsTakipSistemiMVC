@@ -1,0 +1,63 @@
+﻿@model IEnumerable<IsTakipSistemiMVC.Models.YemekTablo>
+
+@{
+    ViewBag.Title = "Menü Listesi";
+    Layout = "~/Views/Shared/_LayoutSistemYoneticisi.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h3 class="card-title text-center mb-4">Menü Listesi</h3>
+            <hr />
+            @foreach (var item in Model)
+            {
+                <ul class="list-group mb-4">
+                    <li class="list-group-item"> @item.YemekAdi1</li>
+                    <li class="list-group-item"> @item.YemekAdi2</li>
+                    <li class="list-group-item"> @item.YemekAdi3</li>
+                    <li class="list-group-item"> @item.YemekAdi4</li>
+                    <li class="list-group-item"> @item.YemekAdi5</li>
+                    <li class="list-group-item"> @item.YemekAdi6</li>
+                    <li class="list-group-item"> @item.YemekAdi7</li>
+                    <li class="list-group-item"> @item.YemekAdi8</li>
+                </ul>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border-radius: 15px;
+        border: none;
+    }
+
+    .card-title {
+        font-weight: bold;
+    }
+
+    .list-group-item {
+        border: none;
+        padding: 15px 20px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        background-color: #ffffff;
+        color: #343a40;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+        .list-group-item strong {
+            font-weight: 600;
+        }
+
+    .list-group {
+        padding: 0;
+        margin-bottom: 30px; /* Listeler arasındaki boşluğu artırır */
+    }
+
+    .container {
+        max-width: 700px;
+    }
+</style>

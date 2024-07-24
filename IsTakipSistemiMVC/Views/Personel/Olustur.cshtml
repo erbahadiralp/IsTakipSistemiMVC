@@ -1,0 +1,138 @@
+﻿@model IsTakipSistemiMVC.Models.BirimYetkiTurler
+
+@{
+    ViewBag.Title = "Oluştur";
+    Layout = "~/Views/Shared/_LayoutSistemYoneticisi.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-sm mx-auto">
+        <div class="card-body">
+            <h3 class="card-title text-center mb-4">Personel Ekle</h3>
+            <hr />
+            @using (Html.BeginForm("Olustur", "Personel", FormMethod.Post, new { @class = "row g-3" }))
+            {
+                <div class="col-6 mb-3">
+                    <label class="form-label" for="adSoyad">Personel Ad Soyad</label>
+                    <input type="text" class="form-control" id="adSoyad" name="adSoyad" placeholder="Ad Soyad girin" />
+                </div>
+
+                <div class="col-6 mb-3">
+                    <label class="form-label" for="kullaniciAd">Kullanıcı Ad</label>
+                    <input type="text" class="form-control" id="kullaniciAd" name="kullaniciAd" placeholder="Kullanıcı adını girin" />
+                </div>
+
+                <div class="col-6 mb-3">
+                    <label class="form-label" for="parola">Parola</label>
+                    <input type="password" class="form-control" id="parola" name="parola" placeholder="Parolanızı girin" />
+                </div>
+
+                <div class="col-6 mb-3">
+                    <label class="form-label" for="iseGirisTarihi">İşe Giriş Tarihi</label>
+                    <input type="date" class="form-control" id="iseGirisTarihi" name="iseGirisTarihi" placeholder="GG-AA-YYYY" />
+                </div>
+
+                <div class="col-6 mb-3">
+                    <label class="form-label" for="dahiliTelefon">Dahili Telefon Numarası</label>
+                    <input type="text" class="form-control" id="dahiliTelefon" name="dahiliTelefon" placeholder="Dahili telefon numarası girin" />
+                </div>
+
+                <div class="col-6 mb-3">
+                    <label class="form-label" for="mail">Mail Adresi</label>
+                    <input type="email" class="form-control" id="mail" name="mail" placeholder="example@outlook.com" />
+                </div>
+
+                <div class="col-6 mb-3">
+                    <label class="form-label" for="adres">Personel Adres</label>
+                    <input type="text" class="form-control" id="adres" name="adres" placeholder="Adres girin" />
+                </div>
+
+                <div class="col-6 mb-3">
+                    <label class="form-label" for="telefon">Telefon Numarası</label>
+                    <input type="text" class="form-control" id="telefon" name="telefon" placeholder="Telefon numarası girin" />
+                </div>
+
+                <div class="col-6 mb-3">
+                    <label class="form-label" for="dogumTarihi">Doğum Tarihi</label>
+                    <input type="date" class="form-control" id="dogumTarihi" name="dogumTarihi" placeholder="GG-AA-YYYY" />
+                </div>
+
+                <div class="col-6 mb-3">
+                    <label class="form-label" for="birim">Birimi</label>
+                    <select id="birim" class="form-select" name="birim">
+                        @foreach (var item in Model.birimlerList)
+                        {
+                            <option value="@item.birimId">@item.birimAd</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-6 mb-3">
+                    <label class="form-label" for="yetkiTur">Yetki Türü</label>
+                    <select id="yetkiTur" class="form-select" name="yetkiTur">
+                        @foreach (var item in Model.yetkiTurlerList)
+                        {
+                            <option value="@item.yetkiTurId">@item.yetkiTurAd</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-12 d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary w-50 py-2">Personel Ekle</button>
+                </div>
+
+                if (ViewBag.mesaj != null)
+                {
+                    <div class="alert alert-danger mt-3" role="alert">
+                        @ViewBag.mesaj
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .container {
+        max-width: 1100px;
+    }
+
+    .card {
+        border-radius: 15px;
+        border: none;
+    }
+
+    .card-title {
+        font-weight: bold;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-size: 1rem;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    .form-control, .form-select {
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    .form-label {
+        margin-bottom: 10px;
+    }
+
+    .form-control, .form-select {
+        margin-bottom: 20px;
+    }
+</style>
