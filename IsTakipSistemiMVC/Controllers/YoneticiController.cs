@@ -92,6 +92,15 @@ namespace IsTakipSistemiMVC.Controllers
                 ViewBag.BugunYemek = bugunYemek;
 
 
+                // En son tarihli duyuruyu al
+                var sonDuyuru = entity.Duyurular
+                    .Where(d => d.aktiflik == true && d.goruntuleyenBirimId == birimId)
+                    .OrderByDescending(d => d.duyuruTarih)
+                    .FirstOrDefault();
+                ViewBag.SonDuyuru = sonDuyuru;
+
+
+
                 var calisanlar = (from p in entity.Personeller where p.personelBirimId == birimId && p.personelYetkiTurId == 2 && p.aktiflik == true select p).ToList();
 
                 ViewBag.personeller = calisanlar;
@@ -370,27 +379,83 @@ namespace IsTakipSistemiMVC.Controllers
             return View(duyuru);
         }
 
+        //[AuthFilter(1)]
+        //public ActionResult DuyuruEkle()
+        //{
+        //    int currentBirimId = Convert.ToInt32(Session["BirimId"]);
+
+        //    // Sadece currentBirimId'yi ViewBag'e ekle
+        //    var birimler = entity.Birimler.Where(b => b.birimId == currentBirimId).ToList();
+
+        //    ViewBag.Birimler = new SelectList(birimler, "birimId", "birimAd");
+        //    return View();
+        //}
+
+        //[HttpPost, AuthFilter(1)]
+        //public ActionResult DuyuruEkle(Duyurular duyuru)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        duyuru.duyuruTarih = DateTime.Now;
+        //        duyuru.duyuruOlusturanId = Convert.ToInt32(Session["PersonelId"]);
+        //        duyuru.aktiflik = true;
+        //        duyuru.goruntuleyenBirimId = Convert.ToInt32(Session["BirimId"]); // Duyurunun birimini currentBirimId olarak ayarla
+
+        //        entity.Duyurular.Add(duyuru);
+        //        entity.SaveChanges();
+
+        //        TempData["bilgi"] = "Duyuru başarıyla eklendi.";
+        //        return RedirectToAction("Duyurular");
+        //    }
+
+        //    // Eğer ModelState geçerli değilse, ViewBag.Birimler nesnesini tekrar doldurmanız gerekir.
+        //    int currentBirimId = Convert.ToInt32(Session["BirimId"]);
+
+        //    var birimler = entity.Birimler.Where(b => b.birimId == currentBirimId).ToList();
+
+        //    ViewBag.Birimler = new SelectList(birimler, "birimId", "birimAd");
+        //    return View(duyuru);
+        //}
+
+
         [AuthFilter(1)]
         public ActionResult DuyuruEkle()
         {
             int currentBirimId = Convert.ToInt32(Session["BirimId"]);
 
-            // Sadece currentBirimId'yi ViewBag'e ekle
+            // Fetch the current unit
             var birimler = entity.Birimler.Where(b => b.birimId == currentBirimId).ToList();
 
-            ViewBag.Birimler = new SelectList(birimler, "birimId", "birimAd");
+            // Fetch users with yetkiTurId of 1
+            var yetkiTurBirimler = entity.Personeller
+                                        .Where(p => p.personelYetkiTurId == 1)
+                                        .Select(p => p.personelBirimId)
+                                        .Distinct()
+                                        .ToList();
+
+            // Combine the current unit and yetkiTurId 1 units
+            var allBirimler = birimler.Union(entity.Birimler.Where(b => yetkiTurBirimler.Contains(b.birimId))).ToList();
+
+            ViewBag.Birimler = new SelectList(allBirimler, "birimId", "birimAd");
             return View();
         }
 
-        [HttpPost, AuthFilter(1)]
+
+        [HttpPost, ActFilter("Yeni Duyuru Eklendi")]
         public ActionResult DuyuruEkle(Duyurular duyuru)
         {
+
+            int currentBirimId;
+
             if (ModelState.IsValid)
             {
                 duyuru.duyuruTarih = DateTime.Now;
                 duyuru.duyuruOlusturanId = Convert.ToInt32(Session["PersonelId"]);
                 duyuru.aktiflik = true;
-                duyuru.goruntuleyenBirimId = Convert.ToInt32(Session["BirimId"]); // Duyurunun birimini currentBirimId olarak ayarla
+
+                // Save the current unit and units of users with yetkiTurId of 1
+                currentBirimId = Convert.ToInt32(Session["BirimId"]);
+                duyuru.goruntuleyenBirimId = currentBirimId;
 
                 entity.Duyurular.Add(duyuru);
                 entity.SaveChanges();
@@ -399,14 +464,20 @@ namespace IsTakipSistemiMVC.Controllers
                 return RedirectToAction("Duyurular");
             }
 
-            // Eğer ModelState geçerli değilse, ViewBag.Birimler nesnesini tekrar doldurmanız gerekir.
-            int currentBirimId = Convert.ToInt32(Session["BirimId"]);
-
+            // If ModelState is not valid, repopulate ViewBag.Birimler
+            currentBirimId = Convert.ToInt32(Session["BirimId"]);
             var birimler = entity.Birimler.Where(b => b.birimId == currentBirimId).ToList();
+            var yetkiTurBirimler = entity.Personeller
+                                        .Where(p => p.personelYetkiTurId == 1)
+                                        .Select(p => p.personelBirimId)
+                                        .Distinct()
+                                        .ToList();
+            var allBirimler = birimler.Union(entity.Birimler.Where(b => yetkiTurBirimler.Contains(b.birimId))).ToList();
 
-            ViewBag.Birimler = new SelectList(birimler, "birimId", "birimAd");
+            ViewBag.Birimler = new SelectList(allBirimler, "birimId", "birimAd");
             return View(duyuru);
         }
+
 
 
         [AuthFilter(1)]
@@ -436,7 +507,7 @@ namespace IsTakipSistemiMVC.Controllers
             return View(duyuru);
         }
 
-        [HttpPost, AuthFilter(1)]
+        [HttpPost, ActFilter("Duyuru Güncellendi")]
         public ActionResult DuyuruGuncelle(Duyurular duyuru)
         {
             var mevcutDuyuru = entity.Duyurular.Find(duyuru.duyuruId);
@@ -501,7 +572,8 @@ namespace IsTakipSistemiMVC.Controllers
 
 
         // Duyuru silme işlemi (aktifliğini false yapar)
-        [AuthFilter(1)]
+        [ActFilter("Duyuru Silindi"),AuthFilter(1)]
+
         public ActionResult DuyuruSil(int id)
         {
             var duyuru = entity.Duyurular.Find(id);

@@ -34,7 +34,7 @@ namespace IsTakipSistemiMVC.Controllers
                 ViewBag.birimAd = birim?.birimAd;
 
                 int personelId = Convert.ToInt32(Session["PersonelId"]);
-                var isler = entity.Isler.Where(i => i.isPersonelId == personelId && i.isOkunma == false )
+                var isler = entity.Isler.Where(i => i.isPersonelId == personelId && i.isOkunma == false)
                                         .OrderByDescending(i => i.iletilenTarih)
                                         .ToList();
                 ViewBag.isler = isler;
@@ -55,6 +55,12 @@ namespace IsTakipSistemiMVC.Controllers
 
                 ViewBag.personeller = calisanlar.Any() ? calisanlar : null;
 
+                // En son tarihli duyuruyu al
+                var sonDuyuru = entity.Duyurular
+                    .Where(d => d.aktiflik == true && d.goruntuleyenBirimId == birimId)
+                    .OrderByDescending(d => d.duyuruTarih)
+                    .FirstOrDefault();
+                ViewBag.SonDuyuru = sonDuyuru;
 
                 return View();
             }
@@ -63,6 +69,7 @@ namespace IsTakipSistemiMVC.Controllers
                 return RedirectToAction("Index", "Login");
             }
         }
+
 
         [HttpPost]
         public ActionResult Index(int isId)

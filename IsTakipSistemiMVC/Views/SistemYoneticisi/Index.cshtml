@@ -1,4 +1,9 @@
 ﻿@model IEnumerable<IsTakipSistemiMVC.Models.BirimViewModel>
+
+@{
+    var sonDuyuru = ViewBag.SonDuyuru as IsTakipSistemiMVC.Models.Duyurular;
+}
+
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutSistemYoneticisi.cshtml";
@@ -66,14 +71,20 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-6 col-md-12 mb-4">
-            <div class="card shadow-sm announcement-card short-card">
+        @if (sonDuyuru != null)
+        {
+            <div class="card shadow-sm announcement-card mb-4">
                 <div class="card-body">
-                    <h5 class="card-title">Duyurular</h5>
-                    <p class="card-text">Duyurular burada yer alacak.</p>
+                    <h5 class="card-title">@sonDuyuru.duyuruBaslik</h5>
+                    <p class="card-text">@sonDuyuru.duyuruIcerik</p>
+                    <p class="card-text"><small class="text-muted">@sonDuyuru.duyuruTarih</small></p>
                 </div>
             </div>
-        </div>
+        }
+        else
+        {
+            <p>Henüz duyuru bulunmamaktadır.</p>
+        }
     </div>
 </div>
 
@@ -140,6 +151,9 @@
         color: #212529; /* Duyuru kartı metin rengi */
     }
 
+    .text-muted {
+        color: #fff !important;
+    }
     .card-color-1 {
         background-color: #ffd966; /* Açık turuncu */
         color: #212529; /* Metin rengi */

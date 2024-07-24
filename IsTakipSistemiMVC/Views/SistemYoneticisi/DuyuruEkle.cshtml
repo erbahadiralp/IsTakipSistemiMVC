@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "DuyuruEkle";
+    ViewBag.Title = "Duyuru Ekle";
     Layout = "~/Views/Shared/_LayoutSistemYoneticisi.cshtml";
 }
 
@@ -13,20 +13,50 @@
             <hr />
             @using (Html.BeginForm())
             {
+                @Html.AntiForgeryToken()
+
                 <div class="form-group mb-3">
-                    <label class="form-label">Duyuru Başlık</label>
-                    @Html.TextBoxFor(model => model.duyuruBaslik, new { @class = "form-control", placeholder = "Duyuru başlığı girin" })
+                    <label class="form-label" for="duyuruBaslik">Duyuru Başlık</label>
+                    @Html.TextBoxFor(model => model.duyuruBaslik, new { @class = "form-control", placeholder = "Duyuru başlığı girin", id = "duyuruBaslik" })
+                    @Html.ValidationMessageFor(model => model.duyuruBaslik, "", new { @class = "text-danger" })
                 </div>
 
                 <div class="form-group mb-3">
-                    <label class="form-label">Duyuru İçerik</label>
-                    @Html.TextAreaFor(model => model.duyuruIcerik, new { @class = "form-control", rows = 5, placeholder = "Duyuru içeriği girin" })
+                    <label class="form-label" for="duyuruIcerik">Duyuru İçerik</label>
+                    @Html.TextAreaFor(model => model.duyuruIcerik, new { @class = "form-control", rows = 5, placeholder = "Duyuru içeriği girin", id = "duyuruIcerik" })
+                    @Html.ValidationMessageFor(model => model.duyuruIcerik, "", new { @class = "text-danger" })
                 </div>
 
                 <div class="form-group mb-3">
-                    <label class="form-label">Görüntüleyen Birim</label>
-                    @Html.DropDownList("goruntuleyenBirimId", ViewBag.Birimler as SelectList, "Hepsi", new { @class = "form-control dropdown-list" })
+                    <label class="form-label" for="goruntuleyenBirim">Görüntüleyen Birim(ler)</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" style="background-color: #f8f9fa; color: #495057;" id="goruntuleyenBirim" readonly placeholder="Birim seçin" />
+                        <div class="dropdown" style="margin-left: 10px">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                Birim Seç
+                            </button>
+                            <ul class="dropdown-menu p-3" aria-labelledby="dropdownMenuButton">
+                                <input type="text" id="birimSearch" class="form-control mb-2" placeholder="Birim ara..." />
+                                <div id="birimList" class="form-check-group">
+                                    @foreach (var item in ViewBag.Birimler as SelectList)
+                                    {
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="@item.Value" id="birim-@item.Value" />
+                                            <label class="form-check-label" for="birim-@item.Value" style="color: #495057;">
+                                                @item.Text
+                                            </label>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="dropdown-divider"></div>
+                                <button class="btn btn-primary" type="button" id="saveBirimButton">Seçimi Kaydet</button>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="selectedBirimler" class="mt-2"></div>
                 </div>
+
+                <input type="hidden" id="selectedBirimIds" name="goruntuleyenBirimId" />
 
                 <div class="d-flex justify-content-center">
                     <button type="submit" class="btn btn-primary">Duyuru Ekle</button>
@@ -36,67 +66,179 @@
     </div>
 </div>
 
-<style>
-    body {
-        background-color: #f8f9fa;
-    }
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var saveBirimButton = document.getElementById('saveBirimButton');
+        var dropdownMenuButton = document.getElementById('dropdownMenuButton');
+        var selectedBirimler = document.getElementById('selectedBirimler');
+        var goruntuleyenBirim = document.getElementById('goruntuleyenBirim');
+        var birimSearch = document.getElementById('birimSearch');
+        var birimList = document.getElementById('birimList');
+        var selectedBirimIds = document.getElementById('selectedBirimIds');
 
+        // Save selected units
+        saveBirimButton.addEventListener('click', function () {
+            var selectedOptions = Array.from(birimList.querySelectorAll('.form-check-input:checked'));
+            var selectedValues = selectedOptions.map(option => option.nextElementSibling.textContent);
+            var selectedIds = selectedOptions.map(option => option.value);
+
+            goruntuleyenBirim.value = selectedValues.join(', ');
+            selectedBirimler.innerHTML = '<strong>Seçilen Birim(ler):</strong> ' + selectedValues.join(', ');
+
+            // Store selected IDs in a hidden field
+            selectedBirimIds.value = selectedIds.join(',');
+
+            // Close dropdown menu
+            var dropdown = new bootstrap.Dropdown(dropdownMenuButton);
+            dropdown.hide();
+        });
+
+        // Filter units based on search input
+        birimSearch.addEventListener('input', function () {
+            var filter = birimSearch.value.toLowerCase();
+            Array.from(birimList.querySelectorAll('.form-check')).forEach(option => {
+                var text = option.querySelector('label').textContent.toLowerCase();
+                option.style.display = text.includes(filter) ? '' : 'none';
+            });
+        });
+    });
+</script>
+
+<style>
     .container {
-        max-width: 600px;
+        max-width: 800px;
     }
 
     .card {
-        border-radius: 15px;
+        border-radius: 10px;
     }
 
-    .card-title {
-        font-weight: bold;
-    }
+    /*.dropdown-menu {
+        max-height: 300px;
+        overflow-y: auto;
+        border-radius: 10px;
+    }*/
 
-    .form-label {
-        font-weight: bold;
+    .form-check-label {
+        color: #495057;
     }
 
     .form-control {
         border-radius: 5px;
     }
 
+    .btn-primary, .btn-secondary {
+        border-radius: 5px;
+        padding: 10px 20px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
     .btn-primary {
         background-color: #007bff;
         border: none;
-        border-radius: 5px;
-        padding: 10px 20px;
-        transition: background-color 0.3s ease;
     }
 
         .btn-primary:hover {
             background-color: #0056b3;
+            transform: scale(1.05);
         }
 
     .btn-secondary {
         background-color: #6c757d;
         border: none;
-        border-radius: 5px;
-        padding: 10px 20px;
-        transition: background-color 0.3s ease;
     }
 
         .btn-secondary:hover {
             background-color: #5a6268;
+            transform: scale(1.05);
         }
 
-    .dropdown-list {
-        color: #000; /* Metin rengini ayarla */
-        background-color: #fff; /* Arka plan rengini ayarla */
+    .btn-outline-secondary {
+        color: #6c757d;
+        border-color: #6c757d;
     }
 
-        .dropdown-list option {
-            color: #000; /* Seçeneklerin metin rengini ayarla */
-            background-color: #fff; /* Seçeneklerin arka plan rengini ayarla */
+        .btn-outline-secondary:hover {
+            color: #fff;
+            background-color: #6c757d;
+            border-color: #6c757d;
         }
 
+    ./*dropdown-item {
+        cursor: pointer;
+        padding: 8px 16px;
+        border-radius: 5px;
+    }
+
+        .dropdown-item:hover {
+            background-color: #e9ecef;
+        }
+
+    .dropdown-divider {
+        margin: 10px 0;
+    }*/
+
+    .text-center {
+        font-weight: bold;
+    }
+
+    .text-danger {
+        font-size: 0.875rem;
+    }
+
+    .mt-5 {
+        margin-top: 3rem !important;
+    }
+
+    .mb-3 {
+        margin-bottom: 1rem !important;
+    }
+
+    .shadow-sm {
+        box-shadow: 0 .125rem .25rem rgba(0,0,0,.075) !important;
+    }
+
+    .p-3 {
+        padding: 1rem !important;
+    }
+
+    .input-group {
+        display: flex;
+        align-items: center;
+    }
+
+    .form-check-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+
+    /* Dropdown menüsünün genişliğini artır */
     .dropdown-menu {
-        color: #000;
-        background-color: #fff;
+        max-height: 300px; /* Yüksekliği sınırlama */
+        overflow-y: auto; /* Scroll bar ekleme */
+        border-radius: 10px;
+        width: 100%; /* Menünün genişliğini %100 yap */
+        min-width: 250px; /* Menü genişliğine minimum bir genişlik ver */
+    }
+
+    /* Dropdown menü öğelerinin hizalamasını iyileştir */
+    .dropdown-item {
+        cursor: pointer;
+        padding: 8px 16px;
+        border-radius: 5px;
+        width: 100%; /* Menü öğelerinin genişliğini %100 yap */
+    }
+
+        /* Dropdown menü öğeleri üzerine gelindiğinde arka plan rengini değiştir */
+        .dropdown-item:hover {
+            background-color: #e9ecef;
+        }
+
+    /* Dropdown arama çubuğunun genişliğini artır */
+    #birimSearch {
+        width: 100%; /* Arama çubuğunun genişliğini %100 yap */
     }
 </style>

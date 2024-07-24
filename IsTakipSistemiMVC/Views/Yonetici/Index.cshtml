@@ -3,6 +3,10 @@
     Layout = "~/Views/Shared/_LayoutYonetici.cshtml";
 }
 
+@{
+    var sonDuyuru = ViewBag.SonDuyuru as IsTakipSistemiMVC.Models.Duyurular;
+}
+
 @model IEnumerable<IsTakipSistemiMVC.Models.ToplamIs>
 
 <div class="container mt-4">
@@ -10,12 +14,20 @@
         <!-- Duyurular, Çalışanlarım ve Ayın Elemanı Kartları Kapsayıcı Div -->
         <div class="col-lg-6 mb-2">
             <!-- Duyurular Kartı -->
-            <div class="card shadow-sm announcement-card mb-2">
-                <div class="card-body">
-                    <h5 class="card-title">Duyurular</h5>
-                    <p class="card-text">Duyurular burada yer alacak.</p>
+            @if (sonDuyuru != null)
+            {
+                <div class="card shadow-sm announcement-card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">@sonDuyuru.duyuruBaslik</h5>
+                        <p class="card-text">@sonDuyuru.duyuruIcerik</p>
+                        <p class="card-text"><small class="text-muted">@sonDuyuru.duyuruTarih</small></p>
+                    </div>
                 </div>
-            </div>
+            }
+            else
+            {
+                <p>Henüz duyuru bulunmamaktadır.</p>
+            }
 
             <!-- Çalışanlarım Kartı -->
             <div class="card shadow-sm personal-card mb-2">
@@ -92,7 +104,7 @@
         </div>
 
         <!-- Sağ: Çalışan Performansı Çizelgesi ve Günün Yemeği Kartı -->
-        <div class="col-lg-6 mb-2" >
+        <div class="col-lg-6 mb-2">
             <!-- Çalışan Performansı Çizelgesi -->
             <div class="card shadow-sm chart-card mb-2" style="height:368px" id="performanceCard">
                 <div class="card-body">
@@ -161,7 +173,7 @@
             color: #f8f9fa;
         }
 
-        
+
 
         .profile-card {
             height: auto;
@@ -174,6 +186,10 @@
         .announcement-card {
             background-color: #007bff;
             color: #212529;
+        }
+
+        .text-muted {
+            color: #fff !important;
         }
 
         .meal-card {

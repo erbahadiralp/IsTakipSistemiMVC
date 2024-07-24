@@ -22,6 +22,8 @@ namespace IsTakipSistemiMVC.Controllers
         public ActionResult Index()
         {
 
+            int birimId = Convert.ToInt32(Session["PersonelBirimId"]);
+
             var birimler = (from b in entity.Birimler where b.aktiflik == true select b).ToList();
 
             string labelBirim = "[";
@@ -78,6 +80,15 @@ namespace IsTakipSistemiMVC.Controllers
             //// En yüksek performans gösteren çalışanı çekme
             //var topPerformer = (from p in entity.Personeller where p.aktiflik == true orderby p.performansPuani descending select p).FirstOrDefault();
             //ViewBag.TopPerformer = topPerformer;
+
+            // En son tarihli duyuruyu al
+            var sonDuyuru = entity.Duyurular
+                .Where(d => d.aktiflik == true && d.goruntuleyenBirimId == birimId)
+                .OrderByDescending(d => d.duyuruTarih)
+                .FirstOrDefault();
+            ViewBag.SonDuyuru = sonDuyuru;
+
+
 
             return View();
         }
@@ -293,22 +304,117 @@ namespace IsTakipSistemiMVC.Controllers
 
         }
 
-        //DUYURULAR KISMI
+        ////DUYURULAR KISMI
 
+        //// Duyuruların listelenmesi
+        //[AuthFilter(3)]
+        //public ActionResult Duyurular()
+        //{
+        //    var duyurular = entity.Duyurular.Where(d => d.aktiflik == true).ToList();
+        //    return View(duyurular);
+        //}
+
+
+        //// Duyuru detayları
+        //[AuthFilter(3)]
+        //public ActionResult DuyuruDetay(int id)
+        //{
+        //    var duyuru = entity.Duyurular.Find(id);
+        //    if (duyuru == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(duyuru);
+        //}
+
+        //// Yeni duyuru ekleme sayfası
+        //[AuthFilter(3)]
+        //public ActionResult DuyuruEkle()
+        //{
+        //    ViewBag.Birimler = new SelectList(entity.Birimler.ToList(), "birimId", "birimAd"); // Düzgün şekilde SelectList oluşturulduğundan emin olun
+        //    return View();
+        //}
+
+        //[HttpPost, AuthFilter(3)]
+        //public ActionResult DuyuruEkle(Duyurular duyuru)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        duyuru.duyuruTarih = DateTime.Now;
+        //        duyuru.duyuruOlusturanId = Convert.ToInt32(Session["PersonelId"]);
+        //        duyuru.aktiflik = true;
+
+        //        entity.Duyurular.Add(duyuru);
+        //        entity.SaveChanges();
+
+        //        TempData["bilgi"] = "Duyuru başarıyla eklendi.";
+        //        return RedirectToAction("Duyurular");
+        //    }
+
+        //    // Eğer ModelState geçerli değilse, ViewBag.Birimler nesnesini tekrar doldurmanız gerekir.
+        //    ViewBag.Birimler = new SelectList(entity.Birimler.ToList(), "birimId", "birimAd");
+        //    return View(duyuru);
+        //}
+
+
+        //// Duyuru güncelleme sayfası
+        //[AuthFilter(3)]
+        //public ActionResult DuyuruGuncelle(int id)
+        //{
+        //    var duyuru = entity.Duyurular.Find(id);
+        //    if (duyuru == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    ViewBag.Birimler = new SelectList(entity.Birimler.Where(b => b.aktiflik == true).ToList(), "birimId", "birimAd", duyuru.goruntuleyenBirimId);
+        //    return View(duyuru);
+        //}
+
+        //[HttpPost, AuthFilter(3)]
+        //public ActionResult DuyuruGuncelle(Duyurular duyuru)
+        //{
+        //    var mevcutDuyuru = entity.Duyurular.Find(duyuru.duyuruId);
+        //    if (mevcutDuyuru == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    mevcutDuyuru.duyuruBaslik = duyuru.duyuruBaslik;
+        //    mevcutDuyuru.duyuruIcerik = duyuru.duyuruIcerik;
+        //    mevcutDuyuru.goruntuleyenBirimId = duyuru.goruntuleyenBirimId;
+        //    mevcutDuyuru.duyuruTarih = DateTime.Now; // Tarihi güncelle
+        //    entity.SaveChanges();
+        //    return RedirectToAction("Duyurular");
+        //}
+
+        //// Duyuru silme işlemi (aktifliğini false yapar)
+        //[AuthFilter(3)]
+        //public ActionResult DuyuruSil(int id)
+        //{
+        //    var duyuru = entity.Duyurular.Find(id);
+        //    if (duyuru == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    duyuru.aktiflik = false;
+        //    entity.SaveChanges();
+        //    return RedirectToAction("Duyurular");
+        //}
+
+        
         // Duyuruların listelenmesi
-        [AuthFilter(3)]
         public ActionResult Duyurular()
         {
-            var duyurular = entity.Duyurular.Where(d => d.aktiflik == true).ToList();
+            var duyurular = entity.Duyurular
+                                   .Where(d => d.aktiflik == true) // Aktif olan duyuruları filtrele
+                                   .ToList();
             return View(duyurular);
         }
 
-
         // Duyuru detayları
-        [AuthFilter(3)]
         public ActionResult DuyuruDetay(int id)
         {
-            var duyuru = entity.Duyurular.Find(id);
+            var duyuru = entity.Duyurular
+                               .FirstOrDefault(d => d.duyuruId == id && d.aktiflik == true); // Aktif duyuruyu bul
             if (duyuru == null)
             {
                 return HttpNotFound();
@@ -317,14 +423,18 @@ namespace IsTakipSistemiMVC.Controllers
         }
 
         // Yeni duyuru ekleme sayfası
-        [AuthFilter(3)]
         public ActionResult DuyuruEkle()
         {
-            ViewBag.Birimler = new SelectList(entity.Birimler.ToList(), "birimId", "birimAd"); // Düzgün şekilde SelectList oluşturulduğundan emin olun
+            ViewBag.Birimler = new SelectList(entity.Birimler
+                                                .Where(b => b.aktiflik == true) // Aktif birimleri listele
+                                                .ToList(),
+                                            "birimId",
+                                            "birimAd");
             return View();
         }
 
-        [HttpPost, AuthFilter(3)]
+        [HttpPost, ActFilter("Yeni Duyuru Eklendi")]
+
         public ActionResult DuyuruEkle(Duyurular duyuru)
         {
             if (ModelState.IsValid)
@@ -340,55 +450,70 @@ namespace IsTakipSistemiMVC.Controllers
                 return RedirectToAction("Duyurular");
             }
 
-            // Eğer ModelState geçerli değilse, ViewBag.Birimler nesnesini tekrar doldurmanız gerekir.
-            ViewBag.Birimler = new SelectList(entity.Birimler.ToList(), "birimId", "birimAd");
+            // ModelState geçerli değilse, ViewBag.Birimler tekrar doldurulmalı
+            ViewBag.Birimler = new SelectList(entity.Birimler
+                                                .Where(b => b.aktiflik == true)
+                                                .ToList(),
+                                            "birimId",
+                                            "birimAd");
             return View(duyuru);
         }
 
-
         // Duyuru güncelleme sayfası
-        [AuthFilter(3)]
         public ActionResult DuyuruGuncelle(int id)
         {
-            var duyuru = entity.Duyurular.Find(id);
+            var duyuru = entity.Duyurular
+                               .FirstOrDefault(d => d.duyuruId == id && d.aktiflik == true); // Aktif duyuruyu bul
             if (duyuru == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.Birimler = new SelectList(entity.Birimler.Where(b => b.aktiflik == true).ToList(), "birimId", "birimAd", duyuru.goruntuleyenBirimId);
+            ViewBag.Birimler = new SelectList(entity.Birimler
+                                                .Where(b => b.aktiflik == true) // Aktif birimleri listele
+                                                .ToList(),
+                                            "birimId",
+                                            "birimAd",
+                                            duyuru.goruntuleyenBirimId);
             return View(duyuru);
         }
 
-        [HttpPost, AuthFilter(3)]
+        [HttpPost, ActFilter("Duyuru Güncellendi")]
+
         public ActionResult DuyuruGuncelle(Duyurular duyuru)
         {
-            var mevcutDuyuru = entity.Duyurular.Find(duyuru.duyuruId);
+            var mevcutDuyuru = entity.Duyurular
+                                     .FirstOrDefault(d => d.duyuruId == duyuru.duyuruId && d.aktiflik == true); // Aktif duyuruyu bul
             if (mevcutDuyuru == null)
             {
                 return HttpNotFound();
             }
+
             mevcutDuyuru.duyuruBaslik = duyuru.duyuruBaslik;
             mevcutDuyuru.duyuruIcerik = duyuru.duyuruIcerik;
             mevcutDuyuru.goruntuleyenBirimId = duyuru.goruntuleyenBirimId;
             mevcutDuyuru.duyuruTarih = DateTime.Now; // Tarihi güncelle
+
             entity.SaveChanges();
             return RedirectToAction("Duyurular");
         }
 
         // Duyuru silme işlemi (aktifliğini false yapar)
-        [AuthFilter(3)]
+        [ActFilter("Duyuru Silindi"), AuthFilter(3)]
+
         public ActionResult DuyuruSil(int id)
         {
-            var duyuru = entity.Duyurular.Find(id);
+            var duyuru = entity.Duyurular
+                               .FirstOrDefault(d => d.duyuruId == id && d.aktiflik == true); // Aktif duyuruyu bul
             if (duyuru == null)
             {
                 return HttpNotFound();
             }
+
             duyuru.aktiflik = false;
             entity.SaveChanges();
+
             return RedirectToAction("Duyurular");
         }
-
 
 
 
