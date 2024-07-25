@@ -1100,6 +1100,7 @@
     <Compile Include="Filters\ActFilter.cs" />
     <Compile Include="Filters\AuthFilter.cs" />
     <Compile Include="Filters\ExcFilter.cs" />
+    <Compile Include="Filters\LayoutActionFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1251,6 +1252,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Layout\" />
     <Folder Include="Views\Logout\" />
   </ItemGroup>
   <ItemGroup>

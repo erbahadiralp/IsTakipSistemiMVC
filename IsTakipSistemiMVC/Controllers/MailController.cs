@@ -8,77 +8,47 @@
 
     namespace IsTakipSistemiMVC.Controllers
     {
-        public class MailController : Controller
+    [LayoutActionFilter]
+    public class MailController : Controller
         {
 
             IsTakipDBEntities entity = new IsTakipDBEntities();
 
-        // GET: Mail
-        public ActionResult Index()
+        // GET
+        
+        
+            public ActionResult Index()
             {
-
                 int userId = Convert.ToInt32(Session["PersonelId"]);
-                int yetkiTurId = Convert.ToInt32(Session["PersonelYetkiTurId"]);
 
                 var mailler = entity.Mailler
-                                       .Where(m => m.aktiflik == true && m.mailAliciId == userId) // Aktif olan duyuruları filtrele
-                                       .ToList();
+                                    .Where(m => m.aktiflik == true && m.mailAliciId == userId)
+                                    .ToList();
 
-                switch (yetkiTurId)
-                {
-                    case 1:
-                        ViewBag.Layout = "~/Views/Shared/_LayoutYonetici.cshtml";
-                        break;
-                    case 2:
-                        ViewBag.Layout = "~/Views/Shared/_LayoutCalisan.cshtml";
-                        break;
-                    case 3:
-                        ViewBag.Layout = "~/Views/Shared/_LayoutSistemYoneticisi.cshtml";
-                        break;
-                }
-
-                return View(mailler);            
+                return View(mailler);
             }
+   
 
+        //// Duyuru detayları
+        //public ActionResult DuyuruDetay(int id)
+        //{
+        //    var duyuru = entity.Duyurular
+        //                       .FirstOrDefault(d => d.duyuruId == id && d.aktiflik == true); // Aktif duyuruyu bul
+        //    if (duyuru == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(duyuru);
+        //}
 
-
-            //// Duyuru detayları
-            //public ActionResult DuyuruDetay(int id)
-            //{
-            //    var duyuru = entity.Duyurular
-            //                       .FirstOrDefault(d => d.duyuruId == id && d.aktiflik == true); // Aktif duyuruyu bul
-            //    if (duyuru == null)
-            //    {
-            //        return HttpNotFound();
-            //    }
-            //    return View(duyuru);
-            //}
-
-            // Yeni duyuru ekleme sayfası
-            public ActionResult MailOlustur()
+        // Yeni duyuru ekleme sayfası
+        public ActionResult MailOlustur()
             {
                 ViewBag.Recipients = new SelectList(entity.Personeller
                                                     .Where(p => p.aktiflik == true) // Only active personnel
                                                     .ToList(),
                                                     "personelId",
                                                     "personelAdSoyad");
-
-                int yetkiTurId = Convert.ToInt32(Session["PersonelYetkiTurId"]);
-
-                switch (yetkiTurId)
-                {
-                    case 1:
-                        ViewBag.Layout = "~/Views/Shared/_LayoutYonetici.cshtml";
-                        break;
-                    case 2:
-                        ViewBag.Layout = "~/Views/Shared/_LayoutCalisan.cshtml";
-                        break;
-                    case 3:
-                        ViewBag.Layout = "~/Views/Shared/_LayoutSistemYoneticisi.cshtml";
-                        break;
-                }
-
-
                 return View();
             }
 
