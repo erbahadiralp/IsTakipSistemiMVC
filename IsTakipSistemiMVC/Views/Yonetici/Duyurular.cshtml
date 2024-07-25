@@ -74,9 +74,11 @@
                 <table id="duyuruTable" class="table table-hover">
                     <thead>
                         <tr class="text-center table-dark">
-                            <th class="sortable" data-column="duyuruOlusturanId">Oluşturan</th>
+                            <th class="sortable" data-column="duyuruOlusturanId">Oluşturan Kişi</th>
                             <th class="sortable" data-column="duyuruBaslik">Başlık</th>
                             <th class="sortable" data-column="duyuruTarih">Tarih</th>
+                            <th class="sortable" data-column="duyuruGoruntuleyenBirimId">Görüntüleyecek Birim</th>
+
                             <th>Detaylar</th>
                         </tr>
                     </thead>
@@ -87,6 +89,8 @@
                                 <td data-column="duyuruOlusturanId">@duyuru.duyuruOlusturanId</td>
                                 <td data-column="duyuruBaslik">@duyuru.duyuruBaslik</td>
                                 <td data-column="duyuruTarih">@duyuru.duyuruTarih</td>
+                                <td data-column="duyuruGoruntuleyenBirimId">@duyuru.goruntuleyenBirimId</td>
+
                                 <td class="d-flex justify-content-center">
                                     <a href="@Url.Action("DuyuruDetay", new { id = duyuru.duyuruId })" class="btn btn-info custom-button me-2">
                                         <i class="fas fa-info-circle"></i> Detaylar

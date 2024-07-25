@@ -20,7 +20,7 @@
         <EntityTypeShape EntityType="IsTakipDBModel.YemekTablo" Width="1.5" PointX="5.375" PointY="7.75" />
         <EntityTypeShape EntityType="IsTakipDBModel.Duyurular" Width="1.5" PointX="5.25" PointY="12.375" />
         <AssociationConnector Association="IsTakipDBModel.FK_Duyurular_Personeller" />
-      </Diagram>
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

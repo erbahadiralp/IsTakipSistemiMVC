@@ -61,7 +61,7 @@
           <Key>
             <PropertyRef Name="personelId" />
           </Key>
-          <Property Name="personelId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="personelId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="personelAdSoyad" Type="nvarchar" MaxLength="50" />
           <Property Name="personelKullaniciAd" Type="nvarchar" MaxLength="50" />
           <Property Name="personelParola" Type="nvarchar" MaxLength="50" />
@@ -382,7 +382,7 @@
             <End Role="Personeller" EntitySet="Personeller" />
             <End Role="Duyurular" EntitySet="Duyurular" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <EntityType Name="Loglar">
           <Key>
             <PropertyRef Name="logId" />
@@ -447,7 +447,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
