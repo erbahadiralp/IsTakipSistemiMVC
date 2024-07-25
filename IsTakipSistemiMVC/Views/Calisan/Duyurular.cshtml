@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_LayoutCalisan.cshtml";
 }
 
-@model IEnumerable<IsTakipSistemiMVC.Models.Duyurular>
+@model IEnumerable<IsTakipSistemiMVC.Models.DuyuruViewModel>
 
 <style>
     .custom-button {
@@ -54,30 +54,31 @@
 </style>
 
 <div class="container mt-4">
-    <div class="card mb-4">
+    
+
+    <div class="card">
         <div class="card-body">
             <div class="table-responsive">
-                <div class="search-bar">
-                    <input type="text" id="searchInput" class="search-input" placeholder="Arama yap...">
-                </div>
                 <table id="duyuruTable" class="table table-hover">
                     <thead>
                         <tr class="text-center table-dark">
-                            <th class="sortable" data-column="duyuruOlusturanId">Oluşturan</th>
-                            <th class="sortable" data-column="duyuruBaslik">Başlık</th>
-                            <th class="sortable" data-column="duyuruTarih">Tarih</th>
+                            <th class="sortable" data-column="OlusturanAdSoyad">Oluşturan Kişi</th>
+                            <th class="sortable" data-column="DuyuruBaslik">Başlık</th>
+                            <th class="sortable" data-column="DuyuruTarih">Tarih</th>
+                            <th class="sortable" data-column="GoruntuleyenBirim">Gönderilen Birim</th>
                             <th>Detaylar</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model)
+                        @foreach (var duyuru in Model)
                         {
                             <tr class="text-center">
-                                <td data-column="duyuruOlusturanId">@item.duyuruOlusturanId</td>
-                                <td data-column="duyuruBaslik">@item.duyuruBaslik</td>
-                                <td data-column="duyuruTarih">@item.duyuruTarih</td>
+                                <td data-column="OlusturanAdSoyad">@duyuru.OlusturanAdSoyad</td>
+                                <td data-column="DuyuruBaslik">@duyuru.DuyuruBaslik</td>
+                                <td data-column="DuyuruTarih">@duyuru.DuyuruTarih.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                <td data-column="GoruntuleyenBirim">@duyuru.GoruntuleyenBirim</td>
                                 <td class="d-flex justify-content-center">
-                                    <a href="@Url.Action("DuyuruDetay", new { id = item.duyuruId })" class="btn btn-info custom-button me-2">
+                                    <a href="@Url.Action("DuyuruDetay", new { id = duyuru.DuyuruId })" class="btn btn-info custom-button me-2">
                                         <i class="fas fa-info-circle"></i> Detaylar
                                     </a>
                                 </td>
@@ -92,7 +93,6 @@
 
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 <script>
-    // Arama çubuğu
     document.getElementById('searchInput').addEventListener('keyup', function () {
         var input = document.getElementById('searchInput');
         var filter = input.value.toLowerCase();
@@ -114,7 +114,6 @@
         }
     });
 
-    // Sıralama
     document.querySelectorAll('.sortable').forEach(function (header) {
         header.addEventListener('click', function () {
             var table = document.getElementById('duyuruTable');
@@ -132,11 +131,9 @@
                     cellA = new Date(cellA);
                     cellB = new Date(cellB);
                     return order === 'asc' ? cellA - cellB : cellB - cellA;
+                } else {
+                    return order === 'asc' ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
                 }
-
-                if (cellA < cellB) return order === 'asc' ? -1 : 1;
-                if (cellA > cellB) return order === 'asc' ? 1 : -1;
-                return 0;
             });
 
             rows.forEach(function (row) {

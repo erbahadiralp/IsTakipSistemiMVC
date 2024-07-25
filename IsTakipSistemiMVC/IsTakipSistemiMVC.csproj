@@ -1115,6 +1115,7 @@
     <Compile Include="Models\Duyurular.cs">
       <DependentUpon>IsTakipModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DuyuruViewModel.cs" />
     <Compile Include="Models\IsDurumModel.cs" />
     <Compile Include="Models\Isler.cs">
       <DependentUpon>IsTakipModel.tt</DependentUpon>
@@ -1145,9 +1146,6 @@
     </Compile>
     <Compile Include="Models\Menu.cs" />
     <Compile Include="Models\Personeller.cs">
-      <DependentUpon>IsTakipModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sysdiagrams.cs">
       <DependentUpon>IsTakipModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ToplamIs.cs" />

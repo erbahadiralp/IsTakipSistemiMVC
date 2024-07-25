@@ -17,7 +17,7 @@ namespace IsTakipSistemiMVC.Models
         public int duyuruId { get; set; }
         public string duyuruBaslik { get; set; }
         public string duyuruIcerik { get; set; }
-        public Nullable<System.DateTime> duyuruTarih { get; set; }
+        public System.DateTime duyuruTarih { get; set; }
         public Nullable<int> duyuruOlusturanId { get; set; }
         public Nullable<bool> aktiflik { get; set; }
         public Nullable<int> goruntuleyenBirimId { get; set; }

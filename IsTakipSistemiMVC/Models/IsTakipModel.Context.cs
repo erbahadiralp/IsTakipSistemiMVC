@@ -29,7 +29,6 @@ namespace IsTakipSistemiMVC.Models
         public virtual DbSet<Durumlar> Durumlar { get; set; }
         public virtual DbSet<Isler> Isler { get; set; }
         public virtual DbSet<Personeller> Personeller { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<YetkiTurler> YetkiTurler { get; set; }
         public virtual DbSet<Loglar> Loglar { get; set; }
         public virtual DbSet<YemekTablo> YemekTablo { get; set; }

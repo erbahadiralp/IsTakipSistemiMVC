@@ -27,7 +27,7 @@
           <Property Name="duyuruId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="duyuruBaslik" Type="nvarchar(max)" />
           <Property Name="duyuruIcerik" Type="nvarchar(max)" />
-          <Property Name="duyuruTarih" Type="datetime" />
+          <Property Name="duyuruTarih" Type="datetime" Nullable="false" />
           <Property Name="duyuruOlusturanId" Type="int" />
           <Property Name="aktiflik" Type="bit" />
           <Property Name="goruntuleyenBirimId" Type="int" />
@@ -61,7 +61,7 @@
           <Key>
             <PropertyRef Name="eklerId" />
           </Key>
-          <Property Name="eklerId" Type="int" Nullable="false" />
+          <Property Name="eklerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="mailId" Type="int" />
           <Property Name="eklerAd" Type="nvarchar(max)" />
           <Property Name="eklerVeri" Type="varbinary(max)" />
@@ -102,16 +102,6 @@
           <Property Name="personelIzın" Type="int" />
           <Property Name="personelOlusturmaTarihi" Type="datetime" />
           <Property Name="personelSilmeTarihi" Type="datetime" />
-        </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="YemekTablo">
           <Key>
@@ -264,7 +254,6 @@
           <EntitySet Name="MailEkler" EntityType="Self.MailEkler" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Mailler" EntityType="Self.Mailler" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Personeller" EntityType="Self.Personeller" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="YemekTablo" EntityType="Self.YemekTablo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="YetkiTurler" EntityType="Self.YetkiTurler" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Duyurular_Personeller" Association="Self.FK_Duyurular_Personeller">
@@ -375,16 +364,6 @@
           <NavigationProperty Name="Mailler" Relationship="IsTakipDBModel.FK_Mailler_Personeller" FromRole="Personeller" ToRole="Mailler" />
           <NavigationProperty Name="Mailler1" Relationship="IsTakipDBModel.FK_Mailler_Personeller1" FromRole="Personeller" ToRole="Mailler" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
         <EntityType Name="YetkiTurler">
           <Key>
             <PropertyRef Name="yetkiTurId" />
@@ -446,7 +425,6 @@
           <EntitySet Name="Durumlar" EntityType="Self.Durumlar" />
           <EntitySet Name="Isler" EntityType="Self.Isler" />
           <EntitySet Name="Personeller" EntityType="Self.Personeller" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="YetkiTurler" EntityType="Self.YetkiTurler" />
           <AssociationSet Name="FK_Personeller_Birimler" Association="Self.FK_Personeller_Birimler">
             <End Role="Birimler" EntitySet="Birimler" />
@@ -540,7 +518,7 @@
           <Property Name="duyuruId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="duyuruBaslik" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="duyuruIcerik" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="duyuruTarih" Type="DateTime" Precision="3" />
+          <Property Name="duyuruTarih" Type="DateTime" Precision="3" Nullable="false" />
           <Property Name="duyuruOlusturanId" Type="Int32" />
           <Property Name="aktiflik" Type="Boolean" />
           <Property Name="goruntuleyenBirimId" Type="Int32" />
@@ -693,17 +671,6 @@
                 <ScalarProperty Name="personelParola" ColumnName="personelParola" />
                 <ScalarProperty Name="personelBirimId" ColumnName="personelBirimId" />
                 <ScalarProperty Name="personelYetkiTurId" ColumnName="personelYetkiTurId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="IsTakipDBModel.sysdiagrams">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
