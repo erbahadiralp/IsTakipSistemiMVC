@@ -1,0 +1,89 @@
+﻿@{
+    ViewBag.Title = "Mail Oluştur";
+
+    Layout = ViewBag.Layout;
+}
+
+@model IsTakipSistemiMVC.Models.Mailler
+
+<h2 class="text-center">Mail Oluştur</h2>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group row">
+        @Html.LabelFor(model => model.mailAliciId, "Kime", htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
+        <div class="col-md-10">
+            @Html.DropDownList("mailAliciId", (SelectList)ViewBag.Recipients, "Seçiniz", htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.mailAliciId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        @Html.LabelFor(model => model.mailKonu, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.mailKonu, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.mailKonu, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        @Html.LabelFor(model => model.mailIcerik, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.mailIcerik, new { htmlAttributes = new { @class = "form-control", rows = "5" } })
+            @Html.ValidationMessageFor(model => model.mailIcerik, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-10 offset-md-2">
+            <button type="submit" class="btn btn-primary">Gönder</button>
+        </div>
+    </div>
+}
+
+<style>
+    .form-horizontal .control-label {
+        text-align: left;
+    }
+
+    .form-horizontal .form-group {
+        margin-bottom: 15px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: white;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+    .text-danger {
+        color: #dc3545;
+    }
+
+    h2 {
+        margin-bottom: 20px;
+        color: #343a40;
+    }
+
+    .form-control {
+        border-radius: 0.25rem;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        transition: box-shadow 0.3s ease;
+    }
+
+        .form-control:focus {
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+    .form-group.row {
+        align-items: center;
+    }
+</style>

@@ -34,5 +34,7 @@ namespace IsTakipSistemiMVC.Models
         public virtual DbSet<Loglar> Loglar { get; set; }
         public virtual DbSet<YemekTablo> YemekTablo { get; set; }
         public virtual DbSet<Duyurular> Duyurular { get; set; }
+        public virtual DbSet<Mailler> Mailler { get; set; }
+        public virtual DbSet<MailEkler> MailEkler { get; set; }
     }
 }

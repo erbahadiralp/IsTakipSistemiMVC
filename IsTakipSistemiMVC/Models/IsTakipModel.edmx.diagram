@@ -20,6 +20,12 @@
         <EntityTypeShape EntityType="IsTakipDBModel.YemekTablo" Width="1.5" PointX="5.375" PointY="7.75" />
         <EntityTypeShape EntityType="IsTakipDBModel.Duyurular" Width="1.5" PointX="5.25" PointY="12.375" />
         <AssociationConnector Association="IsTakipDBModel.FK_Duyurular_Personeller" />
+        <EntityTypeShape EntityType="IsTakipDBModel.Mailler" Width="1.5" PointX="8.25" PointY="4.375" />
+        <AssociationConnector Association="IsTakipDBModel.FK_Mailler_Durumlar" />
+        <AssociationConnector Association="IsTakipDBModel.FK_Mailler_Personeller" />
+        <AssociationConnector Association="IsTakipDBModel.FK_Mailler_Personeller1" />
+        <EntityTypeShape EntityType="IsTakipDBModel.MailEkler" Width="1.5" PointX="10.5" PointY="5.25" />
+        <AssociationConnector Association="IsTakipDBModel.FK_MailEkler_Mailler" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

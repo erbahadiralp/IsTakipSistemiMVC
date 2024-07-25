@@ -1,0 +1,117 @@
+﻿@{
+    ViewBag.Title = "Index";
+
+    Layout = ViewBag.Layout;
+}
+
+@model IEnumerable<IsTakipSistemiMVC.Models.Mailler>
+
+
+<style>
+    .custom-button {
+        margin: 5px; /* Butonlar arasındaki boşluğu artır */
+        transition: background-color 0.3s ease; /* Geçiş efekti */
+    }
+
+        .custom-button:hover {
+            background-color: #0056b3; /* Hover rengi */
+            color: white; /* Yazı rengini beyaz yap */
+        }
+
+    .button-container {
+        display: flex;
+        justify-content: flex-start; /* Butonları sola hizala */
+        gap: 10px; /* Butonlar arasındaki mesafeyi ayarla */
+    }
+
+    .search-bar {
+        flex-grow: 1;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .search-input {
+        width: 200px; /* Genişliği küçült */
+        padding: 5px 10px; /* İç boşlukları ayarla */
+        border: 1px solid #ccc;
+        border-radius: 25px; /* Köşeleri yuvarlat */
+        font-size: 14px; /* Font boyutunu küçült */
+        outline: none;
+        transition: box-shadow 0.3s ease;
+    }
+
+        .search-input:focus {
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Odaklandığında gölge efekti */
+        }
+</style>
+
+<div class="container mt-4">
+    <h2>Gelen Kutusu</h2>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="col button-container">
+                <a href="@Url.Action("MailOlustur", "Mail")" class="btn btn-primary custom-button">
+                    <i class="fas fa-plus"></i> Mail Oluştur
+                </a>
+                <a href="@Url.Action("GidenMailler", "Mail")" class="btn btn-primary custom-button">
+                    <i class="fas fa-plus"></i> Giden Mesajlar
+                </a>
+                <div class="search-bar">
+                    <input type="text" id="searchInput" class="search-input" placeholder="Arama yap...">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr class="text-center table-dark">
+                            <th>Gönderen</th>
+                            <th>Konu</th>
+                            <th>Başlık</th>
+                            <th>Tarih</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var mail in Model)
+                        {
+                            <tr class="text-center">
+                                <td>@mail.mailGondericiId</td>
+                                <td>@mail.mailKonu</td>
+                                <td>@mail.mailIcerik</td>
+                                <td>@mail.mailGonderilmeTarih</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<script>// Arama çubuğu
+    document.getElementById('searchInput').addEventListener('keyup', function () {
+        var input = document.getElementById('searchInput');
+        var filter = input.value.toLowerCase();
+        var table = document.querySelector('table');
+        var trs = table.getElementsByTagName('tr');
+        for (var i = 1; i < trs.length; i++) {
+            var tds = trs[i].getElementsByTagName('td');
+            var display = false;
+            for (var j = 0; j < tds.length; j++) {
+                if (tds[j].textContent.toLowerCase().indexOf(filter) > -1) {
+                    display = true;
+                }
+            }
+            if (display) {
+                trs[i].style.display = "";
+            } else {
+                trs[i].style.display = "none";
+            }
+        }
+    });</script>

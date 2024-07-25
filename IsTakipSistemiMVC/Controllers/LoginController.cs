@@ -36,10 +36,10 @@ namespace IsTakipSistemiMVC.Controllers
                 Session["PersonelBirimId"] = personel.personelBirimId;
                 Session["PersonelYetkiTurId"] = personel.personelYetkiTurId;
 
-                if (birim == null)
-                {
-                    return RedirectToAction("Index", "SistemYoneticisi");
-                }
+                //if (birim == null)
+                //{
+                //    return RedirectToAction("Index", "SistemYoneticisi");
+                //}
 
                 if (birim.aktiflik == true)
                 {

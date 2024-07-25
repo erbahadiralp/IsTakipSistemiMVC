@@ -20,6 +20,8 @@ namespace IsTakipSistemiMVC.Models
             this.Isler = new HashSet<Isler>();
             this.Loglar = new HashSet<Loglar>();
             this.Duyurular = new HashSet<Duyurular>();
+            this.Mailler = new HashSet<Mailler>();
+            this.Mailler1 = new HashSet<Mailler>();
         }
     
         public int personelId { get; set; }
@@ -48,5 +50,9 @@ namespace IsTakipSistemiMVC.Models
         public virtual ICollection<Loglar> Loglar { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Duyurular> Duyurular { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Mailler> Mailler { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Mailler> Mailler1 { get; set; }
     }
 }

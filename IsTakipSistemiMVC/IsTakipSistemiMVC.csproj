@@ -1092,6 +1092,7 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\LogoutController.cs" />
+    <Compile Include="Controllers\MailController.cs" />
     <Compile Include="Controllers\ParolaKontrolController.cs" />
     <Compile Include="Controllers\PersonelController.cs" />
     <Compile Include="Controllers\SistemYoneticisiController.cs" />
@@ -1134,6 +1135,12 @@
       <DependentUpon>IsTakipModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Loglar.cs">
+      <DependentUpon>IsTakipModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MailEkler.cs">
+      <DependentUpon>IsTakipModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Mailler.cs">
       <DependentUpon>IsTakipModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Menu.cs" />
@@ -1234,6 +1241,9 @@
     <Content Include="Views\Yonetici\DuyuruDetay.cshtml" />
     <Content Include="Views\Yonetici\Error.cshtml" />
     <Content Include="Views\Calisan\DuyuruDetay.cshtml" />
+    <Content Include="Views\Mail\Index.cshtml" />
+    <Content Include="Views\Mail\MailOlustur.cshtml" />
+    <Content Include="Views\Mail\GidenMailler.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
