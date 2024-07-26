@@ -1,6 +1,6 @@
 ﻿@{
-    ViewBag.Title = "Duyurular";
-    Layout = "~/Views/Shared/_LayoutSistemYoneticisi.cshtml";
+    ViewBag.Title = "Index";
+    Layout = ViewBag.Layout;
 }
 
 @model List<IsTakipSistemiMVC.Models.DuyuruViewModel>
@@ -54,11 +54,15 @@
 
 <div class="container mt-4">
     <div class="card mb-4">
+        <h2>Duyurular Sayfası</h2>
         <div class="card-body">
             <div class="col button-container">
-                <a href="@Url.Action("DuyuruEkle")" class="btn btn-primary custom-button">
-                    <i class="fas fa-plus"></i> Yeni Duyuru Ekle
-                </a>
+                @if (ViewBag.YetkiTurId == 1 || ViewBag.YetkiTurId == 3)
+                {
+                    <a href="@Url.Action("DuyuruEkle")" class="btn btn-primary custom-button">
+                        <i class="fas fa-plus"></i> Yeni Duyuru Ekle
+                    </a>
+                }
                 <div class="search-bar">
                     <input type="text" id="searchInput" class="search-input" placeholder="Arama yap...">
                 </div>

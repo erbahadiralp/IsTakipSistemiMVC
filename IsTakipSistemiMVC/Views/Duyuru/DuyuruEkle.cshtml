@@ -1,12 +1,12 @@
 ﻿@{
-    ViewBag.Title = "Duyuru Ekle";
-    Layout = "~/Views/Shared/_LayoutSistemYoneticisi.cshtml";
+    ViewBag.Title = "Index";
+    Layout = ViewBag.Layout;
 }
 
 @model IsTakipSistemiMVC.Models.Duyurular
 
 <div class="container mt-5">
-    <a href="@Url.Action("Duyurular", "SistemYoneticisi")" class="btn btn-secondary mb-3">Geri</a>
+    <a href="@Url.Action("Index", "Duyuru")" class="btn btn-secondary mb-3">Geri</a>
     <div class="card shadow-sm">
         <div class="card-body">
             <h2 class="card-title text-center">Yeni Duyuru Ekle</h2>
@@ -165,7 +165,7 @@
             border-color: #6c757d;
         }
 
-    ./*dropdown-item {
+    . /*dropdown-item {
         cursor: pointer;
         padding: 8px 16px;
         border-radius: 5px;
@@ -178,7 +178,6 @@
     .dropdown-divider {
         margin: 10px 0;
     }*/
-
     .text-center {
         font-weight: bold;
     }

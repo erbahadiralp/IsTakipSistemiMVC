@@ -1,12 +1,12 @@
 ﻿@{
     ViewBag.Title = "DuyuruDetay";
-    Layout = "~/Views/Shared/_LayoutSistemYoneticisi.cshtml";
+    Layout = ViewBag.Layout;
 }
 
 @model IsTakipSistemiMVC.Models.Duyurular
 
 <div class="container mt-5">
-    <a href="@Url.Action("Duyurular", "SistemYoneticisi")" class="btn btn-secondary mb-3">Geri</a>
+    <a href="@Url.Action("Index", "Duyuru")" class="btn btn-secondary mb-3">Geri</a>
     <div class="card shadow-sm">
         <div class="card-body">
             <h2 class="card-title text-center">@Model.duyuruBaslik</h2>
@@ -14,10 +14,13 @@
             <p class="card-text">@Model.duyuruIcerik</p>
             <p class="card-text"><small class="text-muted">Oluşturulma Tarihi: @Model.duyuruTarih</small></p>
 
-            <footer class="duyuru-footer d-flex justify-content-between mt-4">
-                <a href="@Url.Action("DuyuruGuncelle", new { id = Model.duyuruId })" class="btn btn-primary">Güncelle</a>
-                <a href="@Url.Action("DuyuruSil", new { id = Model.duyuruId })" class="btn btn-danger">Sil</a>
-            </footer>
+            @if ((ViewBag.YetkiTurId == 1 && @Model.duyuruOlusturanId == Convert.ToInt32(Session["PersonelId"])) || ViewBag.YetkiTurId == 3)
+            {
+                <footer class="duyuru-footer d-flex justify-content-between mt-4">
+                    <a href="@Url.Action("DuyuruGuncelle", new { id = Model.duyuruId })" class="btn btn-primary">Güncelle</a>
+                    <a href="@Url.Action("DuyuruSil", new { id = Model.duyuruId })" class="btn btn-danger">Sil</a>
+                </footer>
+            }
         </div>
     </div>
 </div>
@@ -70,21 +73,4 @@
         .btn-danger:hover {
             background-color: #c82333;
         }
-
-    .btn-secondary {
-        background-color: #6c757d;
-        border: none;
-        border-radius: 5px;
-        padding: 10px 20px;
-        transition: background-color 0.3s ease;
-    }
-
-        .btn-secondary:hover {
-            background-color: #5a6268;
-        }
-
-    .duyuru-footer {
-        border-top: 1px solid #dee2e6;
-        padding-top: 10px;
-    }
 </style>

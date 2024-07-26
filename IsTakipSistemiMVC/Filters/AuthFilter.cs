@@ -1,30 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.UI;
 using System.Web.Mvc;
-
 
 namespace IsTakipSistemiMVC.Filters
 {
     public class AuthFilter : FilterAttribute, IAuthorizationFilter
     {
-        protected int yetkiTur;
+        private readonly int[] allowedYetkiTurler;
 
-        public AuthFilter(int yetkiTur)
+        public AuthFilter(params int[] yetkiTurler)
         {
-            this.yetkiTur = yetkiTur;
+            this.allowedYetkiTurler = yetkiTurler;
         }
+
         public void OnAuthorization(AuthorizationContext filterContext)
         {
             int yetkiTurId = Convert.ToInt32(filterContext.HttpContext.Session["PersonelYetkiTurId"]);
 
-            if(this.yetkiTur != yetkiTurId)
+            if (!allowedYetkiTurler.Contains(yetkiTurId))
             {
                 filterContext.Result = new RedirectResult("/Login/Index");
             }
-
         }
     }
 }

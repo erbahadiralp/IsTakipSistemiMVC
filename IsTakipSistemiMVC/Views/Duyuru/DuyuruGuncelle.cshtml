@@ -1,6 +1,6 @@
 ﻿@{
-    ViewBag.Title = "DuyuruGuncelle";
-    Layout = "~/Views/Shared/_LayoutSistemYoneticisi.cshtml";
+    ViewBag.Title = "Index";
+    Layout = ViewBag.Layout;
 }
 
 @model IsTakipSistemiMVC.Models.Duyurular
@@ -11,7 +11,7 @@
         <div class="card-body">
             <h2 class="card-title text-center">Duyuru Güncelle</h2>
             <hr />
-            @using (Html.BeginForm("DuyuruGuncelle", "SistemYoneticisi", FormMethod.Post))
+            @using (Html.BeginForm("DuyuruGuncelle", "Duyuru", FormMethod.Post))
             {
                 @Html.HiddenFor(model => model.duyuruId)
 
@@ -67,9 +67,9 @@
         transition: background-color 0.3s ease;
     }
 
-    .btn-primary:hover {
-        background-color: #0056b3;
-    }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
 
     .btn-secondary {
         background-color: #6c757d;
@@ -79,7 +79,7 @@
         transition: background-color 0.3s ease;
     }
 
-    .btn-secondary:hover {
-        background-color: #5a6268;
-    }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
 </style>

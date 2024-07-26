@@ -176,50 +176,5 @@ namespace IsTakipSistemiMVC.Controllers
             return View(personel);
         }
 
-
-
-        [AuthFilter(2)]
-        public ActionResult Duyurular()
-        {
-            var duyuruList = (from d in entity.Duyurular
-                              join p in entity.Personeller on d.duyuruOlusturanId equals p.personelId
-                              join b in entity.Birimler on d.goruntuleyenBirimId equals b.birimId
-                              where d.aktiflik == true && d.goruntuleyenBirimId == p.personelBirimId
-                              select new
-                              {
-                                  d.duyuruId,
-                                  d.duyuruBaslik,
-                                  d.duyuruIcerik,
-                                  d.duyuruTarih,
-                                  GoruntuleyenBirim = b.birimAd, // Birim adı alınıyor
-                                  d.goruntuleyenBirimId,
-                                  OlusturanAdSoyad = p.personelAdSoyad
-                              }).ToList();
-
-            var duyurular = duyuruList.Select(d => new DuyuruViewModel
-            {
-                DuyuruId = d.duyuruId,
-                DuyuruBaslik = d.duyuruBaslik,
-                DuyuruIcerik = d.duyuruIcerik,
-                DuyuruTarih = d.duyuruTarih,
-                OlusturanAdSoyad = d.OlusturanAdSoyad,
-                GoruntuleyenBirim = d.GoruntuleyenBirim, // Birim adı burada atanıyor
-                GoruntuleyenBirimId = int.TryParse(d.goruntuleyenBirimId.ToString(), out int birimId) ? birimId : 0
-            }).ToList();
-
-            return View(duyurular);
-        }
-
-        // Duyuru detayları
-        [AuthFilter(2)]
-        public ActionResult DuyuruDetay(int id)
-        {
-            var duyuru = entity.Duyurular.Find(id);
-            if (duyuru == null)
-            {
-                return HttpNotFound();
-            }
-            return View(duyuru);
-        }
     }
 }
