@@ -1,9 +1,9 @@
-﻿@{
-    ViewBag.Title = "Giden Kutusu";
+﻿@model IEnumerable<IsTakipSistemiMVC.Models.MailViewModel>
+
+@{
+    ViewBag.Title = "ArsivGoster";
     Layout = ViewBag.Layout;
 }
-
-@model IEnumerable<IsTakipSistemiMVC.Models.MailViewModel>
 
 <style>
     .custom-button {
@@ -60,27 +60,13 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 <div class="container mt-4">
-    <h2>@ViewBag.Title</h2>
+    <h2>Arşivli Mailler</h2>
 
     <div class="card mb-4">
         <div class="card-body">
-            
             <a href="@Url.Action("Index", "Mail")" class="btn btn-primary custom-button">
                 <i class="fas fa-arrow-left"></i> Geri Dön
             </a>
-
-            <div class="col button-container" id="actionButtons">
-                <button id="deleteSelected" class="btn btn-danger custom-button">
-                    <i class="fas fa-trash-alt"></i>
-                </button>
-                <button id="markReadSelected" class="btn btn-success custom-button">
-                    <i class="fas fa-envelope-open"></i>
-                </button>
-                <button id="archiveSelected" class="btn btn-warning custom-button">
-                    <i class="fas fa-archive"></i> Arşivle
-                </button>
-
-            </div>
 
             <div class="search-bar">
                 <input type="text" id="searchInput" class="search-input" placeholder="Arama yap...">
@@ -94,10 +80,10 @@
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr class="text-center table-dark">
-                            <th><input type="checkbox" id="selectAll"></th>
+                            <th>Gönderen</th>
                             <th>Alıcı</th>
                             <th>Konu</th>
-                            <th>Başlık</th>
+                            <th>İçerik</th>
                             <th>Tarih</th>
                         </tr>
                     </thead>
@@ -105,11 +91,11 @@
                         @foreach (var mail in Model)
                         {
                             <tr class="text-center">
-                                <td><input type="checkbox" class="select-mail" data-mail-id="@mail.MailId"></td>
+                                <td>@mail.GondericiAdSoyad</td>
                                 <td>@mail.AliciAdSoyad</td>
                                 <td>@mail.Konu</td>
                                 <td>@mail.Icerik</td>
-                                <td>@mail.GonderilmeTarihi</td>
+                                <td>@mail.GonderilmeTarihi.ToString("dd.MM.yyyy HH:mm")</td>
                             </tr>
                         }
                     </tbody>
@@ -136,59 +122,6 @@
                 }
             }
             trs[i].style.display = display ? "" : "none";
-        }
-    });
-
-    // Tüm mailleri seçme
-    document.getElementById('selectAll').addEventListener('change', function () {
-        var checkboxes = document.querySelectorAll('.select-mail');
-        checkboxes.forEach(function (checkbox) {
-            checkbox.checked = this.checked;
-        }, this);
-        toggleActionButtons();
-    });
-
-    // Bireysel mail seçme
-    document.querySelectorAll('.select-mail').forEach(function (checkbox) {
-        checkbox.addEventListener('change', function () {
-            if (!this.checked) {
-                document.getElementById('selectAll').checked = false;
-            }
-            toggleActionButtons();
-        });
-    });
-
-    // Butonların görünürlüğünü yönetme
-    function toggleActionButtons() {
-        var selected = document.querySelectorAll('.select-mail:checked').length > 0;
-        var actionButtons = document.getElementById('actionButtons');
-        if (selected) {
-            actionButtons.classList.add('visible');
-        } else {
-            actionButtons.classList.remove('visible');
-        }
-    }
-
-    // Seçili mailleri arşivleme
-    document.getElementById('archiveSelected').addEventListener('click', function () {
-        var ids = Array.from(document.querySelectorAll('.select-mail:checked')).map(function (checkbox) {
-            return parseInt(checkbox.getAttribute('data-mail-id'));
-        });
-        if (ids.length > 0) {
-            fetch('@Url.Action("MailArsivle", "Mail")', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(ids)
-            }).then(response => response.json())
-              .then(data => {
-                  if (data.success) {
-                      location.reload();
-                  } else {
-                      alert(data.message);
-                  }
-              });
         }
     });
 </script>

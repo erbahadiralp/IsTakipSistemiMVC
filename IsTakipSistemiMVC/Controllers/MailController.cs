@@ -25,7 +25,7 @@ using static IsTakipSistemiMVC.Models.MailViewModel;
             var mailler = (from mail in entity.Mailler
                            join gonderici in entity.Personeller on mail.mailGondericiId equals gonderici.personelId
                            join alici in entity.Personeller on mail.mailAliciId equals alici.personelId
-                           where mail.aktiflik == true && mail.mailAliciId == userId
+                           where mail.aktiflik == true && mail.mailAliciId == userId && mail.mailArsiv == false
                            select new MailViewModel
                            {
                                MailId = mail.mailId,
@@ -38,7 +38,6 @@ using static IsTakipSistemiMVC.Models.MailViewModel;
 
             return View(mailler);
         }
-
 
 
         //// Duyuru detayları
@@ -54,6 +53,7 @@ using static IsTakipSistemiMVC.Models.MailViewModel;
         //}
 
         // Yeni duyuru ekleme sayfası
+
         public ActionResult MailOlustur()
         {
             ViewBag.Recipients = new SelectList(entity.Personeller
@@ -90,6 +90,7 @@ using static IsTakipSistemiMVC.Models.MailViewModel;
             return View(mail);
         }
 
+        //GİDEN MAİLLER
         public ActionResult GidenMailler()
         {
             int userId = Convert.ToInt32(Session["PersonelId"]);
@@ -97,7 +98,7 @@ using static IsTakipSistemiMVC.Models.MailViewModel;
             var gidenMailler = (from mail in entity.Mailler
                                 join gonderici in entity.Personeller on mail.mailGondericiId equals gonderici.personelId
                                 join alici in entity.Personeller on mail.mailAliciId equals alici.personelId
-                                where mail.aktiflik == true && mail.mailGondericiId == userId
+                                where mail.aktiflik == true && mail.mailGondericiId == userId && mail.mailArsiv == false
                                 select new MailViewModel
                                 {
                                     MailId = mail.mailId,
@@ -112,27 +113,75 @@ using static IsTakipSistemiMVC.Models.MailViewModel;
         }
 
 
+        [HttpPost]
+        public ActionResult MailSil(List<int> ids)
+        {
+            if (ids != null && ids.Count > 0)
+            {
+                foreach (var id in ids)
+                {
+                    var mail = entity.Mailler.FirstOrDefault(m => m.mailId == id);
+                    if (mail != null)
+                    {
+                        mail.aktiflik = false;
+                    }
+                }
+                entity.SaveChanges();
+                TempData["bilgi"] = "Mail(ler) başarıyla silindi.";
+            }
+            else
+            {
+                TempData["bilgi"] = "Mail bulunamadı.";
+            }
+            return Json(new { success = true });
+        }
 
+        [HttpPost]
+        public ActionResult MailArsivle(int[] ids)
+        {
+            if (ids == null || ids.Length == 0)
+            {
+                return Json(new { success = false, message = "Arşivlenecek mail seçilmedi." });
+            }
 
-        //Mail Giden - GELEN
+            var mailler = entity.Mailler.Where(m => ids.Contains(m.mailId)).ToList();
 
-        //// Duyuru silme işlemi (aktifliğini false yapar)
-        //[ActFilter("Duyuru Silindi"), AuthFilter(3)]
+            if (mailler.Count == 0)
+            {
+                return Json(new { success = false, message = "Geçersiz mail id'leri." });
+            }
 
-        //public ActionResult DuyuruSil(int id)
-        //{
-        //    var duyuru = entity.Duyurular
-        //                       .FirstOrDefault(d => d.duyuruId == id && d.aktiflik == true); // Aktif duyuruyu bul
-        //    if (duyuru == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
+            foreach (var mail in mailler)
+            {
+                mail.mailArsiv = true; // Arşivle
+            }
 
-        //    duyuru.aktiflik = false;
-        //    entity.SaveChanges();
+            entity.SaveChanges();
 
-        //    return RedirectToAction("Duyurular");
-        //}
+            return Json(new { success = true });
+        }
+
+        public ActionResult ArsivGoster()
+        {
+            // Arşivlenen mailleri getir
+            var arsivlenmisMailler = (from mail in entity.Mailler
+                                      join gonderici in entity.Personeller on mail.mailGondericiId equals gonderici.personelId
+                                      join alici in entity.Personeller on mail.mailAliciId equals alici.personelId
+                                      where mail.mailArsiv == true
+                                      select new MailViewModel
+                                      {
+                                          MailId = mail.mailId,
+                                          GondericiAdSoyad = gonderici.personelAdSoyad,
+                                          AliciAdSoyad = alici.personelAdSoyad,
+                                          Konu = mail.mailKonu,
+                                          Icerik = mail.mailIcerik,
+                                          GonderilmeTarihi = mail.mailGonderilmeTarih,
+                                          Arsiv = mail.mailArsiv ?? false
+                                      }).ToList();
+
+            // View'e model olarak gönder
+            return View(arsivlenmisMailler);
+        }
 
 
 

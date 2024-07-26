@@ -15,6 +15,7 @@ namespace IsTakipSistemiMVC.Models
         public string Konu { get; set; }
         public string Icerik { get; set; }
         public DateTime GonderilmeTarihi { get; set; }
+        public bool Arsiv { get; set; }
     }
 
 }

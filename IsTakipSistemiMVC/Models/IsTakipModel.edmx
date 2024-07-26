@@ -80,6 +80,7 @@
           <Property Name="mailGonderilmeDurumu" Type="int" />
           <Property Name="mailGonderilmeTarih" Type="datetime" Nullable="false" />
           <Property Name="mailZamanliGonderilmeTarih" Type="datetime" />
+          <Property Name="mailArsiv" Type="bit" />
         </EntityType>
         <EntityType Name="Personeller">
           <Key>
@@ -566,6 +567,7 @@
           <NavigationProperty Name="Personeller" Relationship="IsTakipDBModel.FK_Mailler_Personeller" FromRole="Mailler" ToRole="Personeller" />
           <NavigationProperty Name="Personeller1" Relationship="IsTakipDBModel.FK_Mailler_Personeller1" FromRole="Mailler" ToRole="Personeller" />
           <NavigationProperty Name="MailEkler" Relationship="IsTakipDBModel.FK_MailEkler_Mailler" FromRole="Mailler" ToRole="MailEkler" />
+          <Property Name="mailArsiv" Type="Boolean" />
         </EntityType>
         <Association Name="FK_Mailler_Durumlar">
           <End Type="IsTakipDBModel.Durumlar" Role="Durumlar" Multiplicity="0..1" />
@@ -748,6 +750,7 @@
           <EntitySetMapping Name="Mailler">
             <EntityTypeMapping TypeName="IsTakipDBModel.Mailler">
               <MappingFragment StoreEntitySet="Mailler">
+                <ScalarProperty Name="mailArsiv" ColumnName="mailArsiv" />
                 <ScalarProperty Name="mailZamanliGonderilmeTarih" ColumnName="mailZamanliGonderilmeTarih" />
                 <ScalarProperty Name="mailGonderilmeTarih" ColumnName="mailGonderilmeTarih" />
                 <ScalarProperty Name="mailGonderilmeDurumu" ColumnName="mailGonderilmeDurumu" />

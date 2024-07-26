@@ -279,13 +279,19 @@ namespace IsTakipSistemiMVC.Controllers
         }
 
         [HttpPost]
-
         public ActionResult YemekEkle(FormCollection fc)
         {
+            DateTime tarih = DateTime.Parse(fc["Tarih"]); // Tarih bilgisini al
+
+            // Veritabanında aynı tarihe sahip bir menü olup olmadığını kontrol et
+            var varOlanMenu = entity.YemekTablo.FirstOrDefault(m => m.Tarih == tarih);
+            if (varOlanMenu != null)
+            {
+                TempData["bilgi"] = "Zaten bu tarihe bir menü atanmış.";
+                return RedirectToAction("YemekEkle");
+            }
 
             YemekTablo Menu = new YemekTablo();
-
-
             Menu.YemekAdi1 = fc["YemekAdi1"];
             Menu.YemekAdi2 = fc["YemekAdi2"];
             Menu.YemekAdi3 = fc["YemekAdi3"];
@@ -294,15 +300,15 @@ namespace IsTakipSistemiMVC.Controllers
             Menu.YemekAdi6 = fc["YemekAdi6"];
             Menu.YemekAdi7 = fc["YemekAdi7"];
             Menu.YemekAdi8 = fc["YemekAdi8"];
-            Menu.Tarih = DateTime.Parse(fc["Tarih"]); // Tarih bilgisini al
+            Menu.Tarih = tarih;
 
             entity.YemekTablo.Add(Menu);
             entity.SaveChanges();
 
             TempData["bilgi"] = "Yemek menüsü başarıyla eklendi.";
             return RedirectToAction("YemekEkle");
-
         }
+
 
 
         // Duyuruların listelenmesi
@@ -446,7 +452,10 @@ namespace IsTakipSistemiMVC.Controllers
             return RedirectToAction("Duyurular");
         }
 
-
+        public ActionResult MailDeneme()
+        {
+            return View();
+        }
 
     }
 }
