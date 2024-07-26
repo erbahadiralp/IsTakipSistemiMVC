@@ -28,7 +28,7 @@ namespace IsTakipSistemiMVC.Models
         public Nullable<bool> mailOkunma { get; set; }
         public Nullable<bool> aktiflik { get; set; }
         public Nullable<int> mailGonderilmeDurumu { get; set; }
-        public Nullable<System.DateTime> mailGonderilmeTarih { get; set; }
+        public System.DateTime mailGonderilmeTarih { get; set; }
         public Nullable<System.DateTime> mailZamanliGonderilmeTarih { get; set; }
     
         public virtual Durumlar Durumlar { get; set; }

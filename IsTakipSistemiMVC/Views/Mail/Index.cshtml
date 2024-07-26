@@ -2,9 +2,10 @@
     ViewBag.Title = "Index";
 
     Layout = ViewBag.Layout;
-    }
+}
 
-@model IEnumerable<IsTakipSistemiMVC.Models.Mailler>
+@model IEnumerable<IsTakipSistemiMVC.Models.MailViewModel>
+
 
 
 <style>
@@ -45,6 +46,7 @@
         }
 </style>
 
+
 <div class="container mt-4">
     <h2>Gelen Kutusu</h2>
 
@@ -80,10 +82,10 @@
                         @foreach (var mail in Model)
                         {
                             <tr class="text-center">
-                                <td>@mail.mailGondericiId</td>
-                                <td>@mail.mailKonu</td>
-                                <td>@mail.mailIcerik</td>
-                                <td>@mail.mailGonderilmeTarih</td>
+                                <td>@mail.GondericiAdSoyad</td>
+                                <td>@mail.Konu</td>
+                                <td>@mail.Icerik</td>
+                                <td>@mail.GonderilmeTarihi</td>
                             </tr>
                         }
                     </tbody>
@@ -93,8 +95,11 @@
     </div>
 </div>
 
+
+
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-<script>// Arama çubuğu
+<script>
+    // Arama çubuğu
     document.getElementById('searchInput').addEventListener('keyup', function () {
         var input = document.getElementById('searchInput');
         var filter = input.value.toLowerCase();

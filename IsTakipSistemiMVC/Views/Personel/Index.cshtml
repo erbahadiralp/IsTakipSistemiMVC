@@ -52,6 +52,32 @@
     .sortable:hover {
         cursor: pointer;
     }
+
+    .pagination {
+        display: flex;
+        justify-content: left;
+        margin-top: 10px;
+    }
+
+    .page-link {
+        margin: 0 5px;
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        text-decoration: none;
+        color: #007bff;
+    }
+
+        .page-link.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        .page-link:hover {
+            background-color: #0056b3;
+            color: white;
+        }
 </style>
 
 <div class="container mt-4">
@@ -116,58 +142,121 @@
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 <script>
 
-    //arama çubuğu
-    document.getElementById('searchInput').addEventListener('keyup', function () {
-        var input = document.getElementById('searchInput');
-        var filter = input.value.toLowerCase();
-        var table = document.getElementById('personelTable');
-        var trs = table.getElementsByTagName('tr');
-        for (var i = 1; i < trs.length; i++) {
-            var tds = trs[i].getElementsByTagName('td');
-            var display = false;
-            for (var j = 0; j < tds.length; j++) {
-                if (tds[j].textContent.toLowerCase().indexOf(filter) > -1) {
-                    display = true;
+        //arama çubuğu
+        document.getElementById('searchInput').addEventListener('keyup', function () {
+            var input = document.getElementById('searchInput');
+            var filter = input.value.toLowerCase();
+            var table = document.getElementById('personelTable');
+            var trs = table.getElementsByTagName('tr');
+            for (var i = 1; i < trs.length; i++) {
+                var tds = trs[i].getElementsByTagName('td');
+                var display = false;
+                for (var j = 0; j < tds.length; j++) {
+                    if (tds[j].textContent.toLowerCase().indexOf(filter) > -1) {
+                        display = true;
+                    }
+                }
+                if (display) {
+                    trs[i].style.display = "";
+                } else {
+                    trs[i].style.display = "none";
                 }
             }
-            if (display) {
-                trs[i].style.display = "";
-            } else {
-                trs[i].style.display = "none";
-            }
-        }
-    });
+        });
 
-    // Sıralama
-    document.querySelectorAll('.sortable').forEach(function (header) {
-        header.addEventListener('click', function () {
+        // Sıralama
+        document.querySelectorAll('.sortable').forEach(function (header) {
+            header.addEventListener('click', function () {
+                var table = document.getElementById('personelTable');
+                var tbody = table.tBodies[0];
+                var rows = Array.from(tbody.querySelectorAll('tr'));
+                var column = header.getAttribute('data-column');
+                var order = header.getAttribute('data-order') === 'asc' ? 'desc' : 'asc';
+                header.setAttribute('data-order', order);
+
+                rows.sort(function (a, b) {
+                    var cellA = a.querySelector('[data-column="' + column + '"]').textContent.trim();
+                    var cellB = b.querySelector('[data-column="' + column + '"]').textContent.trim();
+
+                    // Sayısal sıralama kontrolü
+                    if (column === 'personelId') {
+                        cellA = parseInt(cellA, 10);
+                        cellB = parseInt(cellB, 10);
+                        return order === 'asc' ? cellA - cellB : cellB - cellA;
+                    }
+
+                    // Metin sıralama
+                    if (cellA < cellB) return order === 'asc' ? -1 : 1;
+                    if (cellA > cellB) return order === 'asc' ? 1 : -1;
+                    return 0;
+                });
+
+                rows.forEach(function (row) {
+                    tbody.appendChild(row);
+                });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
             var table = document.getElementById('personelTable');
             var tbody = table.tBodies[0];
             var rows = Array.from(tbody.querySelectorAll('tr'));
-            var column = header.getAttribute('data-column');
-            var order = header.getAttribute('data-order') === 'asc' ? 'desc' : 'asc';
-            header.setAttribute('data-order', order);
+            var rowsPerPage = 5;
+            var currentPage = 1;
+            var totalPages = Math.ceil(rows.length / rowsPerPage);
 
-            rows.sort(function (a, b) {
-                var cellA = a.querySelector('[data-column="' + column + '"]').textContent.trim();
-                var cellB = b.querySelector('[data-column="' + column + '"]').textContent.trim();
+            function displayRows(startIndex) {
+                rows.forEach(function (row, index) {
+                    if (index >= startIndex && index < startIndex + rowsPerPage) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            }
 
-                // Sayısal sıralama kontrolü
-                if (column === 'personelId') {
-                    cellA = parseInt(cellA, 10);
-                    cellB = parseInt(cellB, 10);
-                    return order === 'asc' ? cellA - cellB : cellB - cellA;
+            function createPagination() {
+                var pagination = document.createElement('div');
+                pagination.className = 'pagination';
+                for (var i = 1; i <= totalPages; i++) {
+                    var pageLink = document.createElement('a');
+                    pageLink.href = '#';
+                    pageLink.innerText = i;
+                    pageLink.className = 'page-link';
+                    pageLink.dataset.page = i;
+                    pageLink.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        currentPage = parseInt(this.dataset.page);
+                        displayRows((currentPage - 1) * rowsPerPage);
+                        updatePagination();
+                    });
+                    pagination.appendChild(pageLink);
                 }
+                return pagination;
+            }
 
-                // Metin sıralama
-                if (cellA < cellB) return order === 'asc' ? -1 : 1;
-                if (cellA > cellB) return order === 'asc' ? 1 : -1;
-                return 0;
-            });
+            function updatePagination() {
+                var pageLinks = document.querySelectorAll('.page-link');
+                pageLinks.forEach(function (link) {
+                    link.classList.remove('active');
+                });
+                pageLinks[currentPage - 1].classList.add('active');
+            }
 
-            rows.forEach(function (row) {
-                tbody.appendChild(row);
-            });
+            var paginationContainer = document.createElement('div');
+            paginationContainer.className = 'pagination-container';
+            paginationContainer.appendChild(createPagination());
+
+            table.parentNode.appendChild(paginationContainer);
+            displayRows(0);
+            updatePagination();
         });
-    });
 </script>
+
+
+
+
+
+
+
+

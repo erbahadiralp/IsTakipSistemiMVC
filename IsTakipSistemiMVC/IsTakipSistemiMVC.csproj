@@ -1145,8 +1145,12 @@
     <Compile Include="Models\Mailler.cs">
       <DependentUpon>IsTakipModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\MailViewModel.cs" />
     <Compile Include="Models\Menu.cs" />
     <Compile Include="Models\Personeller.cs">
+      <DependentUpon>IsTakipModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sysdiagrams.cs">
       <DependentUpon>IsTakipModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ToplamIs.cs" />

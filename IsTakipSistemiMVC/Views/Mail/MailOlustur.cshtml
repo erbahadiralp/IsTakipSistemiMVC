@@ -1,81 +1,64 @@
 ﻿@{
     ViewBag.Title = "Mail Oluştur";
-
     Layout = ViewBag.Layout;
 }
 
 @model IsTakipSistemiMVC.Models.Mailler
 
-<h2 class="text-center">Mail Oluştur</h2>
+<div class="container mt-5">
+    <h2 class="text-center">Mail Oluştur</h2>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
 
-@using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
-    @Html.AntiForgeryToken()
+                <div class="form-group mb-3">
+                    @Html.LabelFor(model => model.mailAliciId, "Kime", htmlAttributes: new { @class = "form-label" })
+                    @Html.DropDownList("mailAliciId", (SelectList)ViewBag.Recipients, "Seçiniz", htmlAttributes: new { @class = "form-control custom-select" })
+                    @Html.ValidationMessageFor(model => model.mailAliciId, "", new { @class = "text-danger" })
+                </div>
 
-    <div class="form-group row">
-        @Html.LabelFor(model => model.mailAliciId, "Kime", htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
-        <div class="col-md-10">
-            @Html.DropDownList("mailAliciId", (SelectList)ViewBag.Recipients, "Seçiniz", htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.mailAliciId, "", new { @class = "text-danger" })
+                <div class="form-group mb-3">
+                    @Html.LabelFor(model => model.mailKonu, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.mailKonu, new { htmlAttributes = new { @class = "form-control", placeholder = "Konu girin" } })
+                    @Html.ValidationMessageFor(model => model.mailKonu, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group mb-3">
+                    @Html.LabelFor(model => model.mailIcerik, htmlAttributes: new { @class = "form-label" })
+                    <div class="input-group">
+                        @Html.TextAreaFor(model => model.mailIcerik, new { @class = "form-control", rows = "10", placeholder = "Mail içeriğini girin", style = "resize: vertical;" })
+                        <span class="input-group-text"><i class="fas fa-edit"></i></span>
+                    </div>
+                    @Html.ValidationMessageFor(model => model.mailIcerik, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary">Gönder</button>
+                </div>
+            }
         </div>
     </div>
-
-    <div class="form-group row">
-        @Html.LabelFor(model => model.mailKonu, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.mailKonu, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.mailKonu, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group row">
-        @Html.LabelFor(model => model.mailIcerik, htmlAttributes: new { @class = "control-label col-md-2 col-form-label" })
-        <div class="col-md-10">
-            @Html.TextAreaFor(model => model.mailIcerik, new { htmlAttributes = new { @class = "form-control", rows = "5" } })
-            @Html.ValidationMessageFor(model => model.mailIcerik, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group row">
-        <div class="col-md-10 offset-md-2">
-            <button type="submit" class="btn btn-primary">Gönder</button>
-        </div>
-    </div>
-}
+</div>
 
 <style>
-    .form-horizontal .control-label {
-        text-align: left;
+    .container {
+        max-width: 800px;
     }
 
-    .form-horizontal .form-group {
-        margin-bottom: 15px;
+    .card {
+        border-radius: 10px;
+        padding: 20px;
     }
 
-    .btn-primary {
-        background-color: #007bff;
-        border-color: #007bff;
-        color: white;
-        transition: background-color 0.3s ease, border-color 0.3s ease;
-    }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #004085;
-        }
-
-    .text-danger {
-        color: #dc3545;
-    }
-
-    h2 {
-        margin-bottom: 20px;
+    .form-label {
         color: #343a40;
+        font-weight: bold;
     }
 
     .form-control {
-        border-radius: 0.25rem;
-        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        border-radius: 5px;
         transition: box-shadow 0.3s ease;
     }
 
@@ -83,7 +66,51 @@
             box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
         }
 
-    .form-group.row {
-        align-items: center;
+        .form-control.custom-select {
+            color: #495057;
+            background-color: #f8f9fa;
+        }
+
+            .form-control.custom-select option {
+                color: #495057;
+            }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+    .text-danger {
+        font-size: 0.875rem;
+    }
+
+    h2 {
+        margin-bottom: 20px;
+        color: #343a40;
+    }
+
+    .input-group-text {
+        background-color: #e9ecef;
+        border: 1px solid #ced4da;
+        border-left: 0;
+        border-radius: 0 5px 5px 0;
+    }
+
+    .input-group .form-control {
+        border-radius: 5px 0 0 5px;
     }
 </style>
+
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
