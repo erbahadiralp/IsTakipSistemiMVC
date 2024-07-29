@@ -3,65 +3,87 @@
     Layout = "~/Views/Shared/_LayoutYonetici.cshtml";
 }
 
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="alert alert-dark" role="alert">
-                @using (Html.BeginForm("AyinElemani", "Yonetici", FormMethod.Post, new { @class = "row g-3 align-items-center" }))
-                {
-                    <div class="col-auto">
-                        @Html.Partial("_PartialAylarSelect")
-                    </div>
-
-                    <div class="col-auto">
-                        <select class="form-select" name="yillar">
-                            @foreach (var yil in ViewBag.yillar)
-                            {
-                                <option value="@yil">@yil</option>
-                            }
-                        </select>
-                    </div>
-
-                    <div class="col-auto">
-                        <button class="btn btn-primary">Ayın Elemanını Getir</button>
-                    </div>
-                }
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            @if (ViewBag.ayinElemani != null)
-            {
-                <div class="alert alert-success" role="alert">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            @ViewBag.ayinElemani.personelAdSoyad
-                            <span class="badge bg-primary rounded-pill">Yapılan İş Toplamı: @ViewBag.ayinElemani.toplamIs</span>
-                        </li>
-                    </ul>
-                </div>
-            }
-            else
-            {
-                <div class="alert alert-dark" role="alert">
-                    Herhangi bir çalışan bulunamadı
-                </div>
-            }
-        </div>
-    </div>
-</div>
-
 <style>
+    .container {
+        margin-top: 30px;
+    }
+
+    .form-select, .btn {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .img-fluid {
+        max-width: 200px;
+        height: auto;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
     .alert {
-        border-radius: 10px;
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .badge {
+        font-size: 1rem;
     }
 
     .btn-primary {
-        width: 100%;
-    }
-
-    .list-group-item {
-        border: none;
-        padding: 10px 15px;
+        background-color: #007bff;
+        border-color: #007bff;
     }
 </style>
+
+<div class="container p-5">
+    @using (Html.BeginForm("AyinElemani", "Yonetici", FormMethod.Post, new { @class = "row" }))
+    {
+        <div class="col-md-4">
+            @Html.Partial("_partialAylarSelect", new { selectedAy = ViewBag.SelectedAy })
+        </div>
+        <div class="col-md-4">
+            <select class="form-select" name="yillar">
+                @foreach (var yil in ViewBag.yillar)
+                {
+                    <option value="@yil" @(yil == ViewBag.SelectedYil ? "selected" : "")>@yil</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-4 d-grid gap-2">
+            <button class="btn btn-primary" type="submit">Ayın Elemanını Getir</button>
+        </div>
+    }
+</div>
+
+<div class="container mt-5">
+    @if (ViewBag.ayinElemani != null)
+    {
+        if (ViewBag.ayinElemani.toplamIs != 0)
+        {
+            <div class="text-center mx-auto my-5" style="max-width: 600px; padding: 20px; border-radius: 10px; border: 1px solid #ddd;">
+                <div class="">
+                    <p class="h5"><b>AYIN ELEMANI</b></p>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHQ-5AFT61RZKko6Bncn8EgWPvLab4r4ZQyA&s" class="img-fluid rounded-circle my-3" alt="Personel Fotoğrafı" />
+                    <p class="h6">@ViewBag.ayinElemani.personelAdSoyad</p>
+                    <span class="badge bg-primary rounded-pill mt-2">
+                        Yapılan İş Toplamı: @ViewBag.ayinElemani.toplamIs
+                    </span>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-success" role="alert">
+                @ViewBag.isYapilmamis
+            </div>
+        }
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+            Herhangi bir çalışan bulunamadı!
+        </div>
+    }
+</div>

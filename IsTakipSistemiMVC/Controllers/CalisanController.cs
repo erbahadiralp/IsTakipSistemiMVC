@@ -176,5 +176,8 @@ namespace IsTakipSistemiMVC.Controllers
             return View(personel);
         }
 
+       
+
+
     }
 }

@@ -2,11 +2,11 @@
 
 @{
     ViewBag.Title = "Profil";
-    Layout = "~/Views/Shared/_LayoutCalisan.cshtml";
+    Layout = ViewBag.Layout;
 }
 
 <div class="container mt-5 custom-container">
-    
+
 
     <div class="row">
         <div class="col">
@@ -36,7 +36,7 @@
                             <p><strong>Kalan İzin Gün Sayısı:</strong> @Model.personelIzın</p>
                         </div>
                         <div class="col-md-6 text-center profile-img-container custom-col">
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHQ-5AFT61RZKko6Bncn8EgWPvLab4r4ZQyA&s" alt="Profil Fotoğrafı" class="profile-img">
+                            <img src="@Model.personelFotograf" alt="Profil Fotoğrafı" class="profile-img">
                         </div>
                     </div>
                 </div>
@@ -64,10 +64,10 @@
     }
 
     .profile-img {
-        width: 200px;
-        height: 200px;
         object-fit: cover;
         border: 2px solid #ddd;
+        max-width: 100%; /* Örnek stil */
+        height: auto;
     }
 
     .custom-row {

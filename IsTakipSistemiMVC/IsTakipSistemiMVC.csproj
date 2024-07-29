@@ -1097,6 +1097,7 @@
     <Compile Include="Controllers\MailController.cs" />
     <Compile Include="Controllers\ParolaKontrolController.cs" />
     <Compile Include="Controllers\PersonelController.cs" />
+    <Compile Include="Controllers\ProfilController.cs" />
     <Compile Include="Controllers\SistemYoneticisiController.cs" />
     <Compile Include="Controllers\YoneticiController.cs" />
     <Compile Include="Filters\ActFilter.cs" />
@@ -1137,6 +1138,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>IsTakipModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IzinTalepleri.cs">
+      <DependentUpon>IsTakipModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Loglar.cs">
       <DependentUpon>IsTakipModel.tt</DependentUpon>
@@ -1229,19 +1233,11 @@
     <Content Include="Views\ParolaKontrol\Index.cshtml" />
     <Content Include="Views\Personel\Detay.cshtml" />
     <Content Include="Views\SistemYoneticisi\ExceleAktar.cshtml" />
-    <Content Include="Views\Calisan\Profil.cshtml" />
-    <Content Include="Views\Yonetici\Profil.cshtml" />
     <Content Include="Views\Yonetici\CalisanListe.cshtml" />
     <Content Include="Views\SistemYoneticisi\YemekEkle.cshtml" />
     <Content Include="Views\Yonetici\MenuListesi.cshtml" />
     <Content Include="Views\Personel\ExceleAktar.cshtml" />
-    <Content Include="Views\Calisan\Duyurular.cshtml" />
-    <Content Include="Views\Yonetici\Duyurular.cshtml" />
-    <Content Include="Views\Yonetici\DuyuruEkle.cshtml" />
-    <Content Include="Views\Yonetici\DuyuruGuncelle.cshtml" />
-    <Content Include="Views\Yonetici\DuyuruDetay.cshtml" />
     <Content Include="Views\Yonetici\Error.cshtml" />
-    <Content Include="Views\Calisan\DuyuruDetay.cshtml" />
     <Content Include="Views\Mail\Index.cshtml" />
     <Content Include="Views\Mail\MailOlustur.cshtml" />
     <Content Include="Views\Mail\GidenMailler.cshtml" />
@@ -1253,6 +1249,7 @@
     <Content Include="Views\Duyuru\DuyuruEkle.cshtml" />
     <Content Include="Views\Duyuru\DuyuruGuncelle.cshtml" />
     <Content Include="Views\Mail\MailDetay.cshtml" />
+    <Content Include="Views\Profil\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1262,6 +1259,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Izin\" />
     <Folder Include="Views\Layout\" />
     <Folder Include="Views\Logout\" />
   </ItemGroup>

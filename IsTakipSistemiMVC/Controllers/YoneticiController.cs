@@ -38,10 +38,6 @@ namespace IsTakipSistemiMVC.Controllers
                                       isler = isler
                                   };
 
-
-                //var yemekListesi = entity.YemekTablo.ToList();
-                //ViewBag.MenuListesi = yemekListesi;
-
                 List<ToplamIs> list = new List<ToplamIs>();
                 foreach (var personel in personeller)
                 {
@@ -70,7 +66,6 @@ namespace IsTakipSistemiMVC.Controllers
 
                 IEnumerable<ToplamIs> siraliListe = list.OrderByDescending(i => i.toplamIs);
 
-                // ViewBag.yillar'ı ayarlayın
                 int simdikiYil = DateTime.Now.Year;
                 List<int> yillar = new List<int>();
                 for (int i = simdikiYil; i >= 2024; i--)
@@ -84,27 +79,21 @@ namespace IsTakipSistemiMVC.Controllers
                     ViewBag.ayinElemani = TempData["ayinElemani"];
                 }
 
-                // Günün yemeğini al
                 DateTime bugun = DateTime.Today;
                 var bugunYemek = entity.YemekTablo
                     .Where(y => DbFunctions.TruncateTime(y.Tarih) == bugun)
                     .FirstOrDefault();
                 ViewBag.BugunYemek = bugunYemek;
 
-
-                // En son tarihli duyuruyu al
                 var sonDuyuru = entity.Duyurular
                     .Where(d => d.aktiflik == true && d.goruntuleyenBirimId == birimId)
                     .OrderByDescending(d => d.duyuruTarih)
                     .FirstOrDefault();
                 ViewBag.SonDuyuru = sonDuyuru;
 
-
-
                 var calisanlar = (from p in entity.Personeller where p.personelBirimId == birimId && p.personelYetkiTurId == 2 && p.aktiflik == true select p).ToList();
 
                 ViewBag.personeller = calisanlar;
-
 
                 return View(siraliListe);
             }
@@ -113,6 +102,7 @@ namespace IsTakipSistemiMVC.Controllers
                 return RedirectToAction("Index", "Login");
             }
         }
+
 
         public ActionResult Ata()
         {
@@ -327,7 +317,8 @@ namespace IsTakipSistemiMVC.Controllers
         //DUYURULAR KISMI
 
         // Duyuruların listelenmesi
-       
 
+        // GET: AyinElemani
+        
     }
 }

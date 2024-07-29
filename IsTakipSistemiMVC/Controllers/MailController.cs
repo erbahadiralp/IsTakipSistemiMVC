@@ -194,7 +194,7 @@ namespace IsTakipSistemiMVC.Controllers
                                           Konu = mail.mailKonu,
                                           Icerik = mail.mailIcerik,
                                           GonderilmeTarihi = mail.mailGonderilmeTarih,
-                                          Arsiv = mail.mailArsiv
+                                          Arsiv = mail.mailArsiv ?? false
                                       }).ToList();
 
             // View'e model olarak gönder

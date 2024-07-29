@@ -22,6 +22,7 @@ namespace IsTakipSistemiMVC.Models
             this.Duyurular = new HashSet<Duyurular>();
             this.Mailler = new HashSet<Mailler>();
             this.Mailler1 = new HashSet<Mailler>();
+            this.IzinTalepleri = new HashSet<IzinTalepleri>();
         }
     
         public int personelId { get; set; }
@@ -39,8 +40,7 @@ namespace IsTakipSistemiMVC.Models
         public string personelTelefon { get; set; }
         public string personelDahili { get; set; }
         public Nullable<int> personelIzın { get; set; }
-        public Nullable<System.DateTime> personelOlusturmaTarihi { get; set; }
-        public Nullable<System.DateTime> personelSilmeTarihi { get; set; }
+        public string personelFotograf { get; set; }
     
         public virtual Birimler Birimler { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -54,5 +54,7 @@ namespace IsTakipSistemiMVC.Models
         public virtual ICollection<Mailler> Mailler { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Mailler> Mailler1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<IzinTalepleri> IzinTalepleri { get; set; }
     }
 }
