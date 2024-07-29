@@ -5,16 +5,12 @@
 
 @model IsTakipSistemiMVC.Models.Mailler
 
-
-
-
 <div class="container mt-5">
     <h2 class="text-center">Mail Oluştur</h2>
 
     <a href="@Url.Action("Index", "Mail")" class="btn btn-primary custom-button">
         <i class="fas fa-arrow-left"></i> Geri Dön
     </a>
-
 
     <div class="card shadow-sm">
         <div class="card-body">
@@ -24,8 +20,32 @@
                 @Html.AntiForgeryToken()
 
                 <div class="form-group mb-3">
-                    @Html.LabelFor(model => model.mailAliciId, "Kime", htmlAttributes: new { @class = "form-label" })
-                    @Html.DropDownList("mailAliciId", (SelectList)ViewBag.Recipients, "Seçiniz", htmlAttributes: new { @class = "form-control custom-select" })
+                    <label class="form-label" for="mailAlici">Kime</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="mailAlici" readonly placeholder="Kişi seçin" />
+                        <div class="dropdown" style="margin-left: 10px">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                Seçiniz
+                            </button>
+                            <ul class="dropdown-menu p-3" aria-labelledby="dropdownMenuButton">
+                                <input type="text" id="recipientSearch" class="form-control mb-2" placeholder="Kişi ara..." />
+                                <div id="recipientList" class="form-check-group">
+                                    @foreach (var item in ViewBag.Recipients as SelectList)
+                                    {
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="@item.Value" id="recipient-@item.Value" />
+                                            <label class="form-check-label" for="recipient-@item.Value" style="color: #495057;">
+                                                @item.Text
+                                            </label>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="dropdown-divider"></div>
+                                <button class="btn btn-primary" type="button" id="saveRecipientButton">Seçimi Kaydet</button>
+                            </ul>
+                        </div>
+                    </div>
+                    <input type="hidden" id="mailAliciId" name="mailAliciId" />
                     @Html.ValidationMessageFor(model => model.mailAliciId, "", new { @class = "text-danger" })
                 </div>
 
@@ -39,7 +59,6 @@
                     @Html.LabelFor(model => model.mailIcerik, htmlAttributes: new { @class = "form-label" })
                     <div class="input-group">
                         @Html.TextAreaFor(model => model.mailIcerik, new { @class = "form-control", rows = "10", placeholder = "Mail içeriğini girin", style = "resize: vertical;" })
-                        <span class="input-group-text"><i class="fas fa-edit"></i></span>
                     </div>
                     @Html.ValidationMessageFor(model => model.mailIcerik, "", new { @class = "text-danger" })
                 </div>
@@ -52,6 +71,46 @@
     </div>
 </div>
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var saveRecipientButton = document.getElementById('saveRecipientButton');
+        var dropdownMenuButton = document.getElementById('dropdownMenuButton');
+        var selectedRecipients = document.getElementById('mailAlici');
+        var recipientSearch = document.getElementById('recipientSearch');
+        var recipientList = document.getElementById('recipientList');
+        var mailAliciId = document.getElementById('mailAliciId');
+
+        // Save selected recipients
+        saveRecipientButton.addEventListener('click', function () {
+            var selectedOptions = Array.from(recipientList.querySelectorAll('.form-check-input:checked'));
+            var selectedValues = selectedOptions.map(option => option.nextElementSibling.textContent.trim());
+            var selectedIds = selectedOptions.map(option => option.value);
+
+            // Update the input field with selected values
+            selectedRecipients.value = selectedValues.join(', ');
+            mailAliciId.value = selectedIds.join(',');
+
+            // Close dropdown menu
+            var dropdown = new bootstrap.Dropdown(dropdownMenuButton);
+            dropdown.hide();
+        });
+
+        // Filter recipients based on search input
+        recipientSearch.addEventListener('input', function () {
+            var filter = recipientSearch.value.toLowerCase();
+            Array.from(recipientList.querySelectorAll('.form-check')).forEach(option => {
+                var text = option.querySelector('label').textContent.toLowerCase();
+                option.style.display = text.includes(filter) ? '' : 'none';
+            });
+        });
+    });
+</script>
+
+
+
+
 <style>
     .container {
         max-width: 800px;
@@ -59,7 +118,6 @@
 
     .card {
         border-radius: 10px;
-        padding: 20px;
     }
 
     .form-label {
@@ -76,30 +134,45 @@
             box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
         }
 
-        .form-control.custom-select {
-            color: #495057;
-            background-color: #f8f9fa;
-        }
-
-            .form-control.custom-select option {
-                color: #495057;
-            }
-
     .form-group {
         margin-bottom: 20px;
+    }
+
+    .btn-primary, .btn-secondary {
+        border-radius: 5px;
+        padding: 10px 20px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
     }
 
     .btn-primary {
         background-color: #007bff;
         border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        transition: background-color 0.3s ease, transform 0.3s ease;
     }
 
         .btn-primary:hover {
             background-color: #0056b3;
             transform: scale(1.05);
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            transform: scale(1.05);
+        }
+
+    .btn-outline-secondary {
+        color: #6c757d;
+        border-color: #6c757d;
+    }
+
+        .btn-outline-secondary:hover {
+            color: #fff;
+            background-color: #6c757d;
+            border-color: #6c757d;
         }
 
     .text-danger {
@@ -111,16 +184,37 @@
         color: #343a40;
     }
 
-    .input-group-text {
-        background-color: #e9ecef;
-        border: 1px solid #ced4da;
-        border-left: 0;
-        border-radius: 0 5px 5px 0;
+    .input-group {
+        display: flex;
+        align-items: center;
     }
 
-    .input-group .form-control {
-        border-radius: 5px 0 0 5px;
+    .form-check-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .dropdown-menu {
+        max-height: 300px;
+        overflow-y: auto;
+        border-radius: 10px;
+        width: 100%;
+        min-width: 275px;
+    }
+
+    .dropdown-item {
+        cursor: pointer;
+        padding: 8px 16px;
+        border-radius: 5px;
+        width: 100%;
+    }
+
+        .dropdown-item:hover {
+            background-color: #e9ecef;
+        }
+
+    #recipientSearch {
+        width: 100%;
     }
 </style>
-
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>

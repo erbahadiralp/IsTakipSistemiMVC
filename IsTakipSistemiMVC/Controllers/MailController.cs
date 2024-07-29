@@ -39,21 +39,6 @@ namespace IsTakipSistemiMVC.Controllers
             return View(mailler);
         }
 
-
-        //// Duyuru detayları
-        //public ActionResult DuyuruDetay(int id)
-        //{
-        //    var duyuru = entity.Duyurular
-        //                       .FirstOrDefault(d => d.duyuruId == id && d.aktiflik == true); // Aktif duyuruyu bul
-        //    if (duyuru == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(duyuru);
-        //}
-
-        // Yeni duyuru ekleme sayfası
-
         public ActionResult MailOlustur()
         {
             ViewBag.Recipients = new SelectList(entity.Personeller
@@ -188,7 +173,6 @@ namespace IsTakipSistemiMVC.Controllers
 
             return Json(new { success = true });
         }
-
 
 
         public ActionResult ArsivGoster()
