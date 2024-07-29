@@ -7,7 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using static IsTakipSistemiMVC.Models.MailViewModel;
 
-    namespace IsTakipSistemiMVC.Controllers
+namespace IsTakipSistemiMVC.Controllers
 {
     [LayoutActionFilter]
     public class MailController : Controller
@@ -57,10 +57,10 @@ using static IsTakipSistemiMVC.Models.MailViewModel;
         public ActionResult MailOlustur()
         {
             ViewBag.Recipients = new SelectList(entity.Personeller
-                                                .Where(p => p.aktiflik == true) // Only active personnel
-                                                .ToList(),
-                                                "personelId",
-                                                "personelMail");
+                                                 .Where(p => p.aktiflik == true) // Only active personnel
+                                                 .ToList(),
+                                                 "personelId",
+                                                 "personelMail");
             return View();
         }
 
@@ -75,6 +75,7 @@ using static IsTakipSistemiMVC.Models.MailViewModel;
                 mail.mailIcerik = mail.mailIcerik;
                 mail.mailAliciId = mail.mailAliciId;
                 mail.aktiflik = true;
+                mail.mailArsiv = false; // Explicitly set to false
 
                 entity.Mailler.Add(mail);
                 entity.SaveChanges();
@@ -83,12 +84,13 @@ using static IsTakipSistemiMVC.Models.MailViewModel;
                 return RedirectToAction("Index");
             }
             ViewBag.Recipients = new SelectList(entity.Personeller
-                                                .Where(p => p.aktiflik == true) // Only active personnel
-                                                .ToList(),
-                                                "personelId",
-                                                "personelAdSoyad");
+                                                 .Where(p => p.aktiflik == true) // Only active personnel
+                                                 .ToList(),
+                                                 "personelId",
+                                                 "personelAdSoyad");
             return View(mail);
         }
+
 
         //GİDEN MAİLLER
         public ActionResult GidenMailler()
@@ -136,6 +138,7 @@ using static IsTakipSistemiMVC.Models.MailViewModel;
             return Json(new { success = true });
         }
 
+
         [HttpPost]
         public ActionResult MailArsivle(int[] ids)
         {
@@ -161,13 +164,44 @@ using static IsTakipSistemiMVC.Models.MailViewModel;
             return Json(new { success = true });
         }
 
+        [HttpPost]
+        public ActionResult MailArsivdenCikar(int[] ids)
+        {
+            if (ids == null || ids.Length == 0)
+            {
+                return Json(new { success = false, message = "Arşivden çıkarılacak mail seçilmedi." });
+            }
+
+            var mailler = entity.Mailler.Where(m => ids.Contains(m.mailId)).ToList();
+
+            if (mailler.Count == 0)
+            {
+                return Json(new { success = false, message = "Geçersiz mail id'leri." });
+            }
+
+            foreach (var mail in mailler)
+            {
+                mail.mailArsiv = false; // Arşivden çıkar
+            }
+
+            entity.SaveChanges();
+
+            return Json(new { success = true });
+        }
+
+
+
         public ActionResult ArsivGoster()
         {
-            // Arşivlenen mailleri getir
+
+            int userId = Convert.ToInt32(Session["PersonelId"]);
+
+
+            // Belirli bir kullanıcının arşivlenen maillerini getir (gönderilen ve alınan)
             var arsivlenmisMailler = (from mail in entity.Mailler
                                       join gonderici in entity.Personeller on mail.mailGondericiId equals gonderici.personelId
                                       join alici in entity.Personeller on mail.mailAliciId equals alici.personelId
-                                      where mail.mailArsiv == true
+                                      where mail.mailArsiv == true && (mail.mailGondericiId == userId || mail.mailAliciId == userId)
                                       select new MailViewModel
                                       {
                                           MailId = mail.mailId,
@@ -176,13 +210,37 @@ using static IsTakipSistemiMVC.Models.MailViewModel;
                                           Konu = mail.mailKonu,
                                           Icerik = mail.mailIcerik,
                                           GonderilmeTarihi = mail.mailGonderilmeTarih,
-                                          Arsiv = mail.mailArsiv ?? false
+                                          Arsiv = mail.mailArsiv
                                       }).ToList();
 
             // View'e model olarak gönder
             return View(arsivlenmisMailler);
         }
 
+
+        public ActionResult MailDetay(int id)
+        {
+            var mailDetay = (from mail in entity.Mailler
+                             join gonderici in entity.Personeller on mail.mailGondericiId equals gonderici.personelId
+                             join alici in entity.Personeller on mail.mailAliciId equals alici.personelId
+                             where mail.mailId == id
+                             select new MailViewModel
+                             {
+                                 MailId = mail.mailId,
+                                 GondericiAdSoyad = gonderici.personelAdSoyad,
+                                 AliciAdSoyad = alici.personelAdSoyad,
+                                 Konu = mail.mailKonu,
+                                 Icerik = mail.mailIcerik,
+                                 GonderilmeTarihi = mail.mailGonderilmeTarih
+                             }).FirstOrDefault();
+
+            if (mailDetay == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(mailDetay);
+        }
 
 
     }

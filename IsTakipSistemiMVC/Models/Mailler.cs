@@ -26,11 +26,11 @@ namespace IsTakipSistemiMVC.Models
         public string mailKonu { get; set; }
         public string mailIcerik { get; set; }
         public Nullable<bool> mailOkunma { get; set; }
-        public Nullable<bool> aktiflik { get; set; }
+        public bool aktiflik { get; set; }
         public Nullable<int> mailGonderilmeDurumu { get; set; }
         public System.DateTime mailGonderilmeTarih { get; set; }
         public Nullable<System.DateTime> mailZamanliGonderilmeTarih { get; set; }
-        public Nullable<bool> mailArsiv { get; set; }
+        public bool mailArsiv { get; set; }
     
         public virtual Durumlar Durumlar { get; set; }
         public virtual Personeller Personeller { get; set; }

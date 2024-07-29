@@ -85,7 +85,6 @@
                 <button id="archiveSelected" class="btn btn-warning custom-button">
                     <i class="fas fa-archive"></i> Arşivle
                 </button>
-
             </div>
             <div class="search-bar">
                 <input type="text" id="searchInput" class="search-input" placeholder="Arama yap...">
@@ -102,18 +101,16 @@
                             <th><input type="checkbox" id="selectAll"></th>
                             <th>Gönderen</th>
                             <th>Konu</th>
-                            <th>Başlık</th>
                             <th>Tarih</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var mail in Model)
                         {
-                            <tr class="text-center">
+                            <tr class="text-center" data-mail-id="@mail.MailId">
                                 <td><input type="checkbox" class="select-mail" data-mail-id="@mail.MailId"></td>
                                 <td>@mail.GondericiAdSoyad</td>
                                 <td>@mail.Konu</td>
-                                <td>@mail.Icerik</td>
                                 <td>@mail.GonderilmeTarihi</td>
                             </tr>
                         }
@@ -125,75 +122,92 @@
 </div>
 
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    // Arama çubuğu
-    document.getElementById('searchInput').addEventListener('keyup', function () {
-        var input = document.getElementById('searchInput');
-        var filter = input.value.toLowerCase();
-        var table = document.querySelector('table');
-        var trs = table.getElementsByTagName('tr');
-        for (var i = 1; i < trs.length; i++) {
-            var tds = trs[i].getElementsByTagName('td');
-            var display = false;
-            for (var j = 0; j < tds.length; j++) {
-                if (tds[j].textContent.toLowerCase().indexOf(filter) > -1) {
-                    display = true;
-                }
-            }
-            trs[i].style.display = display ? "" : "none";
-        }
-    });
+    $(document).ready(function () {
+        // Arama çubuğu
+        $('#searchInput').on('keyup', function () {
+            var input = $(this).val().toLowerCase();
+            $('table tbody tr').filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(input) > -1)
+            });
+        });
 
-    // Tüm mailleri seçme
-    document.getElementById('selectAll').addEventListener('change', function () {
-        var checkboxes = document.querySelectorAll('.select-mail');
-        checkboxes.forEach(function (checkbox) {
-            checkbox.checked = this.checked;
-        }, this);
-        toggleActionButtons();
-    });
+        // Tüm mailleri seçme
+        $('#selectAll').on('change', function () {
+            $('.select-mail').prop('checked', this.checked);
+            toggleActionButtons();
+        });
 
-    // Bireysel mail seçme
-    document.querySelectorAll('.select-mail').forEach(function (checkbox) {
-        checkbox.addEventListener('change', function () {
+        // Bireysel mail seçme
+        $('.select-mail').on('change', function () {
             if (!this.checked) {
-                document.getElementById('selectAll').checked = false;
+                $('#selectAll').prop('checked', false);
             }
             toggleActionButtons();
         });
-    });
 
-    // Butonların görünürlüğünü yönetme
-    function toggleActionButtons() {
-        var selected = document.querySelectorAll('.select-mail:checked').length > 0;
-        var actionButtons = document.getElementById('actionButtons');
-        if (selected) {
-            actionButtons.classList.add('visible');
-        } else {
-            actionButtons.classList.remove('visible');
+        // Butonların görünürlüğünü yönetme
+        function toggleActionButtons() {
+            var selected = $('.select-mail:checked').length > 0;
+            var actionButtons = $('#actionButtons');
+            if (selected) {
+                actionButtons.addClass('visible');
+            } else {
+                actionButtons.removeClass('visible');
+            }
         }
-    }
 
-    // Seçili mailleri arşivleme
-    document.getElementById('archiveSelected').addEventListener('click', function () {
-        var ids = Array.from(document.querySelectorAll('.select-mail:checked')).map(function (checkbox) {
-            return parseInt(checkbox.getAttribute('data-mail-id'));
+        // Seçili mailleri silme
+        $('#deleteSelected').on('click', function () {
+            var ids = $('.select-mail:checked').map(function () {
+                return $(this).data('mail-id');
+            }).get();
+            if (ids.length > 0) {
+                $.ajax({
+                    url: '@Url.Action("MailSil", "Mail")',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(ids),
+                    success: function (data) {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            alert(data.message);
+                        }
+                    }
+                });
+            }
         });
-        if (ids.length > 0) {
-            fetch('@Url.Action("MailArsivle", "Mail")', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(ids)
-            }).then(response => response.json())
-              .then(data => {
-                  if (data.success) {
-                      location.reload();
-                  } else {
-                      alert(data.message);
-                  }
-              });
-        }
+
+        // Seçili mailleri arşivleme
+        $('#archiveSelected').on('click', function () {
+            var ids = $('.select-mail:checked').map(function () {
+                return $(this).data('mail-id');
+            }).get();
+            if (ids.length > 0) {
+                $.ajax({
+                    url: '@Url.Action("MailArsivle", "Mail")',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(ids),
+                    success: function (data) {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            alert(data.message);
+                        }
+                    }
+                });
+            }
+        });
+
+        // Satıra çift tıklama ile mail detaylarına gitme
+        $('table tbody').on('dblclick', 'tr', function () {
+            var mailId = $(this).data('mail-id');
+            if (mailId) {
+                window.location.href = '@Url.Action("MailDetay", "Mail")/' + mailId;
+            }
+        });
     });
 </script>
