@@ -1213,7 +1213,6 @@
     <Content Include="Views\Calisan\Index.cshtml" />
     <Content Include="Views\Calisan\Yap.cshtml" />
     <Content Include="Views\Calisan\Takip.cshtml" />
-    <Content Include="Views\Yonetici\AyinElemani.cshtml" />
     <Content Include="Views\Shared\_PartialAylarSelect.cshtml" />
     <Content Include="Views\Shared\_LayoutSistemYoneticisi.cshtml" />
     <Content Include="Views\SistemYoneticisi\Index.cshtml" />

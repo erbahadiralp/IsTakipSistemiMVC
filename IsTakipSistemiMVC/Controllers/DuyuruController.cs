@@ -16,10 +16,13 @@ namespace IsTakipSistemiMVC.Controllers
         // GET: Duyuru
         public ActionResult Index()
         {
+            int personelBirimId = Convert.ToInt32(Session["PersonelBirimId"]); // Kullanıcının birim ID'si alınır.
+            int yetkiTurId = Convert.ToInt32(Session["PersonelYetkiTurId"]); // Kullanıcının yetki türü alınır.
+
             var duyuruList = (from d in entity.Duyurular
                               join p in entity.Personeller on d.duyuruOlusturanId equals p.personelId
                               join b in entity.Birimler on d.goruntuleyenBirimId equals b.birimId
-                              where d.aktiflik == true
+                              where d.aktiflik == true && (yetkiTurId == 3 || (yetkiTurId != 3 && d.goruntuleyenBirimId == personelBirimId))
                               select new
                               {
                                   d.duyuruId,
@@ -38,15 +41,14 @@ namespace IsTakipSistemiMVC.Controllers
                 DuyuruIcerik = d.duyuruIcerik,
                 DuyuruTarih = d.duyuruTarih,
                 OlusturanAdSoyad = d.OlusturanAdSoyad,
-                GoruntuleyenBirim = d.GoruntuleyenBirim, // Birim adı burada atanıyor
+                GoruntuleyenBirim = d.GoruntuleyenBirim,
                 GoruntuleyenBirimId = int.TryParse(d.goruntuleyenBirimId.ToString(), out int birimId) ? birimId : 0
             }).ToList();
 
-            ViewBag.YetkiTurId = Convert.ToInt32(Session["PersonelYetkiTurId"]);
+            ViewBag.YetkiTurId = yetkiTurId;
 
             return View(duyurular);
         }
-
 
         // Duyuru detayları
         public ActionResult DuyuruDetay(int id)
@@ -67,11 +69,30 @@ namespace IsTakipSistemiMVC.Controllers
         // Yeni duyuru ekleme sayfası
         public ActionResult DuyuruEkle()
         {
-            ViewBag.Birimler = new SelectList(entity.Birimler
-                                                .Where(b => b.aktiflik == true) // Aktif birimleri listele
-                                                .ToList(),
-                                            "birimId",
-                                            "birimAd");
+            int personelId = Convert.ToInt32(Session["PersonelId"]);
+            var personel = entity.Personeller.FirstOrDefault(p => p.personelId == personelId);
+            if (personel == null)
+            {
+                return HttpNotFound();
+            }
+
+            int yetkiTurId = Convert.ToInt32(Session["PersonelYetkiTurId"]);
+            if (yetkiTurId == 3)
+            {
+                ViewBag.Birimler = new SelectList(entity.Birimler
+                                                    .Where(b => b.aktiflik == true) // Tüm birimler
+                                                    .ToList(),
+                                                  "birimId",
+                                                  "birimAd");
+            }
+            else
+            {
+                ViewBag.Birimler = new SelectList(entity.Birimler
+                                                    .Where(b => b.birimId == personel.personelBirimId && b.aktiflik == true) // Sadece kullanıcının birimi
+                                                    .ToList(),
+                                                  "birimId",
+                                                  "birimAd");
+            }
             return View();
         }
 
@@ -80,8 +101,24 @@ namespace IsTakipSistemiMVC.Controllers
         {
             if (ModelState.IsValid)
             {
+                int personelId = Convert.ToInt32(Session["PersonelId"]);
+                var personel = entity.Personeller.FirstOrDefault(p => p.personelId == personelId);
+
                 duyuru.duyuruTarih = DateTime.Now;
-                duyuru.duyuruOlusturanId = Convert.ToInt32(Session["PersonelId"]);
+                duyuru.duyuruOlusturanId = personelId;
+                int yetkiTurId = Convert.ToInt32(Session["PersonelYetkiTurId"]);
+
+                if (yetkiTurId == 3)
+                {
+                    // Tüm birimlere duyuru gönderebilecek
+                    duyuru.goruntuleyenBirimId = duyuru.goruntuleyenBirimId;
+                }
+                else
+                {
+                    // Sadece kendi birimine duyuru gönderebilecek
+                    duyuru.goruntuleyenBirimId = personel.personelBirimId;
+                }
+
                 duyuru.aktiflik = true;
 
                 entity.Duyurular.Add(duyuru);
@@ -92,11 +129,25 @@ namespace IsTakipSistemiMVC.Controllers
             }
 
             // ModelState geçerli değilse, ViewBag.Birimler tekrar doldurulmalı
-            ViewBag.Birimler = new SelectList(entity.Birimler
-                                                .Where(b => b.aktiflik == true)
-                                                .ToList(),
-                                            "birimId",
-                                            "birimAd");
+            int personelIdRetry = Convert.ToInt32(Session["PersonelId"]);
+            var personelRetry = entity.Personeller.FirstOrDefault(p => p.personelId == personelIdRetry);
+            int yetkiTurIdRetry = Convert.ToInt32(Session["PersonelYetkiTurId"]);
+            if (yetkiTurIdRetry == 3)
+            {
+                ViewBag.Birimler = new SelectList(entity.Birimler
+                                                    .Where(b => b.aktiflik == true) // Tüm birimler
+                                                    .ToList(),
+                                                  "birimId",
+                                                  "birimAd");
+            }
+            else
+            {
+                ViewBag.Birimler = new SelectList(entity.Birimler
+                                                    .Where(b => b.birimId == personelRetry.personelBirimId && b.aktiflik == true) // Sadece kullanıcının birimi
+                                                    .ToList(),
+                                                  "birimId",
+                                                  "birimAd");
+            }
             return View(duyuru);
         }
 
@@ -109,11 +160,31 @@ namespace IsTakipSistemiMVC.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.Birimler = new SelectList(entity.Birimler
-                                                .Where(b => b.aktiflik == true) // Aktif birimleri listele
-                                                .ToList(),
-                                            "birimId",
-                                            "birimAd");
+
+            int personelId = Convert.ToInt32(Session["PersonelId"]);
+            var personel = entity.Personeller.FirstOrDefault(p => p.personelId == personelId);
+            if (personel == null)
+            {
+                return HttpNotFound();
+            }
+
+            int yetkiTurId = Convert.ToInt32(Session["PersonelYetkiTurId"]);
+            if (yetkiTurId == 3)
+            {
+                ViewBag.Birimler = new SelectList(entity.Birimler
+                                                    .Where(b => b.aktiflik == true) // Tüm birimler
+                                                    .ToList(),
+                                                  "birimId",
+                                                  "birimAd");
+            }
+            else
+            {
+                ViewBag.Birimler = new SelectList(entity.Birimler
+                                                    .Where(b => b.birimId == personel.personelBirimId && b.aktiflik == true) // Sadece kullanıcının birimi
+                                                    .ToList(),
+                                                  "birimId",
+                                                  "birimAd");
+            }
             return View(duyuru);
         }
 
