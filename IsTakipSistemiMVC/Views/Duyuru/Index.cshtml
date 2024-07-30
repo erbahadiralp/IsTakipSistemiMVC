@@ -21,6 +21,10 @@
         justify-content: space-between;
         align-items: center;
         gap: 10px;
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .search-bar {
@@ -31,7 +35,7 @@
 
     .search-input {
         width: 200px;
-        padding: 5px 10px;
+        padding: 10px 20px;
         border: 1px solid #ccc;
         border-radius: 25px;
         font-size: 14px;
@@ -52,19 +56,17 @@
     }
 </style>
 
-<div class="mb-5">
-    @Html.Partial("_partialTitle", new { ViewBag.Title })
-</div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
 
-<div class="container mt-4">
+<div class="container mt-5">
     <div class="card mb-4">
-        <h2>Duyurular Sayfası</h2>
         <div class="card-body">
-            <div class="col button-container">
+            <h2 class="card-title mb-4">Duyurular</h2>
+            <div class="button-container">
                 @if (ViewBag.YetkiTurId == 1 || ViewBag.YetkiTurId == 3)
                 {
                     <a href="@Url.Action("DuyuruEkle")" class="btn btn-primary custom-button">
-                        <i class="fas fa-plus"></i> Yeni Duyuru Ekle
+                        <i class="bi bi-plus-circle"></i> Yeni Duyuru Ekle
                     </a>
                 }
                 <div class="search-bar">
@@ -97,7 +99,7 @@
                                 <td data-column="GoruntuleyenBirim">@duyuru.GoruntuleyenBirim</td>
                                 <td class="d-flex justify-content-center">
                                     <a href="@Url.Action("DuyuruDetay", new { id = duyuru.DuyuruId })" class="btn btn-info custom-button me-2">
-                                        <i class="fas fa-info-circle"></i> Detaylar
+                                        <i class="bi bi-info-circle"></i> Detaylar
                                     </a>
                                 </td>
                             </tr>
@@ -164,3 +166,4 @@
         });
     });
 </script>
+

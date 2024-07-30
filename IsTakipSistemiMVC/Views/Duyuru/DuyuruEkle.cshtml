@@ -5,8 +5,16 @@
 
 @model IsTakipSistemiMVC.Models.Duyurular
 
+<head>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
 <div class="container mt-5">
-    <a href="@Url.Action("Index", "Duyuru")" class="btn btn-secondary mb-3">Geri</a>
+    <a href="@Url.Action("Index", "Duyuru")" class="btn btn-secondary mb-3" style="border-radius: 5px; padding: 10px 20px; transition: background-color 0.3s ease, transform 0.3s ease;">
+        <i class="bi bi-arrow-left me-2"></i> 
+    </a>   
     <div class="card shadow-sm">
         <div class="card-body">
             <h2 class="card-title text-center">Yeni Duyuru Ekle</h2>
@@ -59,7 +67,9 @@
                 <input type="hidden" id="selectedBirimIds" name="goruntuleyenBirimId" />
 
                 <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary">Duyuru Ekle</button>
+                    <button type="submit" class="btn btn-primary" style="border-radius: 5px; padding: 10px 20px; transition: background-color 0.3s ease, transform 0.3s ease;">
+                        <i class="bi bi-plus-circle me-2"></i> Duyuru Ekle
+                    </button>
                 </div>
             }
         </div>

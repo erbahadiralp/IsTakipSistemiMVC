@@ -12,41 +12,44 @@
 }
 
 <div class="container mt-5">
-    <div class="h-100 p-5 text-white bg-dark rounded-3 shadow-sm">
+    <div class="h-100 p-5 text-dark bg-light rounded-3 shadow-sm">
         <h2>Merhaba, @Model.personelAdSoyad</h2>
         <p>Parolanızı değiştirmek için eski parolanızı ve yeni parolanızın tekrarını giriniz.</p>
     </div>
 </div>
 
 <div class="container mt-5">
-    <div class="card bg-dark text-white border-0 rounded-3 shadow-sm">
+    <div class="card bg-light text-dark border-0 rounded-3 shadow-sm">
         <div class="card-body">
             @using (Html.BeginForm("Index", "ParolaKontrol", FormMethod.Post))
             {
                 @Html.HiddenFor(m => m.personelId)
                 <div class="form-group mb-3">
                     <label for="eskiParola" class="form-label">Eski Parola</label>
-                    <input type="password" id="eskiParola" class="form-control highlighted-input" name="eskiParola" placeholder="Eski Parola" />
+                    <input type="password" id="eskiParola" class="form-control highlighted-input" name="eskiParola" placeholder="Eski Parola" required />
+                    <div class="invalid-feedback">Eski parolayı giriniz.</div>
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="yeniParola" class="form-label">Yeni Parola</label>
-                    <input type="password" id="yeniParola" name="yeniParola" class="form-control highlighted-input" aria-describedby="passwordHelp" placeholder="Yeni Parola" />
-                    <small id="passwordHelp" class="form-text text-white">6 ile 15 karakter uzunluğunda olmalıdır.</small>
+                    <input type="password" id="yeniParola" name="yeniParola" class="form-control highlighted-input" aria-describedby="passwordHelp" placeholder="Yeni Parola" required minlength="6" maxlength="15" />
+                    <small id="passwordHelp" class="form-text text-muted">6 ile 15 karakter uzunluğunda olmalıdır.</small>
+                    <div class="invalid-feedback">Yeni parolanız 6 ile 15 karakter arasında olmalıdır.</div>
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="yeniParolaKontrol" class="form-label">Yeni Parola Tekrar</label>
-                    <input type="password" id="yeniParolaKontrol" name="yeniParolaKontrol" class="form-control highlighted-input" placeholder="Yeni Parola Tekrar" />
+                    <input type="password" id="yeniParolaKontrol" name="yeniParolaKontrol" class="form-control highlighted-input" placeholder="Yeni Parola Tekrar" required />
+                    <div class="invalid-feedback">Yeni parolanızı tekrar giriniz.</div>
                 </div>
 
                 <button type="submit" class="btn btn-primary rounded-pill shadow">Parola Değiştir</button>
-                <button type="button" class="btn btn-dark rounded-pill">İptal</button>
+                <button type="button" class="btn btn-secondary rounded-pill" onclick="window.location.href='@Url.Action("Index", "Home")'">İptal</button>
 
                 <br /><br />
                 if (ViewBag.mesaj != null)
                 {
-                    <div class="alert @ViewBag.sitil" role="alert">
+                    <div class="alert @ViewBag.sitil mt-3" role="alert">
                         @ViewBag.mesaj
                     </div>
                 }
@@ -57,44 +60,44 @@
 
 <style>
     body {
-        background-color: #212529;
-        color: #f8f9fa;
+        background-color: #f8f9fa;
+        color: #212529;
     }
 
-    .bg-dark {
-        background-color: #343a40 !important;
+    .bg-light {
+        background-color: #f8f9fa !important;
     }
 
-    .text-white {
-        color: #f8f9fa !important;
+    .text-dark {
+        color: #212529 !important;
     }
 
     .form-label {
-        color: #f8f9fa;
+        color: #212529;
         font-weight: bold;
-        font-size: 1.1rem; /* Daha büyük yazı boyutu */
+        font-size: 1.1rem;
         font-family: 'Arial', sans-serif;
-        padding-bottom: 0.5rem; /* Alt boşluk */
-        display: block; /* Blok olarak göster */
+        padding-bottom: 0.5rem;
+        display: block;
     }
 
     .form-control {
-        background-color: #343a40;
-        color: #f8f9fa;
-        border: 2px solid #f8f9fa; /* Belirgin kenarlık */
+        background-color: #ffffff;
+        color: #212529;
+        border: 2px solid #ced4da;
         border-radius: 0.25rem;
-        padding: 0.75rem; /* Daha büyük padding */
-        transition: all 0.3s ease; /* Geçiş efekti */
+        padding: 0.75rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     }
+
+        .form-control:focus {
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
 
     .highlighted-input {
-        border: 2px solid #f8f9fa; /* Belirgin kenarlık */
-    }
-
-    .form-control:focus {
-        border: 2px solid #007bff; /* Odaklanma durumunda mavi kenarlık */
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Hafif gölge efekti */
-        outline: none; /* Mavi dış çizgiyi kaldır */
+        border: 2px solid #ced4da;
     }
 
     .btn-primary {
@@ -102,37 +105,27 @@
         border-color: #007bff;
         border-radius: 50px;
         padding: 0.5rem 1rem;
-        box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
-        transition: all 0.3s ease;
+        transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     }
 
         .btn-primary:hover {
             background-color: #0056b3;
             border-color: #0056b3;
-            box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, .25);
+            box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
         }
 
-        .btn-primary:focus {
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
-        }
-
-    .btn-dark {
-        background-color: #212529;
-        border-color: #212529;
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
         border-radius: 50px;
         padding: 0.5rem 1rem;
-        box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
-        transition: all 0.3s ease;
+        transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     }
 
-        .btn-dark:hover {
-            background-color: #1b1e21;
-            border-color: #1b1e21;
-            box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, .25);
-        }
-
-        .btn-dark:focus {
-            box-shadow: 0 0 0 0.2rem rgba(33, 37, 41, 0.5);
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+            box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
         }
 
     .rounded-pill {
@@ -156,11 +149,40 @@
     }
 
     .card-description {
-        color: #adb5bd;
+        color: #6c757d;
+    }
+
+    .invalid-feedback {
+        display: none;
+        width: 100%;
+        margin-top: 0.25rem;
+        font-size: 80%;
+        color: #dc3545;
+    }
+
+    .form-control:invalid + .invalid-feedback {
+        display: block;
     }
 </style>
 
 <script>
+    (() => {
+        'use strict';
+
+        const forms = document.querySelectorAll('.needs-validation');
+
+        Array.prototype.slice.call(forms).forEach((form) => {
+            form.addEventListener('submit', (event) => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+
     const myTimeOut = setTimeout(yonlendir, 3000);
 
     function yonlendir() {

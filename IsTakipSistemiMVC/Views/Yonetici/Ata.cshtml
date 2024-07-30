@@ -5,23 +5,23 @@
 
 <div class="container mt-5">
     <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white text-center">
+        <div class="card-header text-center bg-dark text-white">
             <h5>@ViewBag.birimAd Birimi için İş Atama İşlemi</h5>
         </div>
-        <div class="card-body">
+        <div class="card-body p-4">
             @using (Html.BeginForm("Ata", "Yonetici", FormMethod.Post))
             {
-                <div class="mb-3">
+                <div class="mb-4">
                     <label for="isBaslik" class="form-label">İş Başlığını Giriniz</label>
                     <input type="text" class="form-control" id="isBaslik" name="isBaslik" placeholder="Örneğin: Yeni Proje Başlatma">
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-4">
                     <label for="isAciklama" class="form-label">İş Açıklamasını Giriniz</label>
                     <textarea class="form-control" id="isAciklama" name="isAciklama" rows="4" placeholder="İş ile ilgili detaylı açıklamayı buraya giriniz..."></textarea>
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-4">
                     <label for="selectPer" class="form-label">Çalışan Seçiniz</label>
                     <select class="form-select" name="selectPer" id="selectPer">
                         @foreach (var personel in ViewBag.personeller)
@@ -32,7 +32,7 @@
                 </div>
 
                 <div class="d-grid">
-                    <button class="btn btn-primary btn-block" type="submit">İş Ata</button>
+                    <button class="btn btn-dark btn-block" type="submit">İş Ata</button>
                 </div>
             }
         </div>
@@ -41,23 +41,77 @@
 
 <style>
     .card {
-        border-radius: 10px;
+        border-radius: 15px;
+        border: none;
     }
 
     .card-header {
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        background-color: #343a40;
+        color: white;
+        font-size: 1.2em;
+        font-weight: 600;
     }
 
     .form-label {
-        font-weight: bold;
+        font-weight: 500;
+        font-size: 1em;
     }
+
+    .form-control {
+        border-radius: 8px;
+        border: 1px solid #ced4da;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        padding: 12px;
+    }
+
+        .form-control:focus {
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            border-color: #80bdff;
+        }
+
+    .form-select {
+        border-radius: 8px;
+        border: 1px solid #ced4da;
+        padding: 12px;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        appearance: none;
+        background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns="http://www.w3.org/2000/svg" width="4" height="5" viewBox="0 0 4 5"%3E%3Cpath fill="%23343a40" d="M2 0L0 2h4zm0 5L0 3h4z"/%3E%3C/svg%3E');
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 8px 10px;
+        margin-left: 10px;
+    }
+
+        .form-select:focus {
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            border-color: #80bdff;
+        }
 
     .btn-block {
         width: 100%;
+        padding: 10px;
+        font-size: 1em;
+        font-weight: 500;
+        border-radius: 8px;
     }
+
+    .btn-dark {
+        background-color: #343a40;
+        border: none;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-dark:hover {
+            background-color: #23272b;
+        }
 
     .container {
         max-width: 600px;
+    }
+
+    .mb-4 {
+        margin-bottom: 1.5rem;
     }
 </style>

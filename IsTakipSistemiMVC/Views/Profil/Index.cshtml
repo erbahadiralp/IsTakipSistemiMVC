@@ -6,37 +6,38 @@
 }
 
 <div class="container mt-5 custom-container">
-
-
-    <div class="row">
-        <div class="col">
-            <div class="card position-relative" style="margin-top: -30px;">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow-lg">
                 <div class="card-header">
-                    <h3>Bilgilerim</h3>
+                    <h3 class="text-light">Bilgilerim</h3>
                 </div>
                 <div class="card-body">
-                    <div class="row mb-3 custom-row">
-                        <div class="col-md-6 custom-col">
-                            <p><strong>Ad Soyad:</strong> @Model.personelAdSoyad</p>
-                            <p><strong>Birim:</strong> @Model.Birimler.birimAd</p>
-                            <p><strong>Yetki Türü:</strong> @Model.YetkiTurler.yetkiTurAd</p>
-                            <p><strong>Kullanıcı Ad:</strong> @Model.personelKullaniciAd</p>
+                    <div class="row mb-4">
+                        <div class="col-md-4 text-center">
+                            <img src="@Model.personelFotograf" alt="Profil Fotoğrafı" class="profile-img rounded-circle">
                         </div>
-                        <div class="col-md-6 custom-col2">
-                            <p><strong>Adres:</strong> @Model.personelAdres</p>
-                            <p><strong>Doğum Tarihi:</strong> @Model.personelDogumGunu</p>
-                            <p><strong>Mail Adresi:</strong> @Model.personelMail</p>
-                            <p><strong>Telefon Numarası:</strong> @Model.personelTelefon</p>
-                        </div>
-                    </div>
-
-                    <div class="row mb-3 custom-row">
-                        <div class="col-md-6 custom-col3">
-                            <p><strong>İşe Giriş Tarihi:</strong> @Model.personelIseGiris</p>
-                            <p><strong>Kalan İzin Gün Sayısı:</strong> @Model.personelIzın</p>
-                        </div>
-                        <div class="col-md-6 text-center profile-img-container custom-col">
-                            <img src="@Model.personelFotograf" alt="Profil Fotoğrafı" class="profile-img">
+                        <div class="col-md-8">
+                            <div class="row mb-2">
+                                <div class="col-md-6">
+                                    <p><strong>Ad Soyad:</strong> @Model.personelAdSoyad</p>
+                                    <p><strong>Birim:</strong> @Model.Birimler.birimAd</p>
+                                    <p><strong>Yetki Türü:</strong> @Model.YetkiTurler.yetkiTurAd</p>
+                                    <p><strong>Kullanıcı Ad:</strong> @Model.personelKullaniciAd</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Adres:</strong> @Model.personelAdres</p>
+                                    <p><strong>Doğum Tarihi:</strong> @Model.personelDogumGunu</p>
+                                    <p><strong>Mail Adresi:</strong> @Model.personelMail</p>
+                                    <p><strong>Telefon Numarası:</strong> @Model.personelTelefon</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>İşe Giriş Tarihi:</strong> @Model.personelIseGiris</p>
+                                    <p><strong>Kalan İzin Gün Sayısı:</strong> @Model.personelIzın</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -47,46 +48,47 @@
 
 <style>
     .custom-container {
-        max-width: 70%;
+        max-width: 900px;
         margin: 0 auto;
     }
 
-    .back-button {
-        position: relative;
-        z-index: 2;
-        top: -20px;
+    .card-header {
+        background-color: #343a40;
+        color: #ffffff;
+        border-bottom: 1px solid #e9ecef;
+        border-radius: 15px 15px 0 0;
+        padding: 1rem;
     }
 
-    .profile-img-container {
-        position: absolute;
-        top: 90px;
-        right: 10px;
-    }
-
-    .profile-img {
-        object-fit: cover;
-        border: 2px solid #ddd;
-        max-width: 100%; /* Örnek stil */
-        height: auto;
-    }
-
-    .custom-row {
-        width: 100%;
-        margin: 0;
-        padding: 0;
-    }
-
-    .custom-col, .custom-col2, .custom-col3 {
-        padding: 0 1rem;
-    }
-
-    .card-body .row {
-        display: flex;
-        align-items: flex-start;
-        gap: 1.5rem;
+    .card-body {
+        padding: 2rem;
     }
 
     .card-body p {
         margin-bottom: 0.75rem;
+        font-size: 1rem;
+        color: #6c757d;
+    }
+
+    .profile-img {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border: 3px solid #ddd;
+        margin-top: 20px;
+    }
+
+    .card {
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-body p strong {
+        color: #343a40;
+    }
+
+        .col-md-8, .col-md-4 {
+            margin-bottom: 1rem;
+        }
     }
 </style>

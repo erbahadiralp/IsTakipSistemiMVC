@@ -5,12 +5,30 @@
 
 @model IsTakipSistemiMVC.Models.Mailler
 
+<div class="sidebar">
+    <a href="@Url.Action("MailOlustur", "Mail")" class="btn btn-primary custom-button">Oluştur</a>
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link active" href="@Url.Action("Index", "Mail")">Gelen Kutusu</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("GidenMailler", "Mail")">Gönderilmiş Postalar</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("ArsivGoster", "Mail")">Arşivlenmiş Postalar</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Silinmiş Postalar</a>
+        </li>
+    </ul>
+
+</div>
+
+
+
 <div class="container mt-5">
     <h2 class="text-center">Mail Oluştur</h2>
 
-    <a href="@Url.Action("Index", "Mail")" class="btn btn-primary custom-button">
-        <i class="fas fa-arrow-left"></i> Geri Dön
-    </a>
 
     <div class="card shadow-sm">
         <div class="card-body">
@@ -216,5 +234,15 @@
 
     #recipientSearch {
         width: 100%;
+    }
+
+    .sidebar {
+        width: 250px;
+        background-color: #f8f9fa;
+        padding: 20px;
+        position: fixed;
+        height: 100%;
+        overflow-y: auto;
+        border-right: 1px solid #ddd;
     }
 </style>

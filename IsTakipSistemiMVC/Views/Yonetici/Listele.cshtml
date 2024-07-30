@@ -50,40 +50,50 @@
 
 <style>
     .card {
-        border-radius: 10px;
-        border: 1px solid #ddd;
-        transition: transform 0.2s, box-shadow 0.2s;
+        border-radius: 12px;
+        border: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
         .card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
 
+    .card-body {
+        padding: 1.5rem;
+    }
+
     .card-title {
-        margin-bottom: 20px;
+        margin-bottom: 1rem;
+        font-size: 1.25rem;
         color: #007bff;
     }
 
     .list-group-item {
         border: none;
-        padding: 15px 20px;
-        background-color: #ffffff;
-        transition: background-color 0.2s;
+        padding: 1rem;
+        background-color: #f9f9f9;
+        transition: background-color 0.3s ease, color 0.3s ease;
     }
 
         .list-group-item:hover {
-            background-color: #f1f1f1;
+            background-color: #e9ecef;
+            color: #495057;
         }
 
         .list-group-item strong {
-            display: inline-block;
-            width: 150px;
-            color: #212529; /* Daha koyu renk */
+            color: #343a40;
         }
 
     .alert {
-        margin-top: 20px;
+        margin-top: 2rem;
+        font-size: 1.1rem;
+        padding: 1rem;
+        border-radius: 8px;
+        background-color: #f8f9fa;
+        color: #495057;
     }
 
     .text-primary {
@@ -91,10 +101,11 @@
     }
 
     .text-dark {
-        color: #212529 !important; /* Daha koyu renk */
+        color: #343a40 !important;
     }
 
     .container {
         max-width: 1200px;
     }
+
 </style>

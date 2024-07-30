@@ -8,6 +8,8 @@ using System.Web.Mvc;
 
 namespace IsTakipSistemiMVC.Controllers
 {
+    [LayoutActionFilter]
+
     public class ParolaKontrolController : Controller
     {
         IsTakipDBEntities entity = new IsTakipDBEntities();
