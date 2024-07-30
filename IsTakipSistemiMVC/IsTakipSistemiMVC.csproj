@@ -426,6 +426,7 @@
     <Content Include="theme\fonts\feather.eot" />
     <Content Include="theme\fonts\feather.ttf" />
     <Content Include="theme\fonts\feather.woff" />
+    <Content Include="Views\Shared\_PartialTitle.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

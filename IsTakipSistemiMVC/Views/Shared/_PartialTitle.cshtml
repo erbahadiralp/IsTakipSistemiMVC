@@ -1,0 +1,89 @@
+﻿<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/themes/prism-tomorrow.min.css" />
+<link href="~/Content/style.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+
+<pre id="code-block" class="line-numbers mt-5"><code class="language-js"></code></pre>
+
+<style>
+    /* Kod bloğunun arka plan rengini ve yazı rengini ayarlayın */
+    #code-block {
+        background: var(--dark);
+        color: #ffffff; /* Yazı rengi */
+        padding: 10px; /* İç boşluk */
+        border-radius: 5px; /* Köşe yuvarlama */
+        text-align: center;
+        font-size: 35px;
+    }
+
+    /* Typed.js cursor stilini değiştirmek isterseniz */
+    .typed-cursor {
+        color: #ffffff; /* Cursor rengi */
+    }
+
+    /* Prism tarafından eklenen stilleri beyaza dönüştürün */
+    .token.comment,
+    .token.block-comment,
+    .token.prolog,
+    .token.doctype,
+    .token.cdata,
+    .token.punctuation,
+    .token.property,
+    .token.tag,
+    .token.boolean,
+    .token.number,
+    .token.constant,
+    .token.symbol,
+    .token.deleted,
+    .token.selector,
+    .token.attr-name,
+    .token.string,
+    .token.char,
+    .token.builtin,
+    .token.inserted,
+    .token.operator,
+    .token.entity,
+    .token.url,
+    .language-css .token.string,
+    .style .token.string,
+    .token.variable,
+    .token.atrule,
+    .token.attr-value,
+    .token.function,
+    .token.class-name,
+    .token.keyword,
+    .token.regex,
+    .token.important,
+    .token.important,
+    .token.bold,
+    .token.italic,
+    .token.entity {
+        color: #ffffff !important; /* Yazı rengini beyaz yapın */
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var typed = new Typed("#code-block code", {
+            strings: [
+                "@ViewBag.tabloTitle",
+            ],
+            typeSpeed: 75,
+            backSpeed: 25,
+            loop: false,
+            onComplete: (self) => {
+                Prism.highlightAll();
+                setTimeout(() => {
+                    // Imleci görünmez yap
+                    var cursor = document.querySelector('#code-block .typed-cursor');
+                    if (cursor) {
+                        cursor.style.display = 'none';
+                    }
+                }, 2500); // 3 saniye sonra imlecin yanıp sönmesini durdur
+            },
+            onStringTyped: (arrayPos, self) => {
+                Prism.highlightAll();
+            }
+        });
+    });
+</script>

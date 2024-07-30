@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "GecmisIzinler";
     Layout = "~/Views/Shared/_LayoutCalisan.cshtml";
 }
@@ -10,48 +9,50 @@
     var gecmisIzinler = ViewBag.GecmisIzinler as List<IsTakipSistemiMVC.Models.Izinler>;
 }
 
-@if (gecmisIzinler != null && gecmisIzinler.Any())
-{
-    <table>
-        <thead>
-            <tr>
-                <th>Talep Tarihi</th>
-                <th>İzin Başlangıç Tarihi</th>
-                <th>İzin Bitiş Tarihi</th>
-                <th>Durum</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var izin in gecmisIzinler)
-            {
+<div class="container mt-5">
+    <h2 class="mb-4">Geçmiş İzinler</h2>
+
+    @if (gecmisIzinler != null && gecmisIzinler.Any())
+    {
+        <table class="table table-bordered table-hover">
+            <thead class="thead-light">
                 <tr>
-                    <td>@izin.talepTarihi.ToString("dd.MM.yyyy")</td>
-                    <td>@izin.baslangicTarihi.ToString("dd.MM.yyyy")</td>
-                    <td>@izin.bitisTarihi.ToString("dd.MM.yyyy")</td>
-                    <td>
-                        @if (izin.onayDurumu == null)
-                        {
-                            <span>Beklemede</span>
-                        }
-                        else if (izin.onayDurumu == true)
-                        {
-                            <span>Onaylandı</span>
-                        }
-                        else
-                        {
-                            <span>Reddedildi</span>
-                        }
-                    </td>
+                    <th>Talep Tarihi</th>
+                    <th>İzin Başlangıç Tarihi</th>
+                    <th>İzin Bitiş Tarihi</th>
+                    <th>Durum</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
-    <p>@ViewBag.Message</p>
-}
-
-
-
-
+            </thead>
+            <tbody>
+                @foreach (var izin in gecmisIzinler)
+                {
+                    <tr>
+                        <td>@izin.talepTarihi.ToString("dd.MM.yyyy")</td>
+                        <td>@izin.baslangicTarihi.ToString("dd.MM.yyyy")</td>
+                        <td>@izin.bitisTarihi.ToString("dd.MM.yyyy")</td>
+                        <td>
+                            @if (izin.onayDurumu == null)
+                            {
+                                <span class="badge badge-warning">Beklemede</span>
+                            }
+                            else if (izin.onayDurumu == true)
+                            {
+                                <span class="badge badge-success">Onaylandı</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-danger">Reddedildi</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            @ViewBag.Message
+        </div>
+    }
+</div>
