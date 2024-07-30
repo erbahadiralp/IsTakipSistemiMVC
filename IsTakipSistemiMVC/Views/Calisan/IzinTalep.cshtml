@@ -5,28 +5,86 @@
 
 @model IsTakipSistemiMVC.Models.Izinler
 
-<h2>İzin Talep</h2>
+<div class="container mt-5">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white text-center">
+            <h2 class="mb-0">İzin Talep</h2>
+        </div>
+        <div class="card-body">
+            @if (ViewBag.ErrorMessage != null)
+            {
+                <div class="alert alert-danger text-center">
+                    @ViewBag.ErrorMessage
+                </div>
+            }
 
-@if (ViewBag.ErrorMessage != null)
-{
-    <div class="alert alert-danger">
-        @ViewBag.ErrorMessage
-    </div>
-}
+            @using (Html.BeginForm())
+            {
+                <div class="form-group mb-3">
+                    @Html.Label("Başlangıç Tarihi", htmlAttributes: new { @class = "form-label" })
+                    @Html.TextBox("baslangicTarihi", null, new { @class = "form-control", @type = "date" })
+                </div>
+                <div class="form-group mb-3">
+                    @Html.Label("Bitiş Tarihi", htmlAttributes: new { @class = "form-label" })
+                    @Html.TextBox("bitisTarihi", null, new { @class = "form-control", @type = "date" })
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">İzin Talep Et</button>
+                </div>
+            }
 
-@using (Html.BeginForm())
-{
-    <div class="form-group">
-        @Html.Label("Başlangıç Tarihi")
-        @Html.TextBox("baslangicTarihi", null, new { @class = "form-control", @type = "date" })
+            <div class="text-center mt-4">
+                <a href="@Url.Action("GecmisIzinler", "Calisan")" class="btn btn-secondary">Geçmiş Talepleri Görüntüle</a>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        @Html.Label("Bitiş Tarihi")
-        @Html.TextBox("bitisTarihi", null, new { @class = "form-control", @type = "date" })
-    </div>
-    <button type="submit" class="btn btn-primary">İzin Talep Et</button>
-}
-
-<div class="form-group" style="margin-top: 20px;">
-    <a href="@Url.Action("GecmisIzinler", "Calisan")" class="btn btn-secondary">Geçmiş Talepleri Görüntüle</a>
 </div>
+
+<style>
+    .container {
+        max-width: 600px;
+    }
+
+    .card {
+        border-radius: 15px;
+    }
+
+    .card-header {
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+    .form-label {
+        font-weight: bold;
+        color: #495057;
+    }
+
+    .form-control {
+        border-radius: 0.25rem;
+        border: 1px solid #ced4da;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+
+    .alert {
+        margin-bottom: 20px;
+    }
+</style>

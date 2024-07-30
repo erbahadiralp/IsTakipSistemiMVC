@@ -13,7 +13,7 @@
                 @using (Html.BeginForm("Yap", "Calisan", FormMethod.Post))
                 {
                     <div class="card shadow-sm border-0 h-100 job-card">
-                        <div class="card-header bg-dark text-white text-center">
+                        <div class="card-header text-white text-center">
                             <h5 class="card-title mb-0">@i.isBaslik</h5>
                         </div>
                         <div class="card-body">
@@ -38,14 +38,14 @@
 
 <style>
     body {
-        background-color: #343a40;
-        color: #f8f9fa;
+        background-color: #f8f9fa;
+        color: #212529;
     }
 
     .card {
         border-radius: 15px;
-        background-color: #212529;
-        border: none;
+        background-color: #ffffff;
+        border: 1px solid #e0e0e0;
     }
 
         .card:hover {
@@ -55,25 +55,30 @@
 
     .card-title {
         font-weight: bold;
-        color: #f8f9fa;
+        color: #343a40;
     }
 
     .form-label {
-        color: #f8f9fa;
+        color: #495057;
     }
 
     .job-card .card-header {
-        background-color: #495057;
-        color: #f8f9fa;
+        background-color: #007bff;
+        color: #ffffff;
     }
 
     .job-card .card-body {
-        background-color: #212529;
-        color: #adb5bd;
+        background-color: #ffffff;
+        color: #343a40;
+    }
+
+    .job-card .list-group-item {
+        background-color: #ffffff;
+        color: #495057;
     }
 
     .job-card .card-footer {
-        background-color: #343a40;
+        background-color: #e9ecef;
     }
 
     .btn-success {
@@ -89,4 +94,12 @@
         .btn-success:focus {
             box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
         }
+
+    .shadow-sm {
+        box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
+    }
+
+    .text-center {
+        text-align: center;
+    }
 </style>

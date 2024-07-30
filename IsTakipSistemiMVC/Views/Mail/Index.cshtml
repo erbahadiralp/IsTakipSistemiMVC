@@ -6,6 +6,21 @@
 @model IEnumerable<IsTakipSistemiMVC.Models.MailViewModel>
 
 <style>
+    .sidebar {
+        width: 250px;
+        background-color: #f8f9fa;
+        padding: 20px;
+        position: fixed;
+        height: 100%;
+        overflow-y: auto;
+        border-right: 1px solid #ddd;
+    }
+
+    .content {
+        margin-left: 270px;
+        padding: 20px;
+    }
+
     .custom-button {
         margin: 5px;
         transition: background-color 0.3s ease;
@@ -55,26 +70,45 @@
         align-items: center;
         gap: 10px;
     }
+
+    .table th, .table td {
+        vertical-align: middle;
+    }
+
+    .avatar {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+    }
 </style>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-<div class="container mt-4">
+<div class="sidebar">
+    <a href="@Url.Action("MailOlustur", "Mail")" class="btn btn-primary custom-button">Oluştur</a>    
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link active" href="@Url.Action("Index", "Mail")">Gelen Kutusu</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("GidenMailler", "Mail")">Gönderilmiş Postalar</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("ArsivGoster", "Mail")">Arşivlenmiş Postalar</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Silinmiş Postalar</a>
+        </li>
+    </ul>
+    
+</div>
+
+<div class="content">
     <h2>Gelen Kutusu</h2>
+
 
     <div class="card mb-4">
         <div class="card-body">
-            <a href="@Url.Action("MailOlustur", "Mail")" class="btn btn-primary custom-button">
-                <i class="fas fa-plus"></i> Mail Oluştur
-            </a>
-            <a href="@Url.Action("GidenMailler", "Mail")" class="btn btn-primary custom-button">
-                <i class="fas fa-inbox"></i> Giden Mesajlar
-            </a>
-
-            <a href="@Url.Action("ArsivGoster", "Mail")" class="btn btn-primary custom-button">
-                <i class="fas fa-archive"></i> Arşivlenmiş Mailler
-            </a>
-
             <div class="col button-container" id="actionButtons">
                 <button id="deleteSelected" class="btn btn-danger custom-button">
                     <i class="fas fa-trash-alt"></i>
@@ -86,8 +120,11 @@
                     <i class="fas fa-archive"></i> Arşivle
                 </button>
             </div>
-            <div class="search-bar">
-                <input type="text" id="searchInput" class="search-input" placeholder="Arama yap...">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="search-bar">
+                    <input type="text" id="searchInput" class="search-input" placeholder="Arama yap...">
+                </div>
             </div>
         </div>
     </div>
@@ -109,7 +146,10 @@
                         {
                             <tr class="text-center" data-mail-id="@mail.MailId">
                                 <td><input type="checkbox" class="select-mail" data-mail-id="@mail.MailId"></td>
-                                <td>@mail.GondericiAdSoyad</td>
+                                <td class="d-flex align-items-center">
+                                    <img src="https://via.placeholder.com/30" alt="avatar" class="avatar mr-2">
+                                    @mail.GondericiAdSoyad
+                                </td>
                                 <td>@mail.Konu</td>
                                 <td>@mail.GonderilmeTarihi</td>
                             </tr>
@@ -202,12 +242,10 @@
             }
         });
 
-        // Satıra çift tıklama ile mail detaylarına gitme
-        $('table tbody').on('dblclick', 'tr', function () {
+        // Satıra çift tıklama ile mail detayına gitme
+        $('table tbody tr').on('dblclick', function () {
             var mailId = $(this).data('mail-id');
-            if (mailId) {
-                window.location.href = '@Url.Action("MailDetay", "Mail")/' + mailId;
-            }
+            window.location.href = '@Url.Action("MailDetay", "Mail")/' + mailId;
         });
     });
 </script>

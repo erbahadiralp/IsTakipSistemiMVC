@@ -28,9 +28,6 @@
         <EntityTypeShape EntityType="IsTakipDBModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="8.75" />
         <EntityTypeShape EntityType="IsTakipDBModel.Izinler" Width="1.5" PointX="5.25" PointY="16.625" />
         <AssociationConnector Association="IsTakipDBModel.FK__Izinler__persone__02FC7413" />
-        <EntityTypeShape EntityType="IsTakipDBModel.DuyuruBirimleri" Width="1.5" PointX="8.5" PointY="9.375" />
-        <AssociationConnector Association="IsTakipDBModel.FK__DuyuruBir__Birim__09A971A2" />
-        <AssociationConnector Association="IsTakipDBModel.FK__DuyuruBir__Duyur__08B54D69" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
