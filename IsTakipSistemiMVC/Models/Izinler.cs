@@ -12,14 +12,14 @@ namespace IsTakipSistemiMVC.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class IzinTalepleri
+    public partial class Izinler
     {
-        public int IzinTalepId { get; set; }
-        public int PersonelId { get; set; }
-        public System.DateTime BaslangicTarihi { get; set; }
-        public System.DateTime BitisTarihi { get; set; }
-        public bool OnayDurumu { get; set; }
-        public Nullable<bool> aktiflik { get; set; }
+        public int izinId { get; set; }
+        public Nullable<int> personelId { get; set; }
+        public System.DateTime baslangicTarihi { get; set; }
+        public System.DateTime bitisTarihi { get; set; }
+        public Nullable<bool> onayDurumu { get; set; }
+        public System.DateTime talepTarihi { get; set; }
     
         public virtual Personeller Personeller { get; set; }
     }

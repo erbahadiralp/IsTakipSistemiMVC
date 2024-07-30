@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "IzinGoruntule";
+    Layout = "~/Views/Shared/_LayoutYonetici.cshtml";
+}
+@model IEnumerable<IsTakipSistemiMVC.Models.Izinler>
+
+<h2>İzin Görüntüle</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Çalışan Adı</th>
+            <th>Başlangıç Tarihi</th>
+            <th>Bitiş Tarihi</th>
+            <th>Durum</th>
+            <th>İşlem</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var izin in Model)
+        {
+            <tr>
+                <td>@izin.Personeller.personelAdSoyad</td>
+                <td>@izin.baslangicTarihi.ToShortDateString()</td>
+                <td>@izin.bitisTarihi.ToShortDateString()</td>
+                <td>
+                    @if (izin.onayDurumu == null)
+                    {
+                        <span>Beklemede</span>
+                    }
+                    else if (izin.onayDurumu == true)
+                    {
+                        <span>Onaylandı</span>
+                    }
+                    else
+                    {
+                        <span>Reddedildi</span>
+                    }
+                </td>
+                <td>
+                    @if (izin.onayDurumu == null)
+                    {
+                        using (Html.BeginForm("IzinOnayla", "Yonetici", new { izinId = izin.izinId, onay = true }, FormMethod.Post, new { @class = "d-inline" }))
+                        {
+                            <button type="submit" class="btn btn-success">Onayla</button>
+                        }
+                        using (Html.BeginForm("IzinReddet", "Yonetici", new { izinId = izin.izinId, onay = false }, FormMethod.Post, new { @class = "d-inline" }))
+                        {
+                            <button type="submit" class="btn btn-danger">Reddet</button>
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

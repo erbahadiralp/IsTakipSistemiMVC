@@ -280,17 +280,7 @@ namespace IsTakipSistemiMVC.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Profil()
-        {
 
-            int id = Convert.ToInt32(Session["PersonelId"]);
-            var personel = (from p in entity.Personeller where p.personelId == id select p).FirstOrDefault();
-            if (personel == null)
-            {
-                return HttpNotFound();
-            }
-            return View(personel);
-        }
 
         //public ActionResult CalisanListe()
         //{
@@ -319,6 +309,55 @@ namespace IsTakipSistemiMVC.Controllers
         // Duyuruların listelenmesi
 
         // GET: AyinElemani
-        
+        public ActionResult IzinGoruntule()
+        {
+            int personelBirimId = Convert.ToInt32(Session["PersonelBirimId"]);
+            var izinler = entity.Izinler
+                .Where(i => i.Personeller.personelBirimId == personelBirimId )
+                .ToList();
+
+            return View(izinler);
+        }
+
+        [HttpPost]
+        public ActionResult IzinOnayla(int izinId, bool onay)
+        {
+            var izin = entity.Izinler.FirstOrDefault(i => i.izinId == izinId);
+
+            if (izin != null)
+            {
+                izin.onayDurumu = onay;
+                entity.SaveChanges();
+
+                if (onay)
+                {
+                    var personel = entity.Personeller.FirstOrDefault(p => p.personelId == izin.personelId);
+                    if (personel != null)
+                    {
+                        int izinGunSayisi = ((izin.bitisTarihi - izin.baslangicTarihi).Days) + 1;
+                        personel.personelIzın -= izinGunSayisi;
+                        entity.SaveChanges();
+                    }
+                }
+            }
+
+            return RedirectToAction("IzinGoruntule");
+        }
+
+        [HttpPost]
+        public ActionResult IzinReddet(int izinId)
+        {
+            var izin = entity.Izinler.FirstOrDefault(i => i.izinId == izinId);
+
+            if (izin != null)
+            {
+                izin.onayDurumu = false;
+                entity.SaveChanges();
+            }
+
+            return RedirectToAction("IzinGoruntule");
+        }
+
+
     }
 }

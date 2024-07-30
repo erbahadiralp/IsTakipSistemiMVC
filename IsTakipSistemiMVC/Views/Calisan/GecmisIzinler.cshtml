@@ -1,0 +1,57 @@
+﻿
+@{
+    ViewBag.Title = "GecmisIzinler";
+    Layout = "~/Views/Shared/_LayoutCalisan.cshtml";
+}
+
+@*@model IEnumerable<IsTakipSistemiMVC.Models.Izinler>*@
+
+@{
+    var gecmisIzinler = ViewBag.GecmisIzinler as List<IsTakipSistemiMVC.Models.Izinler>;
+}
+
+@if (gecmisIzinler != null && gecmisIzinler.Any())
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Talep Tarihi</th>
+                <th>İzin Başlangıç Tarihi</th>
+                <th>İzin Bitiş Tarihi</th>
+                <th>Durum</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var izin in gecmisIzinler)
+            {
+                <tr>
+                    <td>@izin.talepTarihi.ToString("dd.MM.yyyy")</td>
+                    <td>@izin.baslangicTarihi.ToString("dd.MM.yyyy")</td>
+                    <td>@izin.bitisTarihi.ToString("dd.MM.yyyy")</td>
+                    <td>
+                        @if (izin.onayDurumu == null)
+                        {
+                            <span>Beklemede</span>
+                        }
+                        else if (izin.onayDurumu == true)
+                        {
+                            <span>Onaylandı</span>
+                        }
+                        else
+                        {
+                            <span>Reddedildi</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>@ViewBag.Message</p>
+}
+
+
+
+

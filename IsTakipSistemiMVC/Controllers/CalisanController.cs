@@ -163,21 +163,77 @@ namespace IsTakipSistemiMVC.Controllers
             }
         }
 
-        public ActionResult Profil()
+        //İZİNLER
+        public ActionResult IzinTalep()
         {
-            int id = Convert.ToInt32(Session["PersonelId"]);
-            var personel = entity.Personeller.FirstOrDefault(p => p.personelId == id);
-
-            if (personel == null)
-            {
-                return HttpNotFound();
-            }
-
-            return View(personel);
+            return View();
         }
 
-       
+        [HttpPost]
+        public ActionResult IzinTalep(DateTime baslangicTarihi, DateTime bitisTarihi)
+        {
+            int personelId = Convert.ToInt32(Session["PersonelId"]);
 
+            // Tarihler arası çakışma kontrolü
+            var cakisanIzinler = entity.Izinler
+                .Where(i => i.personelId == personelId &&
+                            ((baslangicTarihi >= i.baslangicTarihi && baslangicTarihi <= i.bitisTarihi) ||
+                             (bitisTarihi >= i.baslangicTarihi && bitisTarihi <= i.bitisTarihi) ||
+                             (baslangicTarihi <= i.baslangicTarihi && bitisTarihi >= i.bitisTarihi)))
+                .ToList();
+
+            if (cakisanIzinler.Any())
+            {
+                // Çakışan izin talebi varsa bir hata mesajı döndür
+                ViewBag.ErrorMessage = "Bu tarihler arasında zaten bir izin talebiniz bulunmaktadır.";
+                return View();
+            }
+
+            var yeniIzin = new Izinler
+            {
+                personelId = personelId,
+                baslangicTarihi = baslangicTarihi,
+                bitisTarihi = bitisTarihi,
+                onayDurumu = null, // Henüz onaylanmamış
+                talepTarihi = DateTime.Now
+            };
+
+            entity.Izinler.Add(yeniIzin);
+            entity.SaveChanges();
+
+            return RedirectToAction("IzinTalep");
+        }
+
+
+        public ActionResult GecmisIzinler()
+        {
+            // Session'dan personelId alınıyor
+            int personelId = Convert.ToInt32(Session["PersonelId"]);
+
+            // Veritabanından personelId'ye ait geçmiş izinler alınıyor
+            var gecmisIzinler = entity.Izinler
+                .Where(i => i.personelId == personelId)
+                .OrderByDescending(i => i.talepTarihi)
+                .ToList();
+
+            // Eğer izinler null veya boş ise kontrol ediliyor
+            if (gecmisIzinler == null || !gecmisIzinler.Any())
+            {
+                // Hata mesajı veya bilgilendirme mesajı eklenebilir
+                ViewBag.Message = "Geçmiş izin talebi bulunmamaktadır.";
+            }
+            else
+            {
+                ViewBag.GecmisIzinler = gecmisIzinler;
+            }
+
+            return View();
+        }
 
     }
 }
+
+
+
+    
+

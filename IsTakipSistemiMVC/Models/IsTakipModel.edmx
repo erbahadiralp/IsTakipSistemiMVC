@@ -46,16 +46,16 @@
           <Property Name="isYorum" Type="nvarchar(max)" />
           <Property Name="isOkunma" Type="bit" />
         </EntityType>
-        <EntityType Name="IzinTalepleri">
+        <EntityType Name="Izinler">
           <Key>
-            <PropertyRef Name="IzinTalepId" />
+            <PropertyRef Name="izinId" />
           </Key>
-          <Property Name="IzinTalepId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="PersonelId" Type="int" Nullable="false" />
-          <Property Name="BaslangicTarihi" Type="date" Nullable="false" />
-          <Property Name="BitisTarihi" Type="date" Nullable="false" />
-          <Property Name="OnayDurumu" Type="bit" Nullable="false" />
-          <Property Name="aktiflik" Type="bit" />
+          <Property Name="izinId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="personelId" Type="int" />
+          <Property Name="baslangicTarihi" Type="date" />
+          <Property Name="bitisTarihi" Type="date" />
+          <Property Name="onayDurumu" Type="bit" />
+          <Property Name="talepTarihi" Type="date" />
         </EntityType>
         <EntityType Name="Loglar">
           <Key>
@@ -146,15 +146,15 @@
           <Property Name="yetkiTurId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="yetkiTurAd" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <Association Name="FK__IzinTalep__Perso__00200768">
-          <End Role="Personeller" Type="Self.Personeller" Multiplicity="1" />
-          <End Role="IzinTalepleri" Type="Self.IzinTalepleri" Multiplicity="*" />
+        <Association Name="FK__Izinler__persone__02FC7413">
+          <End Role="Personeller" Type="Self.Personeller" Multiplicity="0..1" />
+          <End Role="Izinler" Type="Self.Izinler" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Personeller">
               <PropertyRef Name="personelId" />
             </Principal>
-            <Dependent Role="IzinTalepleri">
-              <PropertyRef Name="PersonelId" />
+            <Dependent Role="Izinler">
+              <PropertyRef Name="personelId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -283,7 +283,7 @@
           <EntitySet Name="Durumlar" EntityType="Self.Durumlar" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Duyurular" EntityType="Self.Duyurular" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Isler" EntityType="Self.Isler" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="IzinTalepleri" EntityType="Self.IzinTalepleri" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Izinler" EntityType="Self.Izinler" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Loglar" EntityType="Self.Loglar" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MailEkler" EntityType="Self.MailEkler" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Mailler" EntityType="Self.Mailler" Schema="dbo" store:Type="Tables" />
@@ -291,9 +291,9 @@
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="YemekTablo" EntityType="Self.YemekTablo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="YetkiTurler" EntityType="Self.YetkiTurler" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__IzinTalep__Perso__00200768" Association="Self.FK__IzinTalep__Perso__00200768">
+          <AssociationSet Name="FK__Izinler__persone__02FC7413" Association="Self.FK__Izinler__persone__02FC7413">
             <End Role="Personeller" EntitySet="Personeller" />
-            <End Role="IzinTalepleri" EntitySet="IzinTalepleri" />
+            <End Role="Izinler" EntitySet="Izinler" />
           </AssociationSet>
           <AssociationSet Name="FK_Duyurular_Personeller" Association="Self.FK_Duyurular_Personeller">
             <End Role="Personeller" EntitySet="Personeller" />
@@ -401,7 +401,7 @@
           <NavigationProperty Name="Mailler" Relationship="IsTakipDBModel.FK_Mailler_Personeller" FromRole="Personeller" ToRole="Mailler" />
           <NavigationProperty Name="Mailler1" Relationship="IsTakipDBModel.FK_Mailler_Personeller1" FromRole="Personeller" ToRole="Mailler" />
           <Property Name="personelFotograf" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="IzinTalepleri" Relationship="IsTakipDBModel.FK__IzinTalep__Perso__00200768" FromRole="Personeller" ToRole="IzinTalepleri" />
+          <NavigationProperty Name="Izinler" Relationship="IsTakipDBModel.FK__Izinler__persone__02FC7413" FromRole="Personeller" ToRole="Izinler" />
         </EntityType>
         <EntityType Name="YetkiTurler">
           <Key>
@@ -511,10 +511,10 @@
             <End Role="MailEkler" EntitySet="MailEkler" />
           </AssociationSet>
           <EntitySet Name="sysdiagrams" EntityType="IsTakipDBModel.sysdiagrams" />
-          <EntitySet Name="IzinTalepleri" EntityType="IsTakipDBModel.IzinTalepleri" />
-          <AssociationSet Name="FK__IzinTalep__Perso__00200768" Association="IsTakipDBModel.FK__IzinTalep__Perso__00200768">
+          <EntitySet Name="Izinler" EntityType="IsTakipDBModel.Izinler" />
+          <AssociationSet Name="FK__Izinler__persone__02FC7413" Association="IsTakipDBModel.FK__Izinler__persone__02FC7413">
             <End Role="Personeller" EntitySet="Personeller" />
-            <End Role="IzinTalepleri" EntitySet="IzinTalepleri" />
+            <End Role="Izinler" EntitySet="Izinler" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Loglar">
@@ -669,27 +669,27 @@
           <Property Name="version" Type="Int32" />
           <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
-        <EntityType Name="IzinTalepleri">
+        <EntityType Name="Izinler">
           <Key>
-            <PropertyRef Name="IzinTalepId" />
+            <PropertyRef Name="izinId" />
           </Key>
-          <Property Name="IzinTalepId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PersonelId" Type="Int32" Nullable="false" />
-          <Property Name="BaslangicTarihi" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="BitisTarihi" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="OnayDurumu" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Personeller" Relationship="IsTakipDBModel.FK__IzinTalep__Perso__00200768" FromRole="IzinTalepleri" ToRole="Personeller" />
-          <Property Name="aktiflik" Type="Boolean" />
+          <Property Name="izinId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="personelId" Type="Int32" />
+          <Property Name="baslangicTarihi" Type="DateTime" Precision="0" />
+          <Property Name="bitisTarihi" Type="DateTime" Precision="0" />
+          <Property Name="onayDurumu" Type="Boolean" />
+          <Property Name="talepTarihi" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Personeller" Relationship="IsTakipDBModel.FK__Izinler__persone__02FC7413" FromRole="Izinler" ToRole="Personeller" />
         </EntityType>
-        <Association Name="FK__IzinTalep__Perso__00200768">
-          <End Type="IsTakipDBModel.Personeller" Role="Personeller" Multiplicity="1" />
-          <End Type="IsTakipDBModel.IzinTalepleri" Role="IzinTalepleri" Multiplicity="*" />
+        <Association Name="FK__Izinler__persone__02FC7413">
+          <End Type="IsTakipDBModel.Personeller" Role="Personeller" Multiplicity="0..1" />
+          <End Type="IsTakipDBModel.Izinler" Role="Izinler" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Personeller">
               <PropertyRef Name="personelId" />
             </Principal>
-            <Dependent Role="IzinTalepleri">
-              <PropertyRef Name="PersonelId" />
+            <Dependent Role="Izinler">
+              <PropertyRef Name="personelId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -840,15 +840,15 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="IzinTalepleri">
-            <EntityTypeMapping TypeName="IsTakipDBModel.IzinTalepleri">
-              <MappingFragment StoreEntitySet="IzinTalepleri">
-                <ScalarProperty Name="aktiflik" ColumnName="aktiflik" />
-                <ScalarProperty Name="OnayDurumu" ColumnName="OnayDurumu" />
-                <ScalarProperty Name="BitisTarihi" ColumnName="BitisTarihi" />
-                <ScalarProperty Name="BaslangicTarihi" ColumnName="BaslangicTarihi" />
-                <ScalarProperty Name="PersonelId" ColumnName="PersonelId" />
-                <ScalarProperty Name="IzinTalepId" ColumnName="IzinTalepId" />
+          <EntitySetMapping Name="Izinler">
+            <EntityTypeMapping TypeName="IsTakipDBModel.Izinler">
+              <MappingFragment StoreEntitySet="Izinler">
+                <ScalarProperty Name="talepTarihi" ColumnName="talepTarihi" />
+                <ScalarProperty Name="onayDurumu" ColumnName="onayDurumu" />
+                <ScalarProperty Name="bitisTarihi" ColumnName="bitisTarihi" />
+                <ScalarProperty Name="baslangicTarihi" ColumnName="baslangicTarihi" />
+                <ScalarProperty Name="personelId" ColumnName="personelId" />
+                <ScalarProperty Name="izinId" ColumnName="izinId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

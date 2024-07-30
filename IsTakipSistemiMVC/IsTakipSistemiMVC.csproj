@@ -1139,7 +1139,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>IsTakipModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\IzinTalepleri.cs">
+    <Compile Include="Models\Izinler.cs">
       <DependentUpon>IsTakipModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Loglar.cs">
@@ -1249,6 +1249,9 @@
     <Content Include="Views\Duyuru\DuyuruGuncelle.cshtml" />
     <Content Include="Views\Mail\MailDetay.cshtml" />
     <Content Include="Views\Profil\Index.cshtml" />
+    <Content Include="Views\Calisan\IzinTalep.cshtml" />
+    <Content Include="Views\Yonetici\IzinGoruntule.cshtml" />
+    <Content Include="Views\Calisan\GecmisIzinler.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

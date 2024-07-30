@@ -26,8 +26,8 @@
         <EntityTypeShape EntityType="IsTakipDBModel.MailEkler" Width="1.5" PointX="10.5" PointY="5.25" />
         <AssociationConnector Association="IsTakipDBModel.FK_MailEkler_Mailler" />
         <EntityTypeShape EntityType="IsTakipDBModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="8.75" />
-        <EntityTypeShape EntityType="IsTakipDBModel.IzinTalepleri" Width="1.5" PointX="5.25" PointY="15.75" />
-        <AssociationConnector Association="IsTakipDBModel.FK__IzinTalep__Perso__00200768" />
+        <EntityTypeShape EntityType="IsTakipDBModel.Izinler" Width="1.5" PointX="5.25" PointY="16.625" />
+        <AssociationConnector Association="IsTakipDBModel.FK__Izinler__persone__02FC7413" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
