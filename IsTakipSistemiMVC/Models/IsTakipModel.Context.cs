@@ -37,5 +37,6 @@ namespace IsTakipSistemiMVC.Models
         public virtual DbSet<MailEkler> MailEkler { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<Izinler> Izinler { get; set; }
+        public virtual DbSet<DuyuruBirimleri> DuyuruBirimleri { get; set; }
     }
 }

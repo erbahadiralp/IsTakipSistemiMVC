@@ -280,35 +280,6 @@ namespace IsTakipSistemiMVC.Controllers
             return RedirectToAction("Index");
         }
 
-
-
-        //public ActionResult CalisanListe()
-        //{
-        //    int yetkiTurId = Convert.ToInt32(Session["PersonelYetkiTurId"]);
-
-        //    if (yetkiTurId == 1)
-        //    {
-        //        int birimId = Convert.ToInt32(Session["PersonelBirimId"]);
-
-
-
-        //        var birim = (from b in entity.Birimler where b.birimId == birimId select b).FirstOrDefault();
-
-        //        ViewBag.birimAd = birim.birimAd;
-
-        //        return View();
-        //    }
-        //    else
-        //    {
-        //        return RedirectToAction("Index", "Login");
-        //    }
-        //}
-
-        //DUYURULAR KISMI
-
-        // Duyuruların listelenmesi
-
-        // GET: AyinElemani
         public ActionResult IzinGoruntule()
         {
             int personelBirimId = Convert.ToInt32(Session["PersonelBirimId"]);

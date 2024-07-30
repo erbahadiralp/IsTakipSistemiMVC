@@ -14,6 +14,12 @@ namespace IsTakipSistemiMVC.Models
     
     public partial class Duyurular
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Duyurular()
+        {
+            this.DuyuruBirimleri = new HashSet<DuyuruBirimleri>();
+        }
+    
         public int duyuruId { get; set; }
         public string duyuruBaslik { get; set; }
         public string duyuruIcerik { get; set; }
@@ -23,5 +29,7 @@ namespace IsTakipSistemiMVC.Models
         public Nullable<int> goruntuleyenBirimId { get; set; }
     
         public virtual Personeller Personeller { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DuyuruBirimleri> DuyuruBirimleri { get; set; }
     }
 }

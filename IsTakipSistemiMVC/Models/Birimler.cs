@@ -18,6 +18,7 @@ namespace IsTakipSistemiMVC.Models
         public Birimler()
         {
             this.Personeller = new HashSet<Personeller>();
+            this.DuyuruBirimleri = new HashSet<DuyuruBirimleri>();
         }
     
         public int birimId { get; set; }
@@ -26,5 +27,7 @@ namespace IsTakipSistemiMVC.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Personeller> Personeller { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DuyuruBirimleri> DuyuruBirimleri { get; set; }
     }
 }

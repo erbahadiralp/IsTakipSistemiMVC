@@ -1116,6 +1116,9 @@
     <Compile Include="Models\Durumlar.cs">
       <DependentUpon>IsTakipModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DuyuruBirimleri.cs">
+      <DependentUpon>IsTakipModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Duyurular.cs">
       <DependentUpon>IsTakipModel.tt</DependentUpon>
     </Compile>
@@ -1241,7 +1244,6 @@
     <Content Include="Views\Mail\MailOlustur.cshtml" />
     <Content Include="Views\Mail\GidenMailler.cshtml" />
     <Content Include="Views\Mail\MailSil.cshtml" />
-    <Content Include="Views\SistemYoneticisi\MailDeneme.cshtml" />
     <Content Include="Views\Mail\ArsivGoster.cshtml" />
     <Content Include="Views\Duyuru\Index.cshtml" />
     <Content Include="Views\Duyuru\DuyuruDetay.cshtml" />
@@ -1261,8 +1263,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Izin\" />
-    <Folder Include="Views\Layout\" />
     <Folder Include="Views\Logout\" />
   </ItemGroup>
   <ItemGroup>

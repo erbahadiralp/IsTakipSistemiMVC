@@ -20,6 +20,14 @@
           <Property Name="durumId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="durumAd" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="DuyuruBirimleri">
+          <Key>
+            <PropertyRef Name="DuyuruBirimId" />
+          </Key>
+          <Property Name="DuyuruBirimId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DuyuruId" Type="int" />
+          <Property Name="BirimId" Type="int" />
+        </EntityType>
         <EntityType Name="Duyurular">
           <Key>
             <PropertyRef Name="duyuruId" />
@@ -52,10 +60,10 @@
           </Key>
           <Property Name="izinId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="personelId" Type="int" />
-          <Property Name="baslangicTarihi" Type="date" />
-          <Property Name="bitisTarihi" Type="date" />
+          <Property Name="baslangicTarihi" Type="date" Nullable="false" />
+          <Property Name="bitisTarihi" Type="date" Nullable="false" />
           <Property Name="onayDurumu" Type="bit" />
-          <Property Name="talepTarihi" Type="date" />
+          <Property Name="talepTarihi" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="Loglar">
           <Key>
@@ -146,6 +154,30 @@
           <Property Name="yetkiTurId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="yetkiTurAd" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <Association Name="FK__DuyuruBir__Birim__09A971A2">
+          <End Role="Birimler" Type="Self.Birimler" Multiplicity="0..1" />
+          <End Role="DuyuruBirimleri" Type="Self.DuyuruBirimleri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Birimler">
+              <PropertyRef Name="birimId" />
+            </Principal>
+            <Dependent Role="DuyuruBirimleri">
+              <PropertyRef Name="BirimId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DuyuruBir__Duyur__08B54D69">
+          <End Role="Duyurular" Type="Self.Duyurular" Multiplicity="0..1" />
+          <End Role="DuyuruBirimleri" Type="Self.DuyuruBirimleri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Duyurular">
+              <PropertyRef Name="duyuruId" />
+            </Principal>
+            <Dependent Role="DuyuruBirimleri">
+              <PropertyRef Name="DuyuruId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Izinler__persone__02FC7413">
           <End Role="Personeller" Type="Self.Personeller" Multiplicity="0..1" />
           <End Role="Izinler" Type="Self.Izinler" Multiplicity="*" />
@@ -281,6 +313,7 @@
         <EntityContainer Name="IsTakipDBModelStoreContainer">
           <EntitySet Name="Birimler" EntityType="Self.Birimler" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Durumlar" EntityType="Self.Durumlar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DuyuruBirimleri" EntityType="Self.DuyuruBirimleri" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Duyurular" EntityType="Self.Duyurular" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Isler" EntityType="Self.Isler" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Izinler" EntityType="Self.Izinler" Schema="dbo" store:Type="Tables" />
@@ -291,6 +324,14 @@
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="YemekTablo" EntityType="Self.YemekTablo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="YetkiTurler" EntityType="Self.YetkiTurler" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__DuyuruBir__Birim__09A971A2" Association="Self.FK__DuyuruBir__Birim__09A971A2">
+            <End Role="Birimler" EntitySet="Birimler" />
+            <End Role="DuyuruBirimleri" EntitySet="DuyuruBirimleri" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DuyuruBir__Duyur__08B54D69" Association="Self.FK__DuyuruBir__Duyur__08B54D69">
+            <End Role="Duyurular" EntitySet="Duyurular" />
+            <End Role="DuyuruBirimleri" EntitySet="DuyuruBirimleri" />
+          </AssociationSet>
           <AssociationSet Name="FK__Izinler__persone__02FC7413" Association="Self.FK__Izinler__persone__02FC7413">
             <End Role="Personeller" EntitySet="Personeller" />
             <End Role="Izinler" EntitySet="Izinler" />
@@ -348,6 +389,7 @@
           <Property Name="birimAd" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Personeller" Relationship="Self.FK_Personeller_Birimler" FromRole="Birimler" ToRole="Personeller" />
           <Property Name="aktiflik" Type="Boolean" />
+          <NavigationProperty Name="DuyuruBirimleri" Relationship="IsTakipDBModel.FK__DuyuruBir__Birim__09A971A2" FromRole="Birimler" ToRole="DuyuruBirimleri" />
         </EntityType>
         <EntityType Name="Durumlar">
           <Key>
@@ -516,6 +558,15 @@
             <End Role="Personeller" EntitySet="Personeller" />
             <End Role="Izinler" EntitySet="Izinler" />
           </AssociationSet>
+          <EntitySet Name="DuyuruBirimleri" EntityType="IsTakipDBModel.DuyuruBirimleri" />
+          <AssociationSet Name="FK__DuyuruBir__Birim__09A971A2" Association="IsTakipDBModel.FK__DuyuruBir__Birim__09A971A2">
+            <End Role="Birimler" EntitySet="Birimler" />
+            <End Role="DuyuruBirimleri" EntitySet="DuyuruBirimleri" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DuyuruBir__Duyur__08B54D69" Association="IsTakipDBModel.FK__DuyuruBir__Duyur__08B54D69">
+            <End Role="Duyurular" EntitySet="Duyurular" />
+            <End Role="DuyuruBirimleri" EntitySet="DuyuruBirimleri" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Loglar">
           <Key>
@@ -568,6 +619,7 @@
           <Property Name="aktiflik" Type="Boolean" />
           <Property Name="goruntuleyenBirimId" Type="Int32" />
           <NavigationProperty Name="Personeller" Relationship="IsTakipDBModel.FK_Duyurular_Personeller" FromRole="Duyurular" ToRole="Personeller" />
+          <NavigationProperty Name="DuyuruBirimleri" Relationship="IsTakipDBModel.FK__DuyuruBir__Duyur__08B54D69" FromRole="Duyurular" ToRole="DuyuruBirimleri" />
         </EntityType>
         <Association Name="FK_Duyurular_Personeller">
           <End Type="IsTakipDBModel.Personeller" Role="Personeller" Multiplicity="0..1" />
@@ -675,10 +727,10 @@
           </Key>
           <Property Name="izinId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="personelId" Type="Int32" />
-          <Property Name="baslangicTarihi" Type="DateTime" Precision="0" />
-          <Property Name="bitisTarihi" Type="DateTime" Precision="0" />
+          <Property Name="baslangicTarihi" Type="DateTime" Precision="0" Nullable="false" />
+          <Property Name="bitisTarihi" Type="DateTime" Precision="0" Nullable="false" />
           <Property Name="onayDurumu" Type="Boolean" />
-          <Property Name="talepTarihi" Type="DateTime" Precision="0" />
+          <Property Name="talepTarihi" Type="DateTime" Precision="0" Nullable="false" />
           <NavigationProperty Name="Personeller" Relationship="IsTakipDBModel.FK__Izinler__persone__02FC7413" FromRole="Izinler" ToRole="Personeller" />
         </EntityType>
         <Association Name="FK__Izinler__persone__02FC7413">
@@ -690,6 +742,40 @@
             </Principal>
             <Dependent Role="Izinler">
               <PropertyRef Name="personelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DuyuruBirimleri">
+          <Key>
+            <PropertyRef Name="DuyuruBirimId" />
+          </Key>
+          <Property Name="DuyuruBirimId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DuyuruId" Type="Int32" />
+          <Property Name="BirimId" Type="Int32" />
+          <NavigationProperty Name="Birimler" Relationship="IsTakipDBModel.FK__DuyuruBir__Birim__09A971A2" FromRole="DuyuruBirimleri" ToRole="Birimler" />
+          <NavigationProperty Name="Duyurular" Relationship="IsTakipDBModel.FK__DuyuruBir__Duyur__08B54D69" FromRole="DuyuruBirimleri" ToRole="Duyurular" />
+        </EntityType>
+        <Association Name="FK__DuyuruBir__Birim__09A971A2">
+          <End Type="IsTakipDBModel.Birimler" Role="Birimler" Multiplicity="0..1" />
+          <End Type="IsTakipDBModel.DuyuruBirimleri" Role="DuyuruBirimleri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Birimler">
+              <PropertyRef Name="birimId" />
+            </Principal>
+            <Dependent Role="DuyuruBirimleri">
+              <PropertyRef Name="BirimId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DuyuruBir__Duyur__08B54D69">
+          <End Type="IsTakipDBModel.Duyurular" Role="Duyurular" Multiplicity="0..1" />
+          <End Type="IsTakipDBModel.DuyuruBirimleri" Role="DuyuruBirimleri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Duyurular">
+              <PropertyRef Name="duyuruId" />
+            </Principal>
+            <Dependent Role="DuyuruBirimleri">
+              <PropertyRef Name="DuyuruId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -849,6 +935,15 @@
                 <ScalarProperty Name="baslangicTarihi" ColumnName="baslangicTarihi" />
                 <ScalarProperty Name="personelId" ColumnName="personelId" />
                 <ScalarProperty Name="izinId" ColumnName="izinId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DuyuruBirimleri">
+            <EntityTypeMapping TypeName="IsTakipDBModel.DuyuruBirimleri">
+              <MappingFragment StoreEntitySet="DuyuruBirimleri">
+                <ScalarProperty Name="BirimId" ColumnName="BirimId" />
+                <ScalarProperty Name="DuyuruId" ColumnName="DuyuruId" />
+                <ScalarProperty Name="DuyuruBirimId" ColumnName="DuyuruBirimId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
