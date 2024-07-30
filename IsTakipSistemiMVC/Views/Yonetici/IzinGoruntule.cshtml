@@ -30,15 +30,15 @@
                                     <td>
                                         @if (izin.onayDurumu == null)
                                         {
-                                            <span>Beklemede</span>
+                                            <span class="badge badge-warning">Beklemede</span>
                                         }
                                         else if (izin.onayDurumu == true)
                                         {
-                                            <span>Onaylandı</span>
+                                            <span class="badge badge-success">Onaylandı</span>
                                         }
                                         else
                                         {
-                                            <span>Reddedildi</span>
+                                            <span class="badge badge-danger">Reddedildi</span>
                                         }
                                     </td>
                                     <td>
