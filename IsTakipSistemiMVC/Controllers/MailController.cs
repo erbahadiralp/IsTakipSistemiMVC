@@ -227,6 +227,25 @@ namespace IsTakipSistemiMVC.Controllers
             return View(mailDetay);
         }
 
+        public ActionResult SilinmisMailler()
+        {
+            int userId = Convert.ToInt32(Session["PersonelId"]);
 
+            var silinmisMailler = (from mail in entity.Mailler
+                                   join gonderici in entity.Personeller on mail.mailGondericiId equals gonderici.personelId
+                                   join alici in entity.Personeller on mail.mailAliciId equals alici.personelId
+                                   where mail.aktiflik == false && (mail.mailGondericiId == userId || mail.mailAliciId == userId)
+                                   select new MailViewModel
+                                   {
+                                       MailId = mail.mailId,
+                                       GondericiAdSoyad = gonderici.personelAdSoyad,
+                                       AliciAdSoyad = alici.personelAdSoyad,
+                                       Konu = mail.mailKonu,
+                                       Icerik = mail.mailIcerik,
+                                       GonderilmeTarihi = mail.mailGonderilmeTarih
+                                   }).ToList();
+
+            return View(silinmisMailler);
+        }
     }
 }

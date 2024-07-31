@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "GidenMesajlar";
     Layout = ViewBag.Layout;
 }
 
@@ -127,12 +127,12 @@
     <a href="@Url.Action("MailOlustur", "Mail")" class="btn btn-primary custom-button">Oluştur</a>
     <ul class="nav flex-column">
         <li class="nav-item">
-            <a class="nav-link active " href="@Url.Action("Index", "Mail")">
+            <a class="nav-link  " href="@Url.Action("Index", "Mail")">
                 <i class="bi bi-inbox"></i> Gelen Kutusu
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="@Url.Action("GidenMailler", "Mail")">
+            <a class="nav-link " href="@Url.Action("GidenMailler", "Mail")">
                 <i class="bi bi-send"></i> Gönderilmiş Postalar
             </a>
         </li>
@@ -142,7 +142,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="@Url.Action("SilinmisMailler", "Mail")">
+            <a class="nav-link active" href="@Url.Action("SilinmisMailler", "Mail")">
                 <i class="bi bi-trash"></i> Silinmiş Postalar
             </a>
         </li>
@@ -159,25 +159,15 @@
 
     <div class="card">
         <div class="card-body">
-            <div class="button-container" id="actionButtons">
-                <button id="deleteSelected" class="btn btn-danger">
-                    <i class="bi bi-trash"></i>
-                </button>
-                <button id="markReadSelected" class="btn btn-success">
-                    <i class="bi bi-envelope-open"></i>
-                </button>
-                <button id="archiveSelected" class="btn btn-warning">
-                    <i class="bi bi-archive"></i>
-                </button>
-            </div>
 
             <div class="table-responsive">
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr class="text-center table-light">
-                            <th><input type="checkbox" id="selectAll"></th>
                             <th>Gönderen</th>
+                            <th>Alıcı</th>
                             <th>Konu</th>
+                            <th>İçerik</th>
                             <th>Tarih</th>
                         </tr>
                     </thead>
@@ -185,9 +175,10 @@
                         @foreach (var mail in Model)
                         {
                             <tr class="text-center" data-mail-id="@mail.MailId">
-                                <td><input type="checkbox" class="select-mail" data-mail-id="@mail.MailId"></td>
                                 <td>@mail.GondericiAdSoyad</td>
+                                <td>@mail.AliciAdSoyad</td>
                                 <td>@mail.Konu</td>
+                                <td>@mail.Icerik</td>
                                 <td>@mail.GonderilmeTarihi</td>
                             </tr>
                         }
@@ -252,9 +243,6 @@
                         } else {
                             alert(data.message);
                         }
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.error('Error deleting mails: ', textStatus, errorThrown);
                     }
                 });
             }
@@ -277,37 +265,15 @@
                         } else {
                             alert(data.message);
                         }
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.error('Error archiving mails: ', textStatus, errorThrown);
                     }
                 });
             }
         });
 
-        // Seçili mailleri okundu olarak işaretleme
-        $('#markReadSelected').on('click', function () {
-            var ids = $('.select-mail:checked').map(function () {
-                return $(this).data('mail-id');
-            }).get();
-            if (ids.length > 0) {
-                $.ajax({
-                    url: '@Url.Action("MailiOkunduYap", "Mail")',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(ids),
-                    success: function (data) {
-                        if (data.success) {
-                            location.reload();
-                        } else {
-                            alert(data.message);
-                        }
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.error('Error marking mails as read: ', textStatus, errorThrown);
-                    }
-                });
-            }
+        // Satıra çift tıklama ile mail detayına gitme
+        $('table tbody tr').on('dblclick', function () {
+            var mailId = $(this).data('mail-id');
+            window.location.href = '@Url.Action("MailDetay", "Mail")/' + mailId;
         });
     });
 </script>

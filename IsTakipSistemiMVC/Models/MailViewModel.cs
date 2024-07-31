@@ -16,6 +16,7 @@ namespace IsTakipSistemiMVC.Models
         public string Icerik { get; set; }
         public DateTime GonderilmeTarihi { get; set; }
         public bool Arsiv { get; set; }
+        public bool mailOkunma { get; set; }
     }
 
 }

@@ -14,75 +14,80 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            background-color: #ffffff;
             margin: 0;
             padding: 0;
         }
 
         .container {
-            max-width: 800px;
-            margin: 50px auto;
-            background-color: #fff;
+            max-width: 900px;
+            margin: 20px auto;
+            background-color: #f9f9f9;
             padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
             border-radius: 8px;
         }
 
-        h2 {
-            border-bottom: 2px solid #d3d3d3;
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #ddd;
             padding-bottom: 10px;
             margin-bottom: 20px;
-            font-size: 24px;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
+            .header h2 {
+                margin: 0;
+                font-size: 18px;
+                font-weight: normal;
+            }
+
+        .info {
             margin-bottom: 20px;
         }
 
-        th, td {
-            text-align: left;
-            padding: 12px 15px;
-            border-bottom: 1px solid #d3d3d3;
-        }
+            .info div {
+                margin-bottom: 10px;
+            }
 
-        th {
-            background-color: #f5f5f5;
-            width: 150px;
-            font-weight: bold;
-        }
-
-        td {
-            background-color: #fff;
-        }
+            .info span {
+                font-weight: bold;
+                display: inline-block;
+                width: 150px;
+            }
 
         .content {
+            white-space: pre-wrap; /* For preserving line breaks */
             padding: 10px 0;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .footer {
+            text-align: right;
+            font-size: 12px;
+            color: #888;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Mail Detayları</h2>
-        <table>
-            <tr>
-                <th>Gönderen</th>
-                <td>@Model.GondericiAdSoyad</td>
-            </tr>
-            <tr>
-                <th>Konu</th>
-                <td>@Model.Konu</td>
-            </tr>
-            <tr>
-                <th>İçerik</th>
-                <td class="content">@Html.Raw(@Model.Icerik.Replace("\n", "<br/>"))</td>
-            </tr>
-            <tr>
-                <th>Gönderilme Tarihi</th>
-                <td>@Model.GonderilmeTarihi</td>
-            </tr>
-        </table>
+        <div class="header">
+            <h2>@Model.Konu</h2>
+        </div>
+        <div class="info">
+            <div><span>Gönderen:</span> @Model.GondericiAdSoyad</div>
+            <div><span>Alıcı:</span> @Model.AliciAdSoyad</div>
+            <div><span>Gönderilme Tarihi:</span> @Model.GonderilmeTarihi</div>
+        </div>
+        <div class="content">
+            @Html.Raw(@Model.Icerik.Replace("\n", "<br/>"))
+        </div>
+        <div class="footer">
+            <p>Çağrıyla ilgili ya da projelerinizle ilgili desteğe ihtiyacınız olduğunda info@birunitenokpark.com adresine e-posta atabilirsiniz. Aşağıdaki iletişim numarasından da bizlere ulaşabilirsiniz.</p>
+        </div>
     </div>
 </body>
 </html>
