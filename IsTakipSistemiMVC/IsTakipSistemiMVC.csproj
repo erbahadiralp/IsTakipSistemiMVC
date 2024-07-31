@@ -403,7 +403,6 @@
     <Content Include="Views\ParolaKontrol\Index.cshtml" />
     <Content Include="Views\Personel\Detay.cshtml" />
     <Content Include="Views\SistemYoneticisi\ExceleAktar.cshtml" />
-    <Content Include="Views\Yonetici\CalisanListe.cshtml" />
     <Content Include="Views\SistemYoneticisi\YemekEkle.cshtml" />
     <Content Include="Views\Personel\ExceleAktar.cshtml" />
     <Content Include="Views\Yonetici\Error.cshtml" />

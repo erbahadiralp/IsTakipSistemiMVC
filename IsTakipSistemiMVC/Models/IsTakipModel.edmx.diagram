@@ -4,31 +4,28 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="7c1ce00340414eff973fd5b42928b077" Name="Diagram1">
-        <EntityTypeShape EntityType="IsTakipDBModel.Birimler" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="IsTakipDBModel.Durumlar" Width="1.5" PointX="3" PointY="5.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="IsTakipDBModel.Isler" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="IsTakipDBModel.Personeller" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="IsTakipDBModel.YetkiTurler" Width="1.5" PointX="0.75" PointY="5.5" IsExpanded="true" />
-        <AssociationConnector Association="IsTakipDBModel.FK_Personeller_Birimler" ManuallyRouted="false" />
-        <AssociationConnector Association="IsTakipDBModel.FK_Isler_Durumlar" ManuallyRouted="false" />
-        <AssociationConnector Association="IsTakipDBModel.FK_Isler_Personeller" ManuallyRouted="false" />
-        <AssociationConnector Association="IsTakipDBModel.FK_Personeller_YetkiTurler" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="IsTakipDBModel.Loglar" Width="1.5" PointX="7.375" PointY="0.75" />
-        <AssociationConnector Association="IsTakipDBModel.FK_Loglar_Personeller" />
-        <EntityTypeShape EntityType="IsTakipDBModel.YemekTablo" Width="1.5" PointX="5.375" PointY="7.75" />
-        <EntityTypeShape EntityType="IsTakipDBModel.Duyurular" Width="1.5" PointX="5.25" PointY="12.375" />
+      <Diagram DiagramId="7c1ce00340414eff973fd5b42928b077" Name="Diagram1" ZoomLevel="64">
+        <EntityTypeShape EntityType="IsTakipDBModel.Birimler" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="IsTakipDBModel.Durumlar" Width="1.5" PointX="3.75" PointY="8.375" />
+        <EntityTypeShape EntityType="IsTakipDBModel.Duyurular" Width="1.5" PointX="3" PointY="3.625" />
+        <EntityTypeShape EntityType="IsTakipDBModel.Isler" Width="1.5" PointX="6" PointY="8.625" />
+        <EntityTypeShape EntityType="IsTakipDBModel.Izinler" Width="1.5" PointX="3" PointY="18.25" />
+        <EntityTypeShape EntityType="IsTakipDBModel.Loglar" Width="1.5" PointX="3" PointY="10.75" />
+        <EntityTypeShape EntityType="IsTakipDBModel.MailEkler" Width="1.5" PointX="5.25" PointY="14.75" />
+        <EntityTypeShape EntityType="IsTakipDBModel.Mailler" Width="1.5" PointX="3" PointY="13.875" />
+        <EntityTypeShape EntityType="IsTakipDBModel.Personeller" Width="1.5" PointX="0.75" PointY="7.5" />
+        <EntityTypeShape EntityType="IsTakipDBModel.sysdiagrams" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="IsTakipDBModel.YemekTablo" Width="1.5" PointX="5.75" PointY="0.75" />
+        <EntityTypeShape EntityType="IsTakipDBModel.YetkiTurler" Width="1.5" PointX="5.75" PointY="4.75" />
+        <AssociationConnector Association="IsTakipDBModel.FK_Isler_Durumlar" />
         <AssociationConnector Association="IsTakipDBModel.FK_Duyurular_Personeller" />
-        <EntityTypeShape EntityType="IsTakipDBModel.Mailler" Width="1.5" PointX="8.25" PointY="4.375" />
-        <AssociationConnector Association="IsTakipDBModel.FK_Mailler_Durumlar" />
+        <AssociationConnector Association="IsTakipDBModel.FK_Isler_Personeller" />
+        <AssociationConnector Association="IsTakipDBModel.FK__Izinler__persone__02FC7413" />
+        <AssociationConnector Association="IsTakipDBModel.FK_Loglar_Personeller" />
+        <AssociationConnector Association="IsTakipDBModel.FK_MailEkler_Mailler" />
         <AssociationConnector Association="IsTakipDBModel.FK_Mailler_Personeller" />
         <AssociationConnector Association="IsTakipDBModel.FK_Mailler_Personeller1" />
-        <EntityTypeShape EntityType="IsTakipDBModel.MailEkler" Width="1.5" PointX="10.5" PointY="5.25" />
-        <AssociationConnector Association="IsTakipDBModel.FK_MailEkler_Mailler" />
-        <EntityTypeShape EntityType="IsTakipDBModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="8.75" />
-        <EntityTypeShape EntityType="IsTakipDBModel.Izinler" Width="1.5" PointX="5.25" PointY="16.625" />
-        <AssociationConnector Association="IsTakipDBModel.FK__Izinler__persone__02FC7413" />
-        </Diagram>
+      </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

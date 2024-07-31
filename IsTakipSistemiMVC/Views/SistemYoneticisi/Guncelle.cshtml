@@ -6,27 +6,45 @@
 }
 
 <div class="container mt-5">
-    <h3 class="text-center">Birim Güncelleme İşlemi</h3>
-    <hr />
-    @using (Html.BeginForm("Guncelle", "SistemYoneticisi", FormMethod.Post))
-    {
-        @Html.HiddenFor(model => model.birimId)
+    <div class="row">
+        <div class="col">
+            <h3 class="text-center mb-4">Birim Güncelleme İşlemi</h3>
+            <hr />
+            @using (Html.BeginForm("Guncelle", "SistemYoneticisi", FormMethod.Post))
+            {
+                @Html.HiddenFor(model => model.birimId)
 
-        <div class="row mb-3">
-            @Html.LabelFor(model => model.birimAd, htmlAttributes: new { @class = "col-sm-3 col-form-label text-end" })
-            <div class="col-sm-6">
-                @Html.EditorFor(model => model.birimAd, new { htmlAttributes = new { @class = "form-control" } })
-            </div>
-        </div>
+                <div class="mb-3 row">
+                    @Html.Label("Birim Adı", htmlAttributes: new { @class = "col-sm-3 col-form-label text-end" })
+                    <div class="col-sm-6">
+                        @Html.EditorFor(model => model.birimAd, new { htmlAttributes = new { @class = "form-control shadow-sm" } })
+                    </div>
+                </div>
 
-        <div class="text-center d-grid gap-2 col-6 mx-auto">
-            <button class="btn btn-success" type="submit">
-                <i class="fas fa-save"></i> GÜNCELLE
-            </button>
+                <div class="text-center d-grid gap-2 col-6 mx-auto">
+                    <button class="btn btn-success btn-lg" type="submit">
+                        Güncelle
+                    </button>
+                </div>
+            }
         </div>
-    }
+    </div>
 </div>
 
+<style>
+    .form-control {
+        border-radius: 0.25rem;
+        padding: 0.5rem;
+    }
 
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+        .form-control:focus {
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            border-color: #007bff;
+        }
 
+    .btn-lg {
+        padding: 0.5rem 1rem;
+        font-size: 1.25rem;
+        border-radius: 0.3rem;
+    }
+</style>

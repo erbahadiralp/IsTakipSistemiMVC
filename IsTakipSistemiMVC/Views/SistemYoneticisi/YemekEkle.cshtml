@@ -8,7 +8,7 @@
         <div class="card-body">
             <h3 class="card-title text-center mb-4">Menü Ekle</h3>
             <hr />
-            @using (Html.BeginForm("YemekEkle", "SistemYoneticisi", FormMethod.Post, new { @class = "row g-3" }))
+            @using (Html.BeginForm("YemekEkle", "SistemYoneticisi", FormMethod.Post, new { @class = "row g-3", id = "yemekForm" }))
             {
                 <div class="col-6">
                     <label class="form-label" for="YemekAdi1">Yemek 1</label>
@@ -50,14 +50,20 @@
                     <input type="text" class="form-control" id="YemekAdi8" name="YemekAdi8" />
                 </div>
 
-                <div class="col-6 ">
+                <div class="col-6">
                     <label class="form-label" for="Tarih">Tarih</label>
                     <input type="date" class="form-control" id="Tarih" name="Tarih" />
                 </div>
 
                 <div class="col-12 d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary w-50 py-2">Menü Ekle</button>
+                    <button type="submit" class="btn btn-primary w-50 py-2" onclick="validateForm(event)">Menü Ekle</button>
                 </div>
+
+                <div id="alert" class="alert alert-danger d-none mt-3 w-100" role="alert">
+                    Lütfen tarih seçiniz!
+                </div>
+
+
             }
         </div>
     </div>
@@ -71,6 +77,16 @@
     </div>
 }
 
+<script>
+    function validateForm(event) {
+        var tarih = document.getElementById("Tarih").value;
+        if (!tarih) {
+            event.preventDefault(); // Formu gönderme
+            var alertDiv = document.getElementById("alert");
+            alertDiv.classList.remove("d-none");
+        }
+    }
+</script>
 
 <style>
     body {
@@ -91,7 +107,7 @@
     }
 
     .btn-primary {
-        background-color: #007bff;
+        background-color: #0056b3; /* Changed color */
         border: none;
         border-radius: 5px;
         padding: 8px 15px; /* Buton boyutunu küçültmek için padding azaltıldı */
@@ -100,7 +116,7 @@
     }
 
         .btn-primary:hover {
-            background-color: #0056b3;
+            background-color: #004085;
         }
 
     .form-control, .form-select {

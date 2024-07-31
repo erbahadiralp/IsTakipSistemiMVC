@@ -27,15 +27,13 @@ namespace IsTakipSistemiMVC.Models
         public string mailIcerik { get; set; }
         public Nullable<bool> mailOkunma { get; set; }
         public Nullable<bool> aktiflik { get; set; }
-        public Nullable<int> mailGonderilmeDurumu { get; set; }
         public System.DateTime mailGonderilmeTarih { get; set; }
         public Nullable<System.DateTime> mailZamanliGonderilmeTarih { get; set; }
         public Nullable<bool> mailArsiv { get; set; }
     
-        public virtual Durumlar Durumlar { get; set; }
-        public virtual Personeller Personeller { get; set; }
-        public virtual Personeller Personeller1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MailEkler> MailEkler { get; set; }
+        public virtual Personeller Personeller { get; set; }
+        public virtual Personeller Personeller1 { get; set; }
     }
 }

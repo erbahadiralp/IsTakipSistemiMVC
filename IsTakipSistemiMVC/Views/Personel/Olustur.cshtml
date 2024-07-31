@@ -12,81 +12,85 @@
             <hr />
             @using (Html.BeginForm("Olustur", "Personel", FormMethod.Post, new { @class = "row g-3" }))
             {
-                <div class="col-6 mb-3">
-                    <label class="form-label" for="adSoyad">Personel Ad Soyad</label>
-                    <input type="text" class="form-control" id="adSoyad" name="adSoyad" placeholder="Ad Soyad girin" />
-                </div>
-
-                <div class="col-6 mb-3">
-                    <label class="form-label" for="kullaniciAd">Kullanıcı Ad</label>
-                    <input type="text" class="form-control" id="kullaniciAd" name="kullaniciAd" placeholder="Kullanıcı adını girin" />
-                </div>
-
-                <div class="col-6 mb-3">
-                    <label class="form-label" for="parola">Parola</label>
-                    <input type="password" class="form-control" id="parola" name="parola" placeholder="Parolanızı girin" />
-                </div>
-
-                <div class="col-6 mb-3">
-                    <label class="form-label" for="iseGirisTarihi">İşe Giriş Tarihi</label>
-                    <input type="date" class="form-control" id="iseGirisTarihi" name="iseGirisTarihi" placeholder="GG-AA-YYYY" />
-                </div>
-
-                <div class="col-6 mb-3">
-                    <label class="form-label" for="dahiliTelefon">Dahili Telefon Numarası</label>
-                    <input type="text" class="form-control" id="dahiliTelefon" name="dahiliTelefon" placeholder="Dahili telefon numarası girin" />
-                </div>
-
-                <div class="col-6 mb-3">
-                    <label class="form-label" for="mail">Mail Adresi</label>
-                    <input type="email" class="form-control" id="mail" name="mail" placeholder="example@outlook.com" />
-                </div>
-
-                <div class="col-6 mb-3">
-                    <label class="form-label" for="adres">Personel Adres</label>
-                    <input type="text" class="form-control" id="adres" name="adres" placeholder="Adres girin" />
-                </div>
-
-                <div class="col-6 mb-3">
-                    <label class="form-label" for="telefon">Telefon Numarası</label>
-                    <input type="text" class="form-control" id="telefon" name="telefon" placeholder="Telefon numarası girin" />
-                </div>
-
-                <div class="col-6 mb-3">
-                    <label class="form-label" for="dogumTarihi">Doğum Tarihi</label>
-                    <input type="date" class="form-control" id="dogumTarihi" name="dogumTarihi" placeholder="GG-AA-YYYY" />
-                </div>
-
-                <div class="col-6 mb-3">
-                    <label class="form-label" for="birim">Birimi</label>
-                    <select id="birim" class="form-select" name="birim">
-                        @foreach (var item in Model.birimlerList)
-                        {
-                            <option value="@item.birimId">@item.birimAd</option>
-                        }
-                    </select>
-                </div>
-
-                <div class="col-6 mb-3">
-                    <label class="form-label" for="yetkiTur">Yetki Türü</label>
-                    <select id="yetkiTur" class="form-select" name="yetkiTur">
-                        @foreach (var item in Model.yetkiTurlerList)
-                        {
-                            <option value="@item.yetkiTurId">@item.yetkiTurAd</option>
-                        }
-                    </select>
-                </div>
-
-                <div class="col-12 d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary w-50 py-2">Personel Ekle</button>
-                </div>
-
-                if (ViewBag.mesaj != null)
-                {
-                    <div class="alert alert-danger mt-3" role="alert">
-                        @ViewBag.mesaj
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label" for="adSoyad">Personel Ad Soyad</label>
+                        <input type="text" class="form-control form-control-sm" id="adSoyad" name="adSoyad" placeholder="Ad Soyad girin" />
                     </div>
-                }
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label" for="kullaniciAd">Kullanıcı Ad</label>
+                        <input type="text" class="form-control form-control-sm" id="kullaniciAd" name="kullaniciAd" placeholder="Kullanıcı adını girin" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label" for="parola">Parola</label>
+                        <input type="password" class="form-control form-control-sm" id="parola" name="parola" placeholder="Parolanızı girin" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label" for="iseGirisTarihi">İşe Giriş Tarihi</label>
+                        <input type="date" class="form-control form-control-sm" id="iseGirisTarihi" name="iseGirisTarihi" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label" for="dahiliTelefon">Dahili Telefon Numarası</label>
+                        <input type="text" class="form-control form-control-sm" id="dahiliTelefon" name="dahiliTelefon" placeholder="Dahili telefon numarası girin" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label" for="mail">Mail Adresi</label>
+                        <input type="email" class="form-control form-control-sm" id="mail" name="mail" placeholder="example@outlook.com" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label" for="adres">Personel Adres</label>
+                        <input type="text" class="form-control form-control-sm" id="adres" name="adres" placeholder="Adres girin" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label" for="telefon">Telefon Numarası</label>
+                        <input type="text" class="form-control form-control-sm" id="telefon" name="telefon" placeholder="Telefon numarası girin" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label" for="dogumTarihi">Doğum Tarihi</label>
+                        <input type="date" class="form-control form-control-sm" id="dogumTarihi" name="dogumTarihi" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label" for="birim">Birimi</label>
+                        <div class="form-select-wrapper">
+                            <select id="birim" class="form-select form-select-sm" name="birim">
+                                @foreach (var item in Model.birimlerList)
+                                {
+                                    <option value="@item.birimId">@item.birimAd</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label" for="yetkiTur">Yetki Türü</label>
+                        <select id="yetkiTur" class="form-select form-select-sm" name="yetkiTur" style="margin-left: 10px">
+                            @foreach (var item in Model.yetkiTurlerList)
+                            {
+                                <option value="@item.yetkiTurId">@item.yetkiTurAd</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-12 d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary w-50 py-2">Personel Ekle</button>
+                    </div>
+                </div>
+            }
+
+            @if (ViewBag.mesaj != null)
+            {
+                <div class="alert alert-danger mt-3" role="alert">
+                    @ViewBag.mesaj
+                </div>
             }
         </div>
     </div>
@@ -98,7 +102,7 @@
     }
 
     .container {
-        max-width: 1100px;
+        max-width: 900px;
     }
 
     .card {
@@ -123,16 +127,22 @@
             background-color: #0056b3;
         }
 
-    .form-control, .form-select {
+    .form-control-sm, .form-select-sm {
         border-radius: 5px;
-        padding: 10px;
+        padding: 5px;
     }
 
     .form-label {
-        margin-bottom: 10px;
+        margin-bottom: 5px;
     }
 
-    .form-control, .form-select {
-        margin-bottom: 20px;
+    .form-control-sm, .form-select-sm {
+        margin-bottom: 15px;
+    }
+
+    .form-select-wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
     }
 </style>

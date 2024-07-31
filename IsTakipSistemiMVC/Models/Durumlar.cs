@@ -18,7 +18,6 @@ namespace IsTakipSistemiMVC.Models
         public Durumlar()
         {
             this.Isler = new HashSet<Isler>();
-            this.Mailler = new HashSet<Mailler>();
         }
     
         public int durumId { get; set; }
@@ -26,7 +25,5 @@ namespace IsTakipSistemiMVC.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Isler> Isler { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Mailler> Mailler { get; set; }
     }
 }

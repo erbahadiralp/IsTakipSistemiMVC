@@ -5,66 +5,69 @@
     Layout = "~/Views/Shared/_LayoutSistemYoneticisi.cshtml";
 }
 
-<div class="card mt-5">
-    <div class="card-body">
-        <h4 class="card-title">Personel Güncelle</h4>
-        @using (Html.BeginForm("Guncelle", "Personel", FormMethod.Post, new { @class = "form-group" }))
-        {
-            <input type="hidden" value="@Model.personelId" name="id" />
+<div class="container mt-5" style="max-width: 600px;">
+    <div class="card border-light shadow-sm rounded">
+        <div class="card-body">
+            <h4 class="card-title mb-4">Personel Güncelle</h4>
+            @using (Html.BeginForm("Guncelle", "Personel", FormMethod.Post, new { @class = "form" }))
+            {
+                <input type="hidden" value="@Model.personelId" name="id" />
 
-            <div class="form-group mb-3">
-                <label for="adSoyad" class="form-label">Personel Ad Soyad</label>
-                <input type="text" class="form-control form-control-lg" id="adSoyad" name="adSoyad" value="@Model.personelAdSoyad" />
-            </div>
+                <div class="form-group mb-3">
+                    <label for="adSoyad" class="form-label">Personel Ad Soyad</label>
+                    <input type="text" class="form-control" id="adSoyad" name="adSoyad" value="@Model.personelAdSoyad" />
+                </div>
 
-            <div class="form-group mb-3">
-                <label for="telefon" class="form-label">Telefon Numarası</label>
-                <input type="text" class="form-control form-control-sm" id="telefon" name="telefon" value="@Model.personelTelefon" />
-            </div>
+                <div class="form-group mb-3">
+                    <label for="telefon" class="form-label">Telefon Numarası</label>
+                    <input type="text" class="form-control" id="telefon" name="telefon" value="@Model.personelTelefon" />
+                </div>
 
-            <div class="form-group mb-3">
-                <label for="adres" class="form-label">Adres</label>
-                <input type="text" class="form-control form-control-sm" id="adres" name="adres" value="@Model.personelAdres" />
-            </div>
+                <div class="form-group mb-3">
+                    <label for="adres" class="form-label">Adres</label>
+                    <input type="text" class="form-control" id="adres" name="adres" value="@Model.personelAdres" />
+                </div>
 
-            
-            <div class="form-group">
-                <button class="btn btn-success" type="submit">Personel Güncelle</button>
-            </div>
-        }
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-primary" type="submit">Personel Güncelle</button>
+                </div>
+            }
+        </div>
     </div>
 </div>
 
 <style>
     .card {
-        border-radius: 15px;
+        border-radius: 10px;
         border: none;
+        overflow: hidden;
     }
 
     .card-title {
-        font-weight: bold;
+        font-weight: 600;
+        color: #333;
     }
 
     .form-label {
-        margin-bottom: 10px;
+        font-weight: 500;
     }
 
-    .form-control, .form-select {
-        border-radius: 5px;
-        padding: 10px;
-        margin-bottom: 20px;
+    .form-control {
+        border-radius: 8px;
+        padding: 12px;
     }
 
-    .btn-success {
-        background-color: #28a745;
+    .btn-primary {
+        background-color: #007bff;
         border: none;
         border-radius: 5px;
         padding: 10px 20px;
         font-size: 1rem;
-        transition: background-color 0.3s ease;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
     }
 
-        .btn-success:hover {
-            background-color: #218838;
+        .btn-primary:hover {
+            background-color: #0056b3;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 </style>

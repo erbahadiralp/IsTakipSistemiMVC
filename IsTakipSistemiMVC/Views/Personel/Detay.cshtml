@@ -7,155 +7,150 @@
 
 <div class="container mt-4 custom-container">
     <div class="row mb-4">
-        <div class="col text-end">
+        <div class="col text-end" style="left:90px; top:20px;">
             <a href="@Url.Action("Index", "Personel")" class="btn btn-secondary back-button">
-
-                <span class="mdi mdi-arrow-left"></span> 
+                <i class="bi bi-arrow-left me-2"></i>
             </a>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col">
-            <div class="card position-relative" style="margin-top: -30px;">
-                <div class="card-header">
-                    <h3>Personel Detayları</h3>
-                </div>
-                <div class="card-body">
-                    <div class="row mb-3 custom-row">
-                        <div class="col-md-6 custom-col">
-                            <p><strong>Ad Soyad:</strong> @Model.personelAdSoyad</p>
-                            <p><strong>Birim:</strong> @Model.Birimler.birimAd</p>
-                            <p><strong>Dahili Numarası:</strong> @Model.personelDahili</p>
-                            <p><strong>İşe Giriş Tarihi:</strong> @Model.personelIseGiris</p>
-                            <p><strong>Kullanıcı Ad:</strong> @Model.personelKullaniciAd</p>
-                            <p><strong>Yetki Türü:</strong> @Model.YetkiTurler.yetkiTurAd</p>
+    <div class="container mt-5 custom-container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card shadow-lg">
+                    <div class="card-header">
+                        <h3 class="text-light">Bilgilerim</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-4 text-center">
+                                <img src="@Model.personelFotograf" alt="Profil Fotoğrafı" class="profile-img rounded-circle">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="row mb-2">
+                                    <div class="col-md-6">
+                                        <p><strong>Ad Soyad:</strong> @Model.personelAdSoyad</p>
+                                        <p><strong>Birim:</strong> @Model.Birimler.birimAd</p>
+                                        <p><strong>Yetki Türü:</strong> @Model.YetkiTurler.yetkiTurAd</p>
+                                        <p><strong>Kullanıcı Ad:</strong> @Model.personelKullaniciAd</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><strong>Adres:</strong> @Model.personelAdres</p>
+                                        <p><strong>Doğum Tarihi:</strong> @Model.personelDogumGunu</p>
+                                        <p><strong>Mail Adresi:</strong> @Model.personelMail</p>
+                                        <p><strong>Telefon Numarası:</strong> @Model.personelTelefon</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong>İşe Giriş Tarihi:</strong> @Model.personelIseGiris</p>
+                                        <p><strong>Kalan İzin Gün Sayısı:</strong> @Model.personelIzın</p>
+                                    </div>
+                                </div>
 
-
-                        </div>
-                        <div class="col-md-6 custom-col2">
-                            <p><strong>Adres:</strong> @Model.personelAdres</p>
-                            <p><strong>Doğum Tarihi:</strong> @Model.personelDogumGunu</p>
-                            <p><strong>Mail Adresi:</strong> @Model.personelMail</p>
-                            <p><strong>Telefon Numarası:</strong> @Model.personelTelefon</p>
+                                <div class="card-footer text-end">
+                                    <a href="@Url.Action("Guncelle", new { id = Model.personelId })" class="btn btn-success me-2">
+                                        <i class="bi bi-pencil-square"></i> Güncelle
+                                    </a>
+                                    <button type="button" class="btn btn-danger" id="showDeleteModal">
+                                        <i class="bi bi-trash"></i> Sil
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="row mb-3 custom-row">
-                        <div class="col-md-6 custom-col3">
-                            <p><strong>Kalan İzin Gün Sayısı:</strong> @Model.personelIzın</p>
-                        </div>
-                        <div class="col-md-6 text-center profile-img-container custom-col">
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHQ-5AFT61RZKko6Bncn8EgWPvLab4r4ZQyA&s" alt="Profil Fotoğrafı" class="profile-img">
-                        </div>
-                    </div>
-
-                </div>
-                <div class="card-footer text-end">
-                    <a href="@Url.Action("Guncelle", new { id = Model.personelId })" class="btn btn-success me-2">
-                        <i class="fas fa-edit"></i> Güncelle
-                    </a>
-                    <button type="button" class="btn btn-danger" id="showDeleteModal">
-                        <i class="fas fa-trash"></i> Sil
-                    </button>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Modal -->
-<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="confirmDeleteModalLabel">Personel Sil</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                @Model.personelAdSoyad adlı personeli silmek istediğinizden emin misiniz?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="cancelButton">İptal</button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Sil</button>
+    <style>
+        .custom-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .card-header {
+            background-color: #343a40;
+            color: #ffffff;
+            border-bottom: 1px solid #e9ecef;
+            border-radius: 15px 15px 0 0;
+            padding: 1rem;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+            .card-body p {
+                margin-bottom: 0.75rem;
+                font-size: 1rem;
+                color: #6c757d;
+            }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border: 3px solid #ddd;
+            margin-top: 20px;
+        }
+
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-body p strong {
+            color: #343a40;
+        }
+
+        .col-md-8, .col-md-4 {
+            margin-bottom: 1rem;
+        }
+    </style>
+
+    <!-- Modal -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Personel Sil</h5>
+                </div>
+                <div class="modal-body">
+                    @Model.personelAdSoyad adlı personeli silmek istediğinizden emin misiniz?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelButton">İptal</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteButton">Sil</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-<script>
-    document.getElementById('showDeleteModal').addEventListener('click', function () {
-        var deleteModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
-        deleteModal.show();
-    });
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script>
+        document.getElementById('showDeleteModal').addEventListener('click', function () {
+            var deleteModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+            deleteModal.show();
+        });
 
-    document.getElementById('confirmDeleteButton').addEventListener('click', function () {
-        var form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '@Url.Action("Sil", "Personel")';
+        document.getElementById('confirmDeleteButton').addEventListener('click', function () {
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '@Url.Action("Sil", "Personel")';
 
-        var hiddenField = document.createElement('input');
-        hiddenField.type = 'hidden';
-        hiddenField.name = 'personelId';
-        hiddenField.value = '@Model.personelId';
-        form.appendChild(hiddenField);
+            var hiddenField = document.createElement('input');
+            hiddenField.type = 'hidden';
+            hiddenField.name = 'personelId';
+            hiddenField.value = '@Model.personelId';
+            form.appendChild(hiddenField);
 
-        document.body.appendChild(form);
-        form.submit();
-    });
+            document.body.appendChild(form);
+            form.submit();
+        });
 
-    document.getElementById('cancelButton').addEventListener('click', function () {
-        window.location.href = '@Url.Action("Index", "Personel")';
-    });
-</script>
-
-<style>
-    .custom-container {
-        max-width: 70%;
-        margin: 0 auto;
-    }
-
-    .back-button {
-        position: relative;
-        z-index: 2;
-        top: -20px;
-    }
-
-    .profile-img-container {
-        position: absolute;
-        top: 90px;
-        right: 10px;
-    }
-
-    .profile-img {
-        width: 200px;
-        height: 200px;
-        object-fit: cover;
-        border: 2px solid #ddd;
-    }
-
-    .custom-row {
-        width: 100%;
-        margin: 0;
-        padding: 0;
-    }
-
-    .custom-col, .custom-col2, .custom-col3 {
-        padding: 0 1rem;
-    }
-
-    .card-body .row {
-        display: flex;
-        align-items: flex-start;
-        gap: 1.5rem;
-    }
-
-    .card-body p {
-        margin-bottom: 0.75rem;
-    }
-
-    .card-footer a {
-        margin-left: 0.5rem;
-    }
-</style>
+        document.getElementById('cancelButton').addEventListener('click', function () {
+            window.location.href = '@Url.Action("Index", "Personel")';
+        });
+    </script>

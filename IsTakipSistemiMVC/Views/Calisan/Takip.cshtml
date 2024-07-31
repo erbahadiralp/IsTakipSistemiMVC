@@ -3,29 +3,98 @@
     Layout = "~/Views/Shared/_LayoutCalisan.cshtml";
 }
 
+@model IsTakipSistemiMVC.Models.IsDurumModel
+
 <div class="container mt-5">
     <h2 class="text-center">İŞ TAKİBİ</h2>
     <br />
+
     <div class="row">
-        @foreach (var isDurum in Model.isDurumlar)
-        {
-            <div class="col-md-4 mb-4">
-                <div class="card shadow-sm border-0 h-100 job-card">
-                    <div class="card-header text-center text-white">
-                        <h5 class="card-title mb-0">@isDurum.isBaslik</h5>
+        <!-- Yapılıyor İşler Carousel -->
+        <div class="col-md-6 mb-4">
+            <h3 class="text-center text-primary">Devam Eden İşler</h3>
+            @if (Model.isDurumlar.Where(d => d.durumAd == "Yapılıyor").Any())
+            {
+                <div id="yapiliyorCarousel" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        @foreach (var isDurum in Model.isDurumlar.Where(d => d.durumAd == "Yapılıyor").ToList())
+                        {
+                            <div class="carousel-item @(isDurum == Model.isDurumlar.First(d => d.durumAd == "Yapılıyor") ? "active" : "")">
+                                <div class="card shadow-sm border-0 h-100 job-card">
+                                    <div class="card-header text-center text-white">
+                                        <h5 class="card-title mb-0">@isDurum.isBaslik</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">@isDurum.isAciklama</li>
+                                            <li class="list-group-item">İletilen Tarih: @isDurum.iletilenTarih</li>
+                                            <li class="list-group-item">Yapılma Tarihi: @isDurum.yapilanTarih</li>
+                                            <li class="list-group-item">İş Durumu: @isDurum.durumAd</li>
+                                            <li class="list-group-item">İş Yorumu: @isDurum.isYorum</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        }
                     </div>
-                    <div class="card-body">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">@isDurum.isAciklama</li>
-                            <li class="list-group-item">İletilen Tarih: @isDurum.iletilenTarih</li>
-                            <li class="list-group-item">Yapılma Tarihi: @isDurum.yapilanTarih</li>
-                            <li class="list-group-item">İş Durumu: @isDurum.durumAd</li>
-                            <li class="list-group-item">İş Yorumu: @isDurum.isYorum</li>
-                        </ul>
-                    </div>
+                    <a class="carousel-control-prev" href="#yapiliyorCarousel" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#yapiliyorCarousel" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
                 </div>
-            </div>
-        }
+            }
+            else
+            {
+                <div class="alert alert-warning text-center">Yapılıyor durumda iş bulunmamaktadır.</div>
+            }
+        </div>
+
+        <!-- Yapıldı İşler Carousel -->
+        <div class="col-md-6 mb-4">
+            <h3 class="text-center text-success">Tamamlanan İşler</h3>
+            @if (Model.isDurumlar.Where(d => d.durumAd == "Yapıldı").Any())
+            {
+                <div id="yapildiCarousel" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        @foreach (var isDurum in Model.isDurumlar.Where(d => d.durumAd == "Yapıldı").ToList())
+                        {
+                            <div class="carousel-item @(isDurum == Model.isDurumlar.First(d => d.durumAd == "Yapıldı") ? "active" : "")">
+                                <div class="card shadow-sm border-0 h-100 job-card">
+                                    <div class="card-header text-center text-white">
+                                        <h5 class="card-title mb-0">@isDurum.isBaslik</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">@isDurum.isAciklama</li>
+                                            <li class="list-group-item">İletilen Tarih: @isDurum.iletilenTarih</li>
+                                            <li class="list-group-item">Yapılma Tarihi: @isDurum.yapilanTarih</li>
+                                            <li class="list-group-item">İş Durumu: @isDurum.durumAd</li>
+                                            <li class="list-group-item">İş Yorumu: @isDurum.isYorum</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <a class="carousel-control-prev" href="#yapildiCarousel" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#yapildiCarousel" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-warning text-center">Yapıldı durumda iş bulunmamaktadır.</div>
+            }
+        </div>
     </div>
 </div>
 
@@ -39,60 +108,35 @@
         border-radius: 15px;
         background-color: #ffffff;
         border: 1px solid #e0e0e0;
+        max-width: 25rem;
+        margin: auto;
+        max-height: 20rem;
     }
 
         .card:hover {
-            transform: scale(1.05);
+            transform: scale(1.03);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
     .card-title {
         font-weight: bold;
         color: #343a40;
-    }
-
-    .form-label {
-        color: #495057;
+        font-size: 1.25rem;
     }
 
     .job-card .card-header {
-        background-color: #007bff;
+        background-color: lightblue;
         color: #ffffff;
+        padding: 0.75rem 1.25rem;
     }
 
     .job-card .card-body {
-        background-color: #ffffff;
-        color: #343a40;
+        padding: 0.5rem 1rem;
     }
 
     .job-card .list-group-item {
         background-color: #ffffff;
         color: #495057;
-    }
-
-    .job-card .card-footer {
-        background-color: #e9ecef;
-    }
-
-    .btn-success {
-        background-color: #28a745;
-        border-color: #28a745;
-    }
-
-        .btn-success:hover {
-            background-color: #218838;
-            border-color: #1e7e34;
-        }
-
-        .btn-success:focus {
-            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
-        }
-
-    .shadow-sm {
-        box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
-    }
-
-    .text-center {
-        text-align: center;
+        padding: 0.5rem 1rem;
     }
 </style>

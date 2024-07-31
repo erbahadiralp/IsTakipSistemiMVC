@@ -1,14 +1,8 @@
 ﻿@model IsTakipSistemiMVC.Models.Personeller
 
 @{
-    if (Model.personelYetkiTurId == 1)
-    {
-        Layout = "~/Views/Shared/_LayoutYonetici.cshtml";
-    }
-    if (Model.personelYetkiTurId == 2)
-    {
-        Layout = "~/Views/Shared/_LayoutCalisan.cshtml";
-    }
+    Layout = ViewBag.Layout;
+
 }
 
 <div class="container mt-5">

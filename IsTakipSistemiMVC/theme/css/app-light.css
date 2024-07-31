@@ -4670,7 +4670,7 @@ a.close.disabled {
   vertical-align: text-top !important; }
 
 .bg-primary {
-  background-color: #1b68ff !important; }
+  background-color: lightblue !important; }
 
 a.bg-primary:hover, a.bg-primary:focus,
 button.bg-primary:hover,
@@ -8046,9 +8046,14 @@ select {
   left: 5rem;
   height: 100%; }
 
-.h1, .h2, .h3, .h4, .h5, .h6,
-h1, h2, h3, h4, h5, h6, strong {
-  color: #fafafa; }
+.h1, .h2, .h3, .h4,  .h6,
+h1, h2, h3, h4, h6, strong {
+  color: #001a4e; }
+
+.h5, h5{
+    color: white;
+}
+
 
 .text-muted {
   color: #adb5bd !important; }

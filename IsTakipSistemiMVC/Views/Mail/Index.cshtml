@@ -6,131 +6,171 @@
 @model IEnumerable<IsTakipSistemiMVC.Models.MailViewModel>
 
 <style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+
     .sidebar {
         width: 250px;
-        background-color: #f8f9fa;
+        background-color: #f5f5f5;
         padding: 20px;
         position: fixed;
         height: 100%;
         overflow-y: auto;
         border-right: 1px solid #ddd;
+        text-align: center;
     }
 
     .content {
         margin-left: 270px;
         padding: 20px;
+        background-color: #f7f7f7;
+        min-height: 100vh;
     }
 
     .custom-button {
-        margin: 5px;
+        width: 100%;
+        background-color: #1a73e8;
+        color: white;
+        border-radius: 25px;
+        text-align: center;
+        padding-left: 15px;
+        font-size: 16px;
+        margin-bottom: 15px;
         transition: background-color 0.3s ease;
     }
 
+        .custom-button i {
+            margin-right: 10px;
+        }
+
         .custom-button:hover {
-            background-color: #0056b3;
+            background-color: #135ab2;
             color: white;
         }
 
-    .button-container {
-        display: flex;
-        justify-content: flex-start;
-        gap: 10px;
-        display: none; /* Başlangıçta gizli */
-        align-items: center;
+    .nav-link {
+        color: #202124;
+        font-weight: 500;
+        padding: 10px;
+        border-radius: 25px;
+        margin-bottom: 5px;
+        transition: background-color 0.3s ease;
     }
 
-        .button-container.visible {
-            display: flex; /* Checkbox işaretlendiğinde göster */
+        .nav-link.active, .nav-link:hover {
+            background-color: #e8f0fe;
+            color: #1a73e8;
         }
 
     .search-bar {
-        flex-grow: 1;
         display: flex;
-        justify-content: flex-end;
-        margin-left: auto;
+        align-items: center;
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 25px;
+        padding: 5px 15px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
     .search-input {
-        width: 200px;
-        padding: 5px 10px;
-        border: 1px solid #ccc;
-        border-radius: 25px;
-        font-size: 14px;
+        width: 100%;
+        border: none;
         outline: none;
-        transition: box-shadow 0.3s ease;
+        font-size: 14px;
+        color: #202124;
     }
 
-        .search-input:focus {
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        .search-input::placeholder {
+            color: #999;
         }
 
     .card-body {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
+        background-color: white;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .table {
+        width: 100%;
+        margin-bottom: 0;
+    }
+
+        .table th, .table td {
+            vertical-align: middle;
+            padding: 10px;
+            border-bottom: 1px solid #f1f3f4;
+        }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f8f9fa;
+    }
+
+    .table-responsive {
+        margin-top: 15px;
+    }
+
+    .button-container {
+        display: none;
+        justify-content: flex-start;
         gap: 10px;
+        margin-bottom: 15px;
     }
 
-    .table th, .table td {
-        vertical-align: middle;
-    }
-
-    .avatar {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-    }
+        .button-container.visible {
+            display: flex;
+        }
 </style>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
 <div class="sidebar">
-    <a href="@Url.Action("MailOlustur", "Mail")" class="btn btn-primary custom-button">Oluştur</a>    
+    <a href="@Url.Action("MailOlustur", "Mail")" class="btn btn-primary custom-button">Oluştur</a>
     <ul class="nav flex-column">
         <li class="nav-item">
-            <a class="nav-link active" href="@Url.Action("Index", "Mail")">Gelen Kutusu</a>
+            <a class="nav-link active " href="@Url.Action("Index", "Mail")">
+                <i class="bi bi-inbox"></i> Gelen Kutusu
+            </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="@Url.Action("GidenMailler", "Mail")">Gönderilmiş Postalar</a>
+            <a class="nav-link" href="@Url.Action("GidenMailler", "Mail")">
+                <i class="bi bi-send"></i> Gönderilmiş Postalar
+            </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="@Url.Action("ArsivGoster", "Mail")">Arşivlenmiş Postalar</a>
+            <a class="nav-link" href="@Url.Action("ArsivGoster", "Mail")">
+                <i class="bi bi-archive"></i> Arşivlenmiş Postalar
+            </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Silinmiş Postalar</a>
+            <a class="nav-link" href="#">
+                <i class="bi bi-trash"></i> Silinmiş Postalar
+            </a>
         </li>
     </ul>
-    
 </div>
 
 <div class="content">
-    <h2>Gelen Kutusu</h2>
-
-
-    <div class="card mb-4">
-        <div class="card-body">
-            <div class="col button-container" id="actionButtons">
-                <button id="deleteSelected" class="btn btn-danger custom-button">
-                    <i class="fas fa-trash-alt"></i>
-                </button>
-                <button id="markReadSelected" class="btn btn-success custom-button">
-                    <i class="fas fa-envelope-open"></i>
-                </button>
-                <button id="archiveSelected" class="btn btn-warning custom-button">
-                    <i class="fas fa-archive"></i> Arşivle
-                </button>
-            </div>
-
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <div class="search-bar">
-                    <input type="text" id="searchInput" class="search-input" placeholder="Arama yap...">
-                </div>
-            </div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" class="search-input" placeholder="Arama yap...">
         </div>
     </div>
 
     <div class="card">
         <div class="card-body">
+            <div class="button-container" id="actionButtons">
+                <button id="deleteSelected" class="btn btn-danger">
+                    <i class="bi bi-trash"></i>
+                </button>
+                <button id="markReadSelected" class="btn btn-success">
+                    <i class="bi bi-envelope-open"></i>
+                </button>
+                <button id="archiveSelected" class="btn btn-warning">
+                    <i class="bi bi-archive"></i>
+                </button>
+            </div>
+
             <div class="table-responsive">
                 <table class="table table-striped table-hover">
                     <thead>
@@ -146,10 +186,7 @@
                         {
                             <tr class="text-center" data-mail-id="@mail.MailId">
                                 <td><input type="checkbox" class="select-mail" data-mail-id="@mail.MailId"></td>
-                                <td class="d-flex align-items-center">
-                                    <img src="https://via.placeholder.com/30" alt="avatar" class="avatar mr-2">
-                                    @mail.GondericiAdSoyad
-                                </td>
+                                <td>@mail.GondericiAdSoyad</td>
                                 <td>@mail.Konu</td>
                                 <td>@mail.GonderilmeTarihi</td>
                             </tr>
@@ -215,6 +252,9 @@
                         } else {
                             alert(data.message);
                         }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.error('Error deleting mails: ', textStatus, errorThrown);
                     }
                 });
             }
@@ -237,15 +277,37 @@
                         } else {
                             alert(data.message);
                         }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.error('Error archiving mails: ', textStatus, errorThrown);
                     }
                 });
             }
         });
 
-        // Satıra çift tıklama ile mail detayına gitme
-        $('table tbody tr').on('dblclick', function () {
-            var mailId = $(this).data('mail-id');
-            window.location.href = '@Url.Action("MailDetay", "Mail")/' + mailId;
+        // Seçili mailleri okundu olarak işaretleme
+        $('#markReadSelected').on('click', function () {
+            var ids = $('.select-mail:checked').map(function () {
+                return $(this).data('mail-id');
+            }).get();
+            if (ids.length > 0) {
+                $.ajax({
+                    url: '@Url.Action("MailiOkunduYap", "Mail")',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(ids),
+                    success: function (data) {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            alert(data.message);
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.error('Error marking mails as read: ', textStatus, errorThrown);
+                    }
+                });
+            }
         });
     });
 </script>

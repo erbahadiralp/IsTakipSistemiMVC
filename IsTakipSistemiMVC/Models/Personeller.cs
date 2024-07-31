@@ -17,12 +17,12 @@ namespace IsTakipSistemiMVC.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Personeller()
         {
-            this.Isler = new HashSet<Isler>();
-            this.Loglar = new HashSet<Loglar>();
             this.Duyurular = new HashSet<Duyurular>();
+            this.Isler = new HashSet<Isler>();
+            this.Izinler = new HashSet<Izinler>();
+            this.Loglar = new HashSet<Loglar>();
             this.Mailler = new HashSet<Mailler>();
             this.Mailler1 = new HashSet<Mailler>();
-            this.Izinler = new HashSet<Izinler>();
         }
     
         public int personelId { get; set; }
@@ -42,19 +42,17 @@ namespace IsTakipSistemiMVC.Models
         public Nullable<int> personelIzın { get; set; }
         public string personelFotograf { get; set; }
     
-        public virtual Birimler Birimler { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Isler> Isler { get; set; }
-        public virtual YetkiTurler YetkiTurler { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Loglar> Loglar { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Duyurular> Duyurular { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Isler> Isler { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Izinler> Izinler { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Loglar> Loglar { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Mailler> Mailler { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Mailler> Mailler1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Izinler> Izinler { get; set; }
     }
 }

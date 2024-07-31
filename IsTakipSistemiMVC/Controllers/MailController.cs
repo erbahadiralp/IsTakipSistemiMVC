@@ -61,6 +61,7 @@ namespace IsTakipSistemiMVC.Controllers
                 mail.mailAliciId = mail.mailAliciId;
                 mail.aktiflik = true;
                 mail.mailArsiv = false; // Explicitly set to false
+                mail.mailOkunma = false;
 
                 entity.Mailler.Add(mail);
                 entity.SaveChanges();
