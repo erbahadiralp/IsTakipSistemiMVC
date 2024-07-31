@@ -4,41 +4,57 @@
 }
 
 @{
-    var sonDuyuru = ViewBag.SonDuyuru as IsTakipSistemiMVC.Models.Duyurular;
+    var sonDuyurular = ViewBag.SonDuyurular as List<IsTakipSistemiMVC.Models.Duyurular>;
 }
 
 @model IEnumerable<IsTakipSistemiMVC.Models.ToplamIs>
 
 <div class="container mt-4">
-    <div class="row">
-        <!-- Duyurular, Çalışanlarım ve Ayın Elemanı Kartları Kapsayıcı Div -->
-        <div class="col-lg-6 mb-2">
-            <!-- Duyurular Kartı -->
-            @if (sonDuyuru != null)
-            {
-                <div class="card shadow-sm announcement-card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">@sonDuyuru.duyuruBaslik</h5>
-                        <p class="card-text">@sonDuyuru.duyuruIcerik</p>
-                        <p class="card-text"><small class="text-muted">@sonDuyuru.duyuruTarih</small></p>
-                    </div>
-                </div>
-            }
-            else
-            {
-                <p>Henüz duyuru bulunmamaktadır.</p>
-            }
+    <!-- Üçlü Kartlar -->
+    <div class="col-lg-8 col-md-12 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Çalışan Performans</h5>
+                <canvas id="performanceChart" class="chart-canvas"></canvas>
+            </div>
+        </div>
+    </div>
 
-            <!-- Çalışanlarım Kartı -->
-            <div class="card shadow-sm personal-card mb-2">
-                <div class="card-body">
+
+    <div class="row mb-4">
+        <div class="col-lg-4 col-md-6 mb-3">
+            <div class="card shadow-sm small-card card-color-1">
+                <div class="card-body text-center">
+                    <h6 class="card-title">Duyurular</h6>
+                    @if (sonDuyurular != null && sonDuyurular.Any())
+                    {
+                        foreach (var duyuru in sonDuyurular)
+                        {
+                            <div class="announcement-card mb-3">
+                                <h6>@duyuru.duyuruBaslik</h6>
+                                <p class="card-text">@duyuru.duyuruIcerik</p>
+                                <p class="card-text"><small class="text-muted">@duyuru.duyuruTarih.ToShortDateString()</small></p>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="card-text">Henüz duyuru bulunmamaktadır.</p>
+                    }
+                </div>
+            </div>
+        </div>  
+
+        <div class="col-lg-4 col-md-6 mb-3">
+            <div class="card shadow-sm small-card card-color-2">
+                <div class="card-body text-center">
                     <h6 class="card-title">Çalışanlarım</h6>
                     <div class="table-responsive">
                         <table class="table table-hover employee-table">
                             <thead class="employee-table-header">
                                 <tr class="text-center">
                                     <th>Ad Soyad</th>
-                                    <th>Dahili Telefon Numara</th>
+                                    <th>Dahili Telefon</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -54,18 +70,21 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Ayın Elemanı Kartı -->
-            <div class="card shadow-sm ayin-elemani-card mb-2" style="height: 250px">
-                <div class="card-body">
-                    <h6 class="card-title">Ayın Elemanı</h6>
+
+
+        <!-- Alt Kartlar -->
+        <div class="row mb-4">
+            <div class="card shadow-sm ayin-elemani-card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Ayın Elemanı</h5>
                     <div class="alert alert-dark" role="alert">
-                        @using (Html.BeginForm("AyinElemani", "Yonetici", FormMethod.Post, new { @class = "row g-3 align-items-center" }))
+                        @using (Html.BeginForm("AyinElemani", "Yonetici", FormMethod.Post, new { @class = "row gx-3 gy-2 align-items-center justify-content-center" }))
                         {
                             <div class="col-auto">
-                                @Html.Partial("_PartialAylarSelect")
+                                @Html.Partial("_PartialAylarSelect", null, new ViewDataDictionary { { "class", "form-select" } })
                             </div>
-
                             <div class="col-auto">
                                 <select class="form-select" name="yillar">
                                     @foreach (var yil in ViewBag.yillar)
@@ -74,233 +93,225 @@
                                     }
                                 </select>
                             </div>
-
                             <div class="col-auto">
                                 <button class="btn btn-primary">Ayın Elemanını Getir</button>
                             </div>
                         }
                     </div>
-                    <div class="col-md-12">
-                        @if (ViewBag.ayinElemani != null)
-                        {
-                            <div class="alert alert-success" role="alert">
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        @ViewBag.ayinElemani.personelAdSoyad
-                                        <span class="badge bg-primary rounded-pill">Yapılan İş Toplamı: @ViewBag.ayinElemani.toplamIs</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="alert alert-dark" role="alert">
-                                Herhangi bir çalışan bulunamadı
-                            </div>
-                        }
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Sağ: Çalışan Performansı Çizelgesi ve Günün Yemeği Kartı -->
-        <div class="col-lg-6 mb-2">
-            <!-- Çalışan Performansı Çizelgesi -->
-            <div class="card shadow-sm chart-card mb-2" style="height:368px" id="performanceCard">
-                <div class="card-body">
-                    <h6 class="card-title">Çalışan Performansı</h6>
-                    <canvas id="performanceChart"></canvas>
-                </div>
-            </div>
-
-            <!-- Günün Yemeği Kartı -->
-            <div class="card shadow-sm meal-card">
-                <div class="card-body">
-                    <h5 class="card-title">Günün Menüsü</h5>
-                    <p class="card-text">
-                        @{
-                            var bugunYemek = ViewBag.BugunYemek as IsTakipSistemiMVC.Models.YemekTablo;
-                        }
-                        @if (bugunYemek != null)
-                        {
-                            <ul class="list-group mb-2">
-                                <li class="list-group-item"> @bugunYemek.YemekAdi1</li>
-                                <li class="list-group-item"> @bugunYemek.YemekAdi2</li>
-                                <li class="list-group-item"> @bugunYemek.YemekAdi3</li>
-                                <li class="list-group-item"> @bugunYemek.YemekAdi4</li>
-                                <li class="list-group-item"> @bugunYemek.YemekAdi5</li>
-                                <li class="list-group-item"> @bugunYemek.YemekAdi6</li>
-                                <li class="list-group-item"> @bugunYemek.YemekAdi7</li>
-                                <li class="list-group-item"> @bugunYemek.YemekAdi8</li>
+                    @if (ViewBag.ayinElemani != null)
+                    {
+                        <div class="alert alert-success mt-4" role="alert">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    @ViewBag.ayinElemani.personelAdSoyad
+                                    <span class="badge bg-primary rounded-pill">Yapılan İş Toplamı: @ViewBag.ayinElemani.toplamIs</span>
+                                </li>
                             </ul>
-                        }
-                        else
-                        {
-                        <p>Bugün için yemek menüsü bulunmamaktadır.</p>
+                        </div>
                     }
-                        </p>
-                    </div>
+                    else
+                    {
+                        <div class="alert alert-dark mt-4" role="alert">
+                            Herhangi bir çalışan bulunamadı
+                        </div>
+                    }
                 </div>
             </div>
+
+            <div class="col-lg-6 col-md-12 mb-4">
+                <div class="card shadow-sm meal-card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Günün Menüsü</h5>
+                        <p class="card-text">
+                            @{
+                                var bugunYemek = ViewBag.BugunYemek as IsTakipSistemiMVC.Models.YemekTablo;
+                            }
+                            @if (bugunYemek != null)
+                            {
+                                <ul class="list-group mb-2">
+                                    <li class="list-group-item"> @bugunYemek.YemekAdi1</li>
+                                    <li class="list-group-item"> @bugunYemek.YemekAdi2</li>
+                                    <li class="list-group-item"> @bugunYemek.YemekAdi3</li>
+                                    <li class="list-group-item"> @bugunYemek.YemekAdi4</li>
+                                    <li class="list-group-item"> @bugunYemek.YemekAdi5</li>
+                                    <li class="list-group-item"> @bugunYemek.YemekAdi6</li>
+                                    <li class="list-group-item"> @bugunYemek.YemekAdi7</li>
+                                    <li class="list-group-item"> @bugunYemek.YemekAdi8</li>
+                                </ul>
+                            }
+                            else
+                            {
+                            <p>Bugün için yemek menüsü bulunmamaktadır.</p>
+                        }
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
-    </div>
 
-    @*<style>
-        body {
-            background-color: #343a40;
-            color: #f8f9fa;
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+    var ctx = document.getElementById('performanceChart').getContext('2d');
+    var performanceChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(Json.Encode(Model.Select(m => m.personelAdSoyad))),
+            datasets: [{
+                label: 'Toplam İş',
+                data: @Html.Raw(Json.Encode(Model.Select(m => m.toplamIs))),
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
         }
+    });
+        </script>
 
-        .card {
-            border-radius: 10px;
-            background-color: #212529;
-        }
+        <style>
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+            }
 
-        .card-title {
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #f8f9fa;
-            font-size: 1.25rem;
-        }
+            .card {
+                border-radius: 15px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            }
 
-        .card-text {
-            color: #f8f9fa;
-        }
+                .card:hover {
+                    transform: scale(1.05);
+                    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+                }
 
-        .container h2 {
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #f8f9fa;
-        }
+            .small-card {
+                padding: 20px;
+                text-align: center;
+                min-height: 250px;
+            }
 
+            .card h6, .card h5 {
+                font-weight: 700;
+                color: #333;
+            }
 
+            .card p {
+                font-size: 14px;
+                color: #555;
+            }
 
-        .profile-card {
-            height: auto;
-        }
+            .card-color-1 {
+                background-color: #f9f6f1;
+            }
 
-        .personal-card {
-            width: auto;
-        }
+            .card-color-2 {
+                background-color: #e3f2fd;
+            }
 
-        .announcement-card {
-            background-color: #007bff;
-            color: #212529;
-        }
+            .card-color-3 {
+                background-color: #e8f5e9;
+            }
 
-        .text-muted {
-            color: #fff !important;
-        }
-
-        .meal-card {
-            background-color: #28a745;
-            color: #f8f9fa;
-        }
-
-        .chart-card {
-            height: 100%;
-        }
-
-        .ayin-elemani-card {
-            height: 100%;
-        }
-
-        .list-group-item {
-            border: none;
-            color: #f8f9fa;
-        }
-
-        .list-group-item-primary {
-            background-color: #007bff;
-            color: white;
-            font-weight: bold;
-            border-color: #007bff;
-        }
-
-        .btn-info {
-            font-size: 0.75rem;
-        }
-
-        .flex-column {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .flex-grow-1 {
-            flex-grow: 1;
-        }
-
-        .h-100 {
-            height: 100%;
-        }
-
-        .alert {
-            border-radius: 10px;
-        }
-
-        .btn-primary {
-            width: 100%;
-        }
-
-        .list-group-item {
-            border: none;
-            padding: 10px 15px;
-            margin-bottom: 5px;
-            border-radius: 5px;
-            background-color: #f8f9fa;
-            color: #343a40;
-            font-size: 0.875rem;
-        }
-
-        .employee-table {
-            background-color: #ffffff;
-            color: #212529;
-            border: 1px solid #dee2e6;
-        }
-
-            .employee-table th, .employee-table td {
+            .announcement-card {
+                background-color: #fff3cd;
+                border: 1px solid #f1c40f;
                 padding: 10px;
-                vertical-align: middle;
-                border: 1px solid #dee2e6;
+                border-radius: 5px;
             }
 
-        .employee-table-header th {
-            background-color: #ffffff !important;
-            color: #212529 !important;
-            font-weight: bold !important;
-        }
-
-        .employee-table tbody tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        .employee-table tbody tr:hover {
-            background-color: #e0e0e0 !important; /* Daha açık bir gri tonu */
-        }
-    </style>*@
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-var ctx = document.getElementById('performanceChart').getContext('2d');
-var performanceChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: @Html.Raw(Json.Encode(Model.Select(m => m.personelAdSoyad))),
-        datasets: [{
-            label: 'Toplam İş',
-            data: @Html.Raw(Json.Encode(Model.Select(m => m.toplamIs))),
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
-        }]
-    },
-    options: {
-        responsive: true,
-        scales: {
-            y: {
-                beginAtZero: true
+            .employee-table thead {
+                background-color: #007bff;
+                color: white;
             }
-        }
-    }
-});
-    </script>
+
+            .employee-table tbody tr {
+                transition: background-color 0.3s ease-in-out;
+            }
+
+                .employee-table tbody tr:hover {
+                    background-color: #f1f1f1;
+                }
+
+            ..ayin-elemani-card {
+                background-color: #f5f5f5; /* Daha açık bir arka plan rengi */
+                min-height: 300px; /* Kartı genişletmek için artırılmış yükseklik */
+                padding: 30px;
+                border-radius: 15px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .meal-card {
+                background-color: #ffe6e6; /* Daha belirgin bir arka plan rengi */
+                min-height: 250px;
+                padding: 20px;
+                border-radius: 15px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+                .meal-card .card-title {
+                    color: #d9534f; /* Kırmızıya yakın bir başlık rengi */
+                    font-weight: bold;
+                }
+
+            .ayin-elemani-card .card-title {
+                color: #5cb85c; /* Yeşil bir başlık rengi */
+                font-weight: bold;
+            }
+
+            .ayin-elemani-card .form-select,
+            .ayin-elemani-card .btn-primary {
+                min-width: 150px;
+                margin: 5px 0;
+            }
+
+            .ayin-elemani-card .alert-dark {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .ayin-elemani-card .row {
+                justify-content: center;
+                gap: 10px;
+            }
+
+            .alert {
+                border-radius: 10px;
+                font-size: 14px;
+            }
+
+            .list-group-item {
+                background-color: #ffffff; /* Beyaz arka plan */
+                border: 1px solid #ddd;
+                margin-bottom: 5px;
+                border-radius: 5px;
+                color: #333;
+            }
+
+
+            .list-group-item {
+                border: 1px solid #ddd;
+                margin-bottom: 5px;
+                border-radius: 5px;
+                background-color: #f8f9fa;
+                color: #343a40;
+            }
+
+            .chart-canvas {
+                max-width: 100%;
+                height: 250px;
+                margin-top: 20px;
+            }
+        </style>

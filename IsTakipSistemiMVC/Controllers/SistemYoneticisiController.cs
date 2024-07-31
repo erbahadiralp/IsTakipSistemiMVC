@@ -74,11 +74,13 @@ namespace IsTakipSistemiMVC.Controllers
             ViewBag.TotalEmployees = entity.Personeller.Count(p => p.aktiflik == true);
 
             // En son tarihli duyuruyu al
-            var sonDuyuru = entity.Duyurular
-                .Where(d => d.aktiflik == true && d.goruntuleyenBirimId == birimId)
-                .OrderByDescending(d => d.duyuruTarih)
-                .FirstOrDefault();
-            ViewBag.SonDuyuru = sonDuyuru;
+            var sonDuyurular = entity.Duyurular
+    .Where(d => d.aktiflik == true && d.goruntuleyenBirimId == birimId)
+    .OrderByDescending(d => d.duyuruTarih)
+    .Take(3)
+    .ToList();
+            ViewBag.SonDuyurular = sonDuyurular;
+
 
             return View();
         }

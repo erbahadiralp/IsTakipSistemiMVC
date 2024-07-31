@@ -42,6 +42,7 @@ namespace IsTakipSistemiMVC.Models
         public Nullable<int> personelIzın { get; set; }
         public string personelFotograf { get; set; }
     
+        public virtual Birimler Birimler { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Duyurular> Duyurular { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -54,5 +55,6 @@ namespace IsTakipSistemiMVC.Models
         public virtual ICollection<Mailler> Mailler { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Mailler> Mailler1 { get; set; }
+        public virtual YetkiTurler YetkiTurler { get; set; }
     }
 }

@@ -241,6 +241,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Personeller_Birimler">
+          <End Role="Birimler" Type="Self.Birimler" Multiplicity="0..1" />
+          <End Role="Personeller" Type="Self.Personeller" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Birimler">
+              <PropertyRef Name="birimId" />
+            </Principal>
+            <Dependent Role="Personeller">
+              <PropertyRef Name="personelBirimId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Personeller_YetkiTurler">
+          <End Role="YetkiTurler" Type="Self.YetkiTurler" Multiplicity="0..1" />
+          <End Role="Personeller" Type="Self.Personeller" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="YetkiTurler">
+              <PropertyRef Name="yetkiTurId" />
+            </Principal>
+            <Dependent Role="Personeller">
+              <PropertyRef Name="personelYetkiTurId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="IsTakipDBModelStoreContainer">
           <EntitySet Name="Birimler" EntityType="Self.Birimler" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Durumlar" EntityType="Self.Durumlar" Schema="dbo" store:Type="Tables" />
@@ -286,6 +310,14 @@
             <End Role="Personeller" EntitySet="Personeller" />
             <End Role="Mailler" EntitySet="Mailler" />
           </AssociationSet>
+          <AssociationSet Name="FK_Personeller_Birimler" Association="Self.FK_Personeller_Birimler">
+            <End Role="Birimler" EntitySet="Birimler" />
+            <End Role="Personeller" EntitySet="Personeller" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Personeller_YetkiTurler" Association="Self.FK_Personeller_YetkiTurler">
+            <End Role="YetkiTurler" EntitySet="YetkiTurler" />
+            <End Role="Personeller" EntitySet="Personeller" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -304,6 +336,10 @@
           <EntitySet Name="sysdiagrams" EntityType="IsTakipDBModel.sysdiagrams" />
           <EntitySet Name="YemekTablo" EntityType="IsTakipDBModel.YemekTablo" />
           <EntitySet Name="YetkiTurler" EntityType="IsTakipDBModel.YetkiTurler" />
+          <AssociationSet Name="FK_Personeller_Birimler" Association="IsTakipDBModel.FK_Personeller_Birimler">
+            <End Role="Birimler" EntitySet="Birimler" />
+            <End Role="Personeller" EntitySet="Personeller" />
+          </AssociationSet>
           <AssociationSet Name="FK_Isler_Durumlar" Association="IsTakipDBModel.FK_Isler_Durumlar">
             <End Role="Durumlar" EntitySet="Durumlar" />
             <End Role="Isler" EntitySet="Isler" />
@@ -336,6 +372,10 @@
             <End Role="Personeller" EntitySet="Personeller" />
             <End Role="Mailler" EntitySet="Mailler" />
           </AssociationSet>
+          <AssociationSet Name="FK_Personeller_YetkiTurler" Association="IsTakipDBModel.FK_Personeller_YetkiTurler">
+            <End Role="YetkiTurler" EntitySet="YetkiTurler" />
+            <End Role="Personeller" EntitySet="Personeller" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Birimler">
           <Key>
@@ -344,6 +384,7 @@
           <Property Name="birimId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="birimAd" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="aktiflik" Type="Boolean" />
+          <NavigationProperty Name="Personeller" Relationship="IsTakipDBModel.FK_Personeller_Birimler" FromRole="Birimler" ToRole="Personeller" />
         </EntityType>
         <EntityType Name="Durumlar">
           <Key>
@@ -454,12 +495,14 @@
           <Property Name="personelDahili" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
           <Property Name="personelIzın" Type="Int32" />
           <Property Name="personelFotograf" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Birimler" Relationship="IsTakipDBModel.FK_Personeller_Birimler" FromRole="Personeller" ToRole="Birimler" />
           <NavigationProperty Name="Duyurular" Relationship="IsTakipDBModel.FK_Duyurular_Personeller" FromRole="Personeller" ToRole="Duyurular" />
           <NavigationProperty Name="Isler" Relationship="IsTakipDBModel.FK_Isler_Personeller" FromRole="Personeller" ToRole="Isler" />
           <NavigationProperty Name="Izinler" Relationship="IsTakipDBModel.FK__Izinler__persone__02FC7413" FromRole="Personeller" ToRole="Izinler" />
           <NavigationProperty Name="Loglar" Relationship="IsTakipDBModel.FK_Loglar_Personeller" FromRole="Personeller" ToRole="Loglar" />
           <NavigationProperty Name="Mailler" Relationship="IsTakipDBModel.FK_Mailler_Personeller" FromRole="Personeller" ToRole="Mailler" />
           <NavigationProperty Name="Mailler1" Relationship="IsTakipDBModel.FK_Mailler_Personeller1" FromRole="Personeller" ToRole="Mailler" />
+          <NavigationProperty Name="YetkiTurler" Relationship="IsTakipDBModel.FK_Personeller_YetkiTurler" FromRole="Personeller" ToRole="YetkiTurler" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -492,7 +535,20 @@
           </Key>
           <Property Name="yetkiTurId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="yetkiTurAd" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Personeller" Relationship="IsTakipDBModel.FK_Personeller_YetkiTurler" FromRole="YetkiTurler" ToRole="Personeller" />
         </EntityType>
+        <Association Name="FK_Personeller_Birimler">
+          <End Type="IsTakipDBModel.Birimler" Role="Birimler" Multiplicity="0..1" />
+          <End Type="IsTakipDBModel.Personeller" Role="Personeller" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Birimler">
+              <PropertyRef Name="birimId" />
+            </Principal>
+            <Dependent Role="Personeller">
+              <PropertyRef Name="personelBirimId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Isler_Durumlar">
           <End Type="IsTakipDBModel.Durumlar" Role="Durumlar" Multiplicity="0..1" />
           <End Type="IsTakipDBModel.Isler" Role="Isler" Multiplicity="*" />
@@ -586,6 +642,18 @@
             </Principal>
             <Dependent Role="Mailler">
               <PropertyRef Name="mailAliciId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Personeller_YetkiTurler">
+          <End Type="IsTakipDBModel.YetkiTurler" Role="YetkiTurler" Multiplicity="0..1" />
+          <End Type="IsTakipDBModel.Personeller" Role="Personeller" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="YetkiTurler">
+              <PropertyRef Name="yetkiTurId" />
+            </Principal>
+            <Dependent Role="Personeller">
+              <PropertyRef Name="personelYetkiTurId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

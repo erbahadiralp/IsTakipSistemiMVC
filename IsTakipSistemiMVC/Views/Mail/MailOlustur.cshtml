@@ -5,547 +5,287 @@
 
 @model IsTakipSistemiMVC.Models.Mailler
 
-@*<div class="sidebar">
-        <a href="@Url.Action("MailOlustur", "Mail")" class="btn btn-primary custom-button">Oluştur</a>
-        <ul class="nav flex-column">
-            <li class="nav-item">
-                <a class="nav-link" href="@Url.Action("Index", "Mail")">
-                    <i class="bi bi-inbox"></i> Gelen Kutusu
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="@Url.Action("GidenMailler", "Mail")">
-                    <i class="bi bi-send"></i> Gönderilmiş Postalar
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="@Url.Action("ArsivGoster", "Mail")">
-                    <i class="bi bi-archive"></i> Arşivlenmiş Postalar
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="bi bi-trash"></i> Silinmiş Postalar
-                </a>
-            </li>
-        </ul>
-    </div>
+<div class="sidebar">
+    <a href="@Url.Action("MailOlustur", "Mail")" class="btn btn-primary custom-button">Oluştur</a>
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link  " href="@Url.Action("Index", "Mail")">
+                <i class="bi bi-inbox"></i> Gelen Kutusu
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="@Url.Action("GidenMailler", "Mail")">
+                <i class="bi bi-send"></i> Gönderilmiş Postalar
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("ArsivGoster", "Mail")">
+                <i class="bi bi-archive"></i> Arşivlenmiş Postalar
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("SilinmisMailler", "Mail")">
+                <i class="bi bi-trash"></i> Silinmiş Postalar
+            </a>
+        </li>
+    </ul>
+</div>
 
-    <div class="content container mt-5">
-        <h2 class="text-center">Mail Oluştur</h2>
+<div class="content container" style="margin-right:255px">
+    <h1 class="text-center ">Mail Oluştur</h1>
 
-        <div class="card shadow-sm">
-            <div class="card-body">
+    <div class="card shadow-sm">
+        <div class="card-body">
 
-                @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                {
-                    @Html.AntiForgeryToken()
+            @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
 
-                    <div class="form-group mb-3">
-                        <label class="form-label" for="mailAlici">Kime</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="mailAlici" readonly placeholder="Kişi seçin" />
-                            <div class="dropdown" style="margin-left: 10px">
-                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Seçiniz
-                                </button>
-                                <ul class="dropdown-menu p-3" aria-labelledby="dropdownMenuButton">
-                                    <input type="text" id="recipientSearch" class="form-control mb-2" placeholder="Kişi ara..." />
-                                    <div id="recipientList" class="form-check-group">
-                                        @foreach (var item in ViewBag.Recipients as SelectList)
-                                        {
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="@item.Value" id="recipient-@item.Value" />
-                                                <label class="form-check-label" for="recipient-@item.Value" style="color: #495057;">
-                                                    @item.Text
-                                                </label>
-                                            </div>
-                                        }
-                                    </div>
-                                    <div class="dropdown-divider"></div>
-                                    <button class="btn btn-primary" type="button" id="saveRecipientButton">Seçimi Kaydet</button>
-                                </ul>
-                            </div>
+                <div class="form-group mb-3">
+                    <label class="form-label" for="mailAlici">Kime</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="mailAlici" readonly placeholder="Kişi seçin" />
+                        <div class="dropdown" style="margin-left: 10px">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                Seçiniz
+                            </button>
+                            <ul class="dropdown-menu p-3" aria-labelledby="dropdownMenuButton">
+                                <input type="text" id="recipientSearch" class="form-control mb-2" placeholder="Kişi ara..." />
+                                <div id="recipientList" class="form-check-group">
+                                    @foreach (var item in ViewBag.Recipients as SelectList)
+                                    {
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="@item.Value" id="recipient-@item.Value" />
+                                            <label class="form-check-label" for="recipient-@item.Value" style="color: #495057;">
+                                                @item.Text
+                                            </label>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="dropdown-divider"></div>
+                                <button class="btn btn-primary" type="button" id="saveRecipientButton">Seçimi Kaydet</button>
+                            </ul>
                         </div>
-                        <input type="hidden" id="mailAliciId" name="mailAliciId" />
-                        @Html.ValidationMessageFor(model => model.mailAliciId, "", new { @class = "text-danger" })
                     </div>
+                    <input type="hidden" id="mailAliciId" name="mailAliciId" />
+                    @Html.ValidationMessageFor(model => model.mailAliciId, "", new { @class = "text-danger" })
+                </div>
 
-                    <div class="form-group mb-3">
-                        @Html.LabelFor(model => model.mailKonu, htmlAttributes: new { @class = "form-label" })
-                        @Html.EditorFor(model => model.mailKonu, new { htmlAttributes = new { @class = "form-control", placeholder = "Konu girin" } })
-                        @Html.ValidationMessageFor(model => model.mailKonu, "", new { @class = "text-danger" })
-                    </div>
+                <div class="form-group mb-3">
+                    @Html.LabelFor(model => model.mailKonu, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.mailKonu, new { htmlAttributes = new { @class = "form-control", placeholder = "Konu girin" } })
+                    @Html.ValidationMessageFor(model => model.mailKonu, "", new { @class = "text-danger" })
+                </div>
 
-                    <div class="form-group mb-3">
-                        @Html.LabelFor(model => model.mailIcerik, htmlAttributes: new { @class = "form-label" })
-                        <div class="input-group">
-                            @Html.TextAreaFor(model => model.mailIcerik, new { @class = "form-control", rows = "10", placeholder = "Mail içeriğini girin", style = "resize: vertical;" })
-                        </div>
-                        @Html.ValidationMessageFor(model => model.mailIcerik, "", new { @class = "text-danger" })
+                <div class="form-group mb-3">
+                    @Html.LabelFor(model => model.mailIcerik, htmlAttributes: new { @class = "form-label" })
+                    <div class="input-group">
+                        @Html.TextAreaFor(model => model.mailIcerik, new { @class = "form-control", rows = "10", placeholder = "Mail içeriğini girin", style = "resize: vertical;" })
                     </div>
+                    @Html.ValidationMessageFor(model => model.mailIcerik, "", new { @class = "text-danger" })
+                </div>
 
-                    <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-primary">Gönder</button>
-                    </div>
-                }
-            </div>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary">Gönder</button>
+                </div>
+            }
         </div>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var saveRecipientButton = document.getElementById('saveRecipientButton');
-            var dropdownMenuButton = document.getElementById('dropdownMenuButton');
-            var selectedRecipients = document.getElementById('mailAlici');
-            var recipientSearch = document.getElementById('recipientSearch');
-            var recipientList = document.getElementById('recipientList');
-            var mailAliciId = document.getElementById('mailAliciId');
-
-            // Save selected recipients
-            saveRecipientButton.addEventListener('click', function () {
-                var selectedOptions = Array.from(recipientList.querySelectorAll('.form-check-input:checked'));
-                var selectedValues = selectedOptions.map(option => option.nextElementSibling.textContent.trim());
-                var selectedIds = selectedOptions.map(option => option.value);
-
-                // Update the input field with selected values
-                selectedRecipients.value = selectedValues.join(', ');
-                mailAliciId.value = selectedIds.join(',');
-
-                // Close dropdown menu
-                var dropdown = new bootstrap.Dropdown(dropdownMenuButton);
-                dropdown.hide();
-            });
-
-            // Filter recipients based on search input
-            recipientSearch.addEventListener('input', function () {
-                var filter = recipientSearch.value.toLowerCase();
-                Array.from(recipientList.querySelectorAll('.form-check')).forEach(option => {
-                    var text = option.querySelector('label').textContent.toLowerCase();
-                    option.style.display = text.includes(filter) ? '' : 'none';
-                });
-            });
-        });
-    </script>
-
-    <style>
-        .container {
-            max-width: 800px;
-        }
-
-        .card {
-            border-radius: 10px;
-        }
-
-        .form-label {
-            color: #343a40;
-            font-weight: bold;
-        }
-
-        .form-control {
-            border-radius: 5px;
-            transition: box-shadow 0.3s ease;
-        }
-
-            .form-control:focus {
-                box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-            }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .btn-primary, .btn-secondary {
-            border-radius: 5px;
-            padding: 10px 20px;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-
-        .btn-primary {
-            background-color: #007bff;
-            border: none;
-        }
-
-            .btn-primary:hover {
-                background-color: #0056b3;
-                transform: scale(1.05);
-            }
-
-        .btn-secondary {
-            background-color: #6c757d;
-            border: none;
-        }
-
-            .btn-secondary:hover {
-                background-color: #5a6268;
-                transform: scale(1.05);
-            }
-
-        .btn-outline-secondary {
-            color: #6c757d;
-            border-color: #6c757d;
-        }
-
-            .btn-outline-secondary:hover {
-                color: #fff;
-                background-color: #6c757d;
-                border-color: #6c757d;
-            }
-
-        .text-danger {
-            font-size: 0.875rem;
-        }
-
-        h2 {
-            margin-bottom: 20px;
-            color: #343a40;
-        }
-
-        .input-group {
-            display: flex;
-            align-items: center;
-        }
-
-        .form-check-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .dropdown-menu {
-            max-height: 300px;
-            overflow-y: auto;
-            border-radius: 10px;
-            width: 100%;
-            min-width: 275px;
-        }
-
-        .dropdown-item {
-            cursor: pointer;
-            padding: 8px 16px;
-            border-radius: 5px;
-            width: 100%;
-        }
-
-            .dropdown-item:hover {
-                background-color: #e9ecef;
-            }
-
-        #recipientSearch {
-            width: 100%;
-        }
-
-        .sidebar {
-            width: 250px;
-            background-color: #f5f5f5;
-            padding: 20px;
-            position: fixed;
-            height: 100%;
-            overflow-y: auto;
-            border-right: 1px solid #ddd;
-            text-align: center;
-        }
-    </style>*@
-
-
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-<br>
-<br>
-<div class="container bootdey">
-    <div class="email-app">
-
-        <main>
-            <p class="text-center">New Message</p>
-            <form>
-                <div class="form-row mb-3">
-                    <label for="to" class="col-2 col-sm-1 col-form-label">To:</label>
-                    <div class="col-10 col-sm-11">
-                        <input type="email" class="form-control" id="to" placeholder="Type email">
-                    </div>
-                </div>
-                <div class="form-row mb-3">
-                    <label for="cc" class="col-2 col-sm-1 col-form-label">CC:</label>
-                    <div class="col-10 col-sm-11">
-                        <input type="email" class="form-control" id="cc" placeholder="Type email">
-                    </div>
-                </div>
-                <div class="form-row mb-3">
-                    <label for="bcc" class="col-2 col-sm-1 col-form-label">BCC:</label>
-                    <div class="col-10 col-sm-11">
-                        <input type="email" class="form-control" id="bcc" placeholder="Type email">
-                    </div>
-                </div>
-            </form>
-            <div class="row">
-                <div class="col-sm-11 ml-auto">
-                    <div class="toolbar" role="toolbar">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-light">
-                                <span class="fa fa-bold"></span>
-                            </button>
-                            <button type="button" class="btn btn-light">
-                                <span class="fa fa-italic"></span>
-                            </button>
-                            <button type="button" class="btn btn-light">
-                                <span class="fa fa-underline"></span>
-                            </button>
-                        </div>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-light">
-                                <span class="fa fa-align-left"></span>
-                            </button>
-                            <button type="button" class="btn btn-light">
-                                <span class="fa fa-align-right"></span>
-                            </button>
-                            <button type="button" class="btn btn-light">
-                                <span class="fa fa-align-center"></span>
-                            </button>
-                            <button type="button" class="btn btn-light">
-                                <span class="fa fa-align-justify"></span>
-                            </button>
-                        </div>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-light">
-                                <span class="fa fa-indent"></span>
-                            </button>
-                            <button type="button" class="btn btn-light">
-                                <span class="fa fa-outdent"></span>
-                            </button>
-                        </div>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-light">
-                                <span class="fa fa-list-ul"></span>
-                            </button>
-                            <button type="button" class="btn btn-light">
-                                <span class="fa fa-list-ol"></span>
-                            </button>
-                        </div>
-                        <button type="button" class="btn btn-light">
-                            <span class="fa fa-trash-o"></span>
-                        </button>
-                        <button type="button" class="btn btn-light">
-                            <span class="fa fa-paperclip"></span>
-                        </button>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown">
-                                <span class="fa fa-tags"></span>
-                                <span class="caret"></span>
-                            </button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#">add label <span class="badge badge-danger"> Home</span></a>
-                                <a class="dropdown-item" href="#">add label <span class="badge badge-info"> Job</span></a>
-                                <a class="dropdown-item" href="#">add label <span class="badge badge-success"> Clients</span></a>
-                                <a class="dropdown-item" href="#">add label <span class="badge badge-warning"> News</span></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group mt-4">
-                        <textarea class="form-control" id="message" name="body" rows="12" placeholder="Click here to reply"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-success">Send</button>
-                        <button type="submit" class="btn btn-light">Draft</button>
-                        <button type="submit" class="btn btn-danger">Discard</button>
-                    </div>
-                </div>
-            </div>
-        </main>
     </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var saveRecipientButton = document.getElementById('saveRecipientButton');
+        var dropdownMenuButton = document.getElementById('dropdownMenuButton');
+        var selectedRecipients = document.getElementById('mailAlici');
+        var recipientSearch = document.getElementById('recipientSearch');
+        var recipientList = document.getElementById('recipientList');
+        var mailAliciId = document.getElementById('mailAliciId');
+
+        // Save selected recipients
+        saveRecipientButton.addEventListener('click', function () {
+            var selectedOptions = Array.from(recipientList.querySelectorAll('.form-check-input:checked'));
+            var selectedValues = selectedOptions.map(option => option.nextElementSibling.textContent.trim());
+            var selectedIds = selectedOptions.map(option => option.value);
+
+            // Update the input field with selected values
+            selectedRecipients.value = selectedValues.join(', ');
+            mailAliciId.value = selectedIds.join(',');
+
+            // Close dropdown menu
+            var dropdown = new bootstrap.Dropdown(dropdownMenuButton);
+            dropdown.hide();
+        });
+
+        // Filter recipients based on search input
+        recipientSearch.addEventListener('input', function () {
+            var filter = recipientSearch.value.toLowerCase();
+            Array.from(recipientList.querySelectorAll('.form-check')).forEach(option => {
+                var text = option.querySelector('label').textContent.toLowerCase();
+                option.style.display = text.includes(filter) ? '' : 'none';
+            });
+        });
+    });
+</script>
+
 <style>
-
-.email-app {
-    display: flex;
-    flex-direction: row;
-    background: #fff;
-    border: 1px solid #e1e6ef;
-}
-
-    .email-app nav {
-        flex: 0 0 200px;
-        padding: 1rem;
-        border-right: 1px solid #e1e6ef;
+    .container {
+        max-width: 800px;
     }
 
-.email-app nav .btn-block {
-    margin-bottom: 15px;
-}
+    .card {
+        border-radius: 10px;
+    }
 
-.email-app nav .nav {
-    flex-direction: column;
-}
+    .form-label {
+        color: #343a40;
+        font-weight: bold;
+    }
 
-.email-app nav .nav .nav-item {
-    position: relative;
-}
+    .form-control {
+        border-radius: 5px;
+        transition: box-shadow 0.3s ease;
+    }
 
-.email-app nav .nav .nav-item .nav-link,
-.email-app nav .nav .nav-item .navbar .dropdown-toggle,
-.navbar .email-app nav .nav .nav-item .dropdown-toggle {
-    color: #151b1e;
-    border-bottom: 1px solid #e1e6ef;
-}
+        .form-control:focus {
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
 
-.email-app nav .nav .nav-item .nav-link i,
-.email-app nav .nav .nav-item .navbar .dropdown-toggle i,
-.navbar .email-app nav .nav .nav-item .dropdown-toggle i {
-    width: 20px;
-    margin: 0 10px 0 0;
-    font-size: 14px;
-    text-align: center;
-}
+    .form-group {
+        margin-bottom: 20px;
+    }
 
-.email-app nav .nav .nav-item .nav-link .badge,
-.email-app nav .nav .nav-item .navbar .dropdown-toggle .badge,
-.navbar .email-app nav .nav .nav-item .dropdown-toggle .badge {
-    float: right;
-    margin-top: 4px;
-    margin-left: 10px;
-}
+    .btn-primary, .btn-secondary {
+        border-radius: 5px;
+        padding: 10px 20px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
 
-.email-app main {
-    min-width: 0;
-    flex: 1;
-    padding: 1rem;
-}
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+    }
 
-.email-app .inbox .toolbar {
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #e1e6ef;
-}
+        .btn-primary:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
 
-.email-app .inbox .messages {
-    padding: 0;
-    list-style: none;
-}
+    .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+    }
 
-.email-app .inbox .message {
-    position: relative;
-    padding: 1rem 1rem 1rem 2rem;
-    cursor: pointer;
-    border-bottom: 1px solid #e1e6ef;
-}
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            transform: scale(1.05);
+        }
 
-.email-app .inbox .message:hover {
-    background: #f9f9fa;
-}
+    .btn-outline-secondary {
+        color: #6c757d;
+        border-color: #6c757d;
+    }
 
-.email-app .inbox .message .actions {
-    position: absolute;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-}
+        .btn-outline-secondary:hover {
+            color: #fff;
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
 
-.email-app .inbox .message .actions .action {
-    width: 2rem;
-    margin-bottom: 0.5rem;
-    color: #c0cadd;
-    text-align: center;
-}
+    .text-danger {
+        font-size: 0.875rem;
+    }
 
-.email-app .inbox .message a {
-    color: #000;
-}
+    h2 {
+        margin-bottom: 20px;
+        color: #343a40;
+    }
 
-.email-app .inbox .message a:hover {
-    text-decoration: none;
-}
+    .input-group {
+        display: flex;
+        align-items: center;
+    }
 
-.email-app .inbox .message.unread .header,
-.email-app .inbox .message.unread .title {
-    font-weight: bold;
-}
+    .form-check-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
 
-.email-app .inbox .message .header {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 0.5rem;
-}
+    .dropdown-menu {
+        max-height: 300px;
+        overflow-y: auto;
+        border-radius: 10px;
+        width: 100%;
+        min-width: 275px;
+    }
 
-.email-app .inbox .message .header .date {
-    margin-left: auto;
-}
+    .dropdown-item {
+        cursor: pointer;
+        padding: 8px 16px;
+        border-radius: 5px;
+        width: 100%;
+    }
 
-.email-app .inbox .message .title {
-    margin-bottom: 0.5rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
+        .dropdown-item:hover {
+            background-color: #e9ecef;
+        }
 
-.email-app .inbox .message .description {
-    font-size: 12px;
-}
+    #recipientSearch {
+        width: 100%;
+    }
 
-.email-app .message .toolbar {
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #e1e6ef;
-}
+   
 
-.email-app .message .details .title {
-    padding: 1rem 0;
-    font-weight: bold;
-}
+    body {
+        font-family: Arial, sans-serif;
+    }
 
-.email-app .message .details .header {
-    display: flex;
-    padding: 1rem 0;
-    margin: 1rem 0;
-    border-top: 1px solid #e1e6ef;
-    border-bottom: 1px solid #e1e6ef;
-}
+    .custom-button {
+        width: 100%;
+        background-color: #1a73e8;
+        color: white;
+        border-radius: 25px;
+        text-align: center;
+        padding-left: 15px;
+        font-size: 16px;
+        margin-bottom: 15px;
+        transition: background-color 0.3s ease;
+    }
 
-.email-app .message .details .header .avatar {
-    width: 40px;
-    height: 40px;
-    margin-right: 1rem;
-}
+        .custom-button i {
+            margin-right: 10px;
+        }
 
-.email-app .message .details .header .from {
-    font-size: 12px;
-    color: #9faecb;
-    align-self: center;
-}
+        .custom-button:hover {
+            background-color: #135ab2;
+            color: white;
+        }
 
-.email-app .message .details .header .from span {
-    display: block;
-    font-weight: bold;
-}
+    .nav-link {
+        color: #202124;
+        font-weight: 500;
+        padding: 10px;
+        border-radius: 25px;
+        margin-bottom: 5px;
+        transition: background-color 0.3s ease;
+    }
 
-.email-app .message .details .header .date {
-    margin-left: auto;
-}
+        .nav-link.active, .nav-link:hover {
+            background-color: #e8f0fe;
+            color: #1a73e8;
+        }
 
-.email-app .message .details .attachments {
-    padding: 1rem 0;
-    margin-bottom: 1rem;
-    border-top: 3px solid #f9f9fa;
-    border-bottom: 3px solid #f9f9fa;
-}
-
-.email-app .message .details .attachments .attachment {
-    display: flex;
-    margin: 0.5rem 0;
-    font-size: 12px;
-    align-self: center;
-}
-
-.email-app .message .details .attachments .attachment .badge {
-    margin: 0 0.5rem;
-    line-height: inherit;
-}
-
-.email-app .message .details .attachments .attachment .menu {
-    margin-left: auto;
-}
-
-.email-app .message .details .attachments .attachment .menu a {
-    padding: 0 0.5rem;
-    font-size: 14px;
-    color: #e1e6ef;
-}
-
+    .sidebar {
+        width: 250px;
+        background-color: #f5f5f5;
+        padding: 20px;
+        position: fixed;
+        height: 100%;
+        overflow-y: auto;
+        border-right: 1px solid #ddd;
+        text-align: center;
+    }
 </style>
+

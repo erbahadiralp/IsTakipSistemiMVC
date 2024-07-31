@@ -5,18 +5,19 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="7c1ce00340414eff973fd5b42928b077" Name="Diagram1" ZoomLevel="64">
-        <EntityTypeShape EntityType="IsTakipDBModel.Birimler" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="IsTakipDBModel.Durumlar" Width="1.5" PointX="3.75" PointY="8.375" />
-        <EntityTypeShape EntityType="IsTakipDBModel.Duyurular" Width="1.5" PointX="3" PointY="3.625" />
-        <EntityTypeShape EntityType="IsTakipDBModel.Isler" Width="1.5" PointX="6" PointY="8.625" />
-        <EntityTypeShape EntityType="IsTakipDBModel.Izinler" Width="1.5" PointX="3" PointY="18.25" />
-        <EntityTypeShape EntityType="IsTakipDBModel.Loglar" Width="1.5" PointX="3" PointY="10.75" />
-        <EntityTypeShape EntityType="IsTakipDBModel.MailEkler" Width="1.5" PointX="5.25" PointY="14.75" />
-        <EntityTypeShape EntityType="IsTakipDBModel.Mailler" Width="1.5" PointX="3" PointY="13.875" />
-        <EntityTypeShape EntityType="IsTakipDBModel.Personeller" Width="1.5" PointX="0.75" PointY="7.5" />
-        <EntityTypeShape EntityType="IsTakipDBModel.sysdiagrams" Width="1.5" PointX="2.75" PointY="0.75" />
-        <EntityTypeShape EntityType="IsTakipDBModel.YemekTablo" Width="1.5" PointX="5.75" PointY="0.75" />
-        <EntityTypeShape EntityType="IsTakipDBModel.YetkiTurler" Width="1.5" PointX="5.75" PointY="4.75" />
+        <EntityTypeShape EntityType="IsTakipDBModel.Birimler" Width="1.5" PointX="0.75" PointY="9.25" />
+        <EntityTypeShape EntityType="IsTakipDBModel.Durumlar" Width="1.5" PointX="6" PointY="10.375" />
+        <EntityTypeShape EntityType="IsTakipDBModel.Duyurular" Width="1.5" PointX="5.25" PointY="6.75" />
+        <EntityTypeShape EntityType="IsTakipDBModel.Isler" Width="1.5" PointX="8.25" PointY="8.625" />
+        <EntityTypeShape EntityType="IsTakipDBModel.Izinler" Width="1.5" PointX="5.25" PointY="13.875" />
+        <EntityTypeShape EntityType="IsTakipDBModel.Loglar" Width="1.5" PointX="5.25" PointY="3.625" />
+        <EntityTypeShape EntityType="IsTakipDBModel.MailEkler" Width="1.5" PointX="7.5" PointY="17.75" />
+        <EntityTypeShape EntityType="IsTakipDBModel.Mailler" Width="1.5" PointX="5.25" PointY="17" />
+        <EntityTypeShape EntityType="IsTakipDBModel.Personeller" Width="1.5" PointX="3" PointY="7.375" />
+        <EntityTypeShape EntityType="IsTakipDBModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="IsTakipDBModel.YemekTablo" Width="1.5" PointX="7.75" PointY="0.75" />
+        <EntityTypeShape EntityType="IsTakipDBModel.YetkiTurler" Width="1.5" PointX="0.75" PointY="6.375" />
+        <AssociationConnector Association="IsTakipDBModel.FK_Personeller_Birimler" />
         <AssociationConnector Association="IsTakipDBModel.FK_Isler_Durumlar" />
         <AssociationConnector Association="IsTakipDBModel.FK_Duyurular_Personeller" />
         <AssociationConnector Association="IsTakipDBModel.FK_Isler_Personeller" />
@@ -25,6 +26,7 @@
         <AssociationConnector Association="IsTakipDBModel.FK_MailEkler_Mailler" />
         <AssociationConnector Association="IsTakipDBModel.FK_Mailler_Personeller" />
         <AssociationConnector Association="IsTakipDBModel.FK_Mailler_Personeller1" />
+        <AssociationConnector Association="IsTakipDBModel.FK_Personeller_YetkiTurler" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

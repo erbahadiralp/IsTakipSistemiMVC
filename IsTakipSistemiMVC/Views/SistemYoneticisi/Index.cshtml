@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<IsTakipSistemiMVC.Models.BirimViewModel>
 
 @{
-    var sonDuyuru = ViewBag.SonDuyuru as IsTakipSistemiMVC.Models.Duyurular;
+    var sonDuyurular = ViewBag.SonDuyurular as List<IsTakipSistemiMVC.Models.Duyurular>;
 }
 
 @{
@@ -9,9 +9,66 @@
     Layout = "~/Views/Shared/_LayoutSistemYoneticisi.cshtml";
 }
 
-<div class="container mt-5">
-    <div class="row g-4">
-        <div class="col-lg-6 col-md-12 mb-4">
+<div class="container mt-4">
+    <!-- Üstte Üç Bilgi Kartı -->
+    <div class="row mb-4">
+        <div class="col-lg-4 col-md-6 mb-3">
+            <div class="card shadow-sm small-card card-color-1">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Toplam Çalışan Sayısı</h5>
+                    <p class="card-text">
+                        @ViewBag.TotalEmployees
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-3">
+            <div class="card shadow-sm small-card card-color-2">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Son Eklenen Çalışan</h5>
+                    <p class="card-text">
+                        @if (ViewBag.LastAddedEmployee != null)
+                        {
+                            <img src="@ViewBag.LastAddedEmployee.FotoUrl" alt="Çalışan Foto" class="img-thumbnail mb-2">
+                            <strong>Ad:</strong> @ViewBag.LastAddedEmployee.personelAdSoyad<br>
+                            <strong>Pozisyon:</strong> @ViewBag.LastAddedEmployee.personelPozisyon<br>
+                            <strong>Eklenme Tarihi:</strong> @ViewBag.LastAddedEmployee.eklenmeTarihi.ToShortDateString()
+                        }
+                        else
+                        {
+                            <span>Son eklenen çalışan bilgisi mevcut değil.</span>
+                        }
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-3">
+            <div class="card shadow-sm small-card card-color-3">
+                <div class="card-body text-center">
+                    <h5 class="card-title">En Yüksek Performans Gösteren Çalışan</h5>
+                    <p class="card-text">
+                        @if (ViewBag.TopPerformer != null)
+                        {
+                            <strong>Ad:</strong> @ViewBag.TopPerformer.personelAdSoyad<br>
+                            <strong>Pozisyon:</strong> @ViewBag.TopPerformer.personelPozisyon<br>
+                            <strong>Performans Puanı:</strong> @ViewBag.TopPerformer.performansPuani
+                            <div class="progress mt-2">
+                                <div class="progress-bar" role="progressbar" style="width: @ViewBag.TopPerformer.performansPuani%;" aria-valuenow="@ViewBag.TopPerformer.performansPuani" aria-valuemin="0" aria-valuemax="100">@ViewBag.TopPerformer.performansPuani%</div>
+                            </div>
+                        }
+                        else
+                        {
+                            <span>En yüksek performans gösteren çalışan bilgisi mevcut değil.</span>
+                        }
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Altında Grafik ve Yanında Duyuru Kartı -->
+    <div class="row">
+        <div class="col-lg-8 col-md-12 mb-4">
             <div class="card shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title">Birimlerin Toplam İşleri</h5>
@@ -19,72 +76,30 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-6 col-md-12 mb-4">
-            <div class="row">
-                <div class="col-md-6 mb-4">
-                    <div class="card shadow-sm small-card card-color-1">
-                        <div class="card-body">
-                            <h5 class="card-title">Toplam Çalışan Sayısı</h5>
-                            <p class="card-text">
-                                @ViewBag.TotalEmployees
-                            </p>
+        <div class="col-lg-4 col-md-12 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Duyurular</h5>
+                    @if (sonDuyurular != null && sonDuyurular.Any())
+                    {
+                        foreach (var duyuru in sonDuyurular)
+                        {
+                            <div class="announcement-card mb-3">
+                                <h6>@duyuru.duyuruBaslik</h6>
+                                <p class="card-text">@duyuru.duyuruIcerik</p>
+                                <p class="card-text"><small class="text-muted">@duyuru.duyuruTarih.ToShortDateString()</small></p>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="announcement-card">
+                            <p class="card-text">Henüz duyuru bulunmamaktadır.</p>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-6 mb-4">
-                    <div class="card shadow-sm small-card card-color-2">
-                        <div class="card-body">
-                            <h5 class="card-title">Son Eklenen Çalışan</h5>
-                            <p class="card-text">
-                                @if (ViewBag.LastAddedEmployee != null)
-                                {
-                                    <strong>Ad:</strong> @ViewBag.LastAddedEmployee.personelAdSoyad<br>
-                                    <strong>Pozisyon:</strong> @ViewBag.LastAddedEmployee.personelPozisyon<br>
-                                    <strong>Eklenme Tarihi:</strong> @ViewBag.LastAddedEmployee.eklenmeTarihi.ToShortDateString()
-                                }
-                                else
-                                {
-                                    <span>Son eklenen çalışan bilgisi mevcut değil.</span>
-                                }
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 mb-4">
-                    <div class="card shadow-sm small-card card-color-3">
-                        <div class="card-body">
-                            <h5 class="card-title">En Yüksek Performans Gösteren Çalışan</h5>
-                            <p class="card-text">
-                                @if (ViewBag.TopPerformer != null)
-                                {
-                                    <strong>Ad:</strong> @ViewBag.TopPerformer.personelAdSoyad<br>
-                                    <strong>Pozisyon:</strong> @ViewBag.TopPerformer.personelPozisyon<br>
-                                    <strong>Performans Puanı:</strong> @ViewBag.TopPerformer.performansPuani
-                                }
-                                else
-                                {
-                                    <span>En yüksek performans gösteren çalışan bilgisi mevcut değil.</span>
-                                }
-                            </p>
-                        </div>
-                    </div>
+                    }
                 </div>
             </div>
         </div>
-        @if (sonDuyuru != null)
-        {
-            <div class="card shadow-sm announcement-card mb-4">
-                <div class="card-body">
-                    <h5 class="card-title">@sonDuyuru.duyuruBaslik</h5>
-                    <p class="card-text">@sonDuyuru.duyuruIcerik</p>
-                    <p class="card-text"><small class="text-muted">@sonDuyuru.duyuruTarih</small></p>
-                </div>
-            </div>
-        }
-        else
-        {
-            <p>Henüz duyuru bulunmamaktadır.</p>
-        }
     </div>
 </div>
 
@@ -98,7 +113,7 @@
             datasets: [{
                 label: 'Birimlerin Toplam İşleri',
                 data: @Html.Raw(ViewBag.dataIs),
-                backgroundColor: '#22333b',
+                backgroundColor: '#1b68ff',
                 borderColor: '#0a0908',
                 borderWidth: 2
             }]
@@ -106,70 +121,97 @@
     });
 </script>
 
-@*<style>
+<style>
     body {
+        font-family: Arial, sans-serif;
         background-color: #f8f9fa;
+        color: #333;
+        margin: 0;
+        padding: 0;
     }
 
-    .card {
-        border-radius: 15px;
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
     }
+
+    /* Kart Stilleri */
+    .card {
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.2s ease-in-out;
+        background-color: #f9f6f1;
+    }
+
+        .card:hover {
+            transform: scale(1.02);
+        }
 
     .card-title {
-        font-weight: bold;
-        margin-bottom: 20px;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #22333b;
     }
 
-    .container h2 {
-        font-weight: bold;
-        margin-bottom: 10px;
+    .card-text {
+        font-size: 0.75rem;
+        color: #555;
     }
 
-    .text-muted {
-        color: #6c757d;
-    }
-
-    .chart-canvas {
-        width: 100% !important;
-        height: 250px !important;
-    }
-
-    .short-card {
-        height: 200px;
-    }
-
-    .tall-card {
-        height: 400px;
-    }
-
+    /* Küçük Kartlar */
     .small-card {
-        height: 150px;
+        padding: 20px;
+        text-align: center;
+        height: 125px; /* Kartların yüksekliğini aynı yapmak için eklendi */
     }
 
-    .announcement-card {
-        background-color: #007bff; /* Duyuru kartı rengi */
-        color: #212529; /* Duyuru kartı metin rengi */
-    }
-
-    .text-muted {
-        color: #fff !important;
-    }
     .card-color-1 {
-        background-color: #ffd966; /* Açık turuncu */
-        color: #212529; /* Metin rengi */
+        background-color: #d1e7dd;
     }
 
     .card-color-2 {
-        background-color: #ccffcc; /* Açık yeşil */
-        color: #212529; /* Metin rengi */
+        background-color: #cfe2ff;
     }
 
     .card-color-3 {
-        background-color: #ccccff; /* Açık mavi */
-        color: #212529; /* Metin rengi */
+        background-color: #f8d7da;
     }
 
-    .row.g-4 > .col-lg-6, .row.g-4 > .col-md-12 {
-        padding-bottom: 1rem; /* Kartlar arasında daha fazla boşluk eklemek için */
+    .announcement-card {
+        background-color: #fff3cd;
+        border: 1px solid #f1c40f;
+        padding: 10px;
+        border-radius: 5px;
     }
-</style>*@
+
+    /* Resim Stili */
+    .img-thumbnail {
+        max-width: 100%;
+        height: auto;
+        border-radius: 5px;
+    }
+
+    /* Progress Bar Stili */
+    .progress {
+        height: 20px;
+        border-radius: 10px;
+        background-color: #e9ecef;
+    }
+
+    .progress-bar {
+        background-color: #22333b;
+        font-weight: bold;
+    }
+
+    /* Grafik Stili */
+    .chart-canvas {
+        max-width: 100%;
+        height: 400px;
+    }
+
+    .col-md-6,
+    .col-md-12 {
+        max-width: 100%;
+    }
+</style>

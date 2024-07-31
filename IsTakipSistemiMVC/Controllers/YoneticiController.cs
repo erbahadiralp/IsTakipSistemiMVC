@@ -85,11 +85,12 @@ namespace IsTakipSistemiMVC.Controllers
                     .FirstOrDefault();
                 ViewBag.BugunYemek = bugunYemek;
 
-                var sonDuyuru = entity.Duyurular
-                    .Where(d => d.aktiflik == true && d.goruntuleyenBirimId == birimId)
-                    .OrderByDescending(d => d.duyuruTarih)
-                    .FirstOrDefault();
-                ViewBag.SonDuyuru = sonDuyuru;
+                var sonDuyurular = entity.Duyurular
+    .Where(d => d.aktiflik == true && d.goruntuleyenBirimId == birimId)
+    .OrderByDescending(d => d.duyuruTarih)
+    .Take(3)
+    .ToList();
+                ViewBag.SonDuyurular = sonDuyurular;
 
                 var calisanlar = (from p in entity.Personeller where p.personelBirimId == birimId && p.personelYetkiTurId == 2 && p.aktiflik == true select p).ToList();
 

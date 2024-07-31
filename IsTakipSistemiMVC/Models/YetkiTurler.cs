@@ -14,7 +14,16 @@ namespace IsTakipSistemiMVC.Models
     
     public partial class YetkiTurler
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public YetkiTurler()
+        {
+            this.Personeller = new HashSet<Personeller>();
+        }
+    
         public int yetkiTurId { get; set; }
         public string yetkiTurAd { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Personeller> Personeller { get; set; }
     }
 }

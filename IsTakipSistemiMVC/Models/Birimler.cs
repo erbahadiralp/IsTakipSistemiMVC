@@ -14,8 +14,17 @@ namespace IsTakipSistemiMVC.Models
     
     public partial class Birimler
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Birimler()
+        {
+            this.Personeller = new HashSet<Personeller>();
+        }
+    
         public int birimId { get; set; }
         public string birimAd { get; set; }
         public Nullable<bool> aktiflik { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Personeller> Personeller { get; set; }
     }
 }
