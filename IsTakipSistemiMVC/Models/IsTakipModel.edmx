@@ -229,18 +229,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Mailler_Personeller1">
-          <End Role="Personeller" Type="Self.Personeller" Multiplicity="0..1" />
-          <End Role="Mailler" Type="Self.Mailler" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Personeller">
-              <PropertyRef Name="personelId" />
-            </Principal>
-            <Dependent Role="Mailler">
-              <PropertyRef Name="mailAliciId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Personeller_Birimler">
           <End Role="Birimler" Type="Self.Birimler" Multiplicity="0..1" />
           <End Role="Personeller" Type="Self.Personeller" Multiplicity="*" />
@@ -303,10 +291,6 @@
             <End Role="MailEkler" EntitySet="MailEkler" />
           </AssociationSet>
           <AssociationSet Name="FK_Mailler_Personeller" Association="Self.FK_Mailler_Personeller">
-            <End Role="Personeller" EntitySet="Personeller" />
-            <End Role="Mailler" EntitySet="Mailler" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Mailler_Personeller1" Association="Self.FK_Mailler_Personeller1">
             <End Role="Personeller" EntitySet="Personeller" />
             <End Role="Mailler" EntitySet="Mailler" />
           </AssociationSet>
@@ -473,7 +457,6 @@
           <Property Name="mailArsiv" Type="Boolean" />
           <NavigationProperty Name="MailEkler" Relationship="IsTakipDBModel.FK_MailEkler_Mailler" FromRole="Mailler" ToRole="MailEkler" />
           <NavigationProperty Name="Personeller" Relationship="IsTakipDBModel.FK_Mailler_Personeller" FromRole="Mailler" ToRole="Personeller" />
-          <NavigationProperty Name="Personeller1" Relationship="IsTakipDBModel.FK_Mailler_Personeller1" FromRole="Mailler" ToRole="Personeller" />
         </EntityType>
         <EntityType Name="Personeller">
           <Key>

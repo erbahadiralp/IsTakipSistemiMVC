@@ -34,6 +34,5 @@ namespace IsTakipSistemiMVC.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MailEkler> MailEkler { get; set; }
         public virtual Personeller Personeller { get; set; }
-        public virtual Personeller Personeller1 { get; set; }
     }
 }
