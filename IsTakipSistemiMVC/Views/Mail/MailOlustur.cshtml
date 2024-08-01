@@ -5,16 +5,19 @@
 
 @model IsTakipSistemiMVC.Models.Mailler
 
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+
 <div class="sidebar">
     <a href="@Url.Action("MailOlustur", "Mail")" class="btn btn-primary custom-button">Oluştur</a>
     <ul class="nav flex-column">
         <li class="nav-item">
-            <a class="nav-link  " href="@Url.Action("Index", "Mail")">
+            <a class="nav-link" href="@Url.Action("Index", "Mail")">
                 <i class="bi bi-inbox"></i> Gelen Kutusu
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" href="@Url.Action("GidenMailler", "Mail")">
+            <a class="nav-link" href="@Url.Action("GidenMailler", "Mail")">
                 <i class="bi bi-send"></i> Gönderilmiş Postalar
             </a>
         </li>
@@ -31,20 +34,18 @@
     </ul>
 </div>
 
-<div class="content container" style="margin-right:255px">
-    <h1 class="text-center ">Mail Oluştur</h1>
-
-    <div class="card shadow-sm">
-        <div class="card-body">
-
+<div class="container bootdey mt-5" style="margin-right:165px">
+    <div class="email-app">
+        <main>
+            <p class="text-center">New Message</p>
             @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                 @Html.AntiForgeryToken()
 
-                <div class="form-group mb-3">
-                    <label class="form-label" for="mailAlici">Kime</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="mailAlici" readonly placeholder="Kişi seçin" />
+                <div class="form-row mb-3">
+                    <label for="mailAlici" class="col-2 col-sm-1 col-form-label">Kime:</label>
+                    <div class="col-10 col-sm-11 d-flex align-items-center">
+                        <input type="text" class="form-control" id="mailAlici" readonly placeholder="Kişi seçin" style="flex-grow: 1;" />
                         <div class="dropdown" style="margin-left: 10px">
                             <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                 Seçiniz
@@ -71,25 +72,76 @@
                     @Html.ValidationMessageFor(model => model.mailAliciId, "", new { @class = "text-danger" })
                 </div>
 
-                <div class="form-group mb-3">
-                    @Html.LabelFor(model => model.mailKonu, htmlAttributes: new { @class = "form-label" })
-                    @Html.EditorFor(model => model.mailKonu, new { htmlAttributes = new { @class = "form-control", placeholder = "Konu girin" } })
-                    @Html.ValidationMessageFor(model => model.mailKonu, "", new { @class = "text-danger" })
-                </div>
-
-                <div class="form-group mb-3">
-                    @Html.LabelFor(model => model.mailIcerik, htmlAttributes: new { @class = "form-label" })
-                    <div class="input-group">
-                        @Html.TextAreaFor(model => model.mailIcerik, new { @class = "form-control", rows = "10", placeholder = "Mail içeriğini girin", style = "resize: vertical;" })
+                <div class="form-row mb-3">
+                    <label for="cc" class="col-2 col-sm-1 col-form-label">Konu:</label>
+                    <div class="col-10 col-sm-11">
+                        @Html.EditorFor(model => model.mailKonu, new { htmlAttributes = new { @class = "form-control", placeholder = "Konu girin" } })
+                        @Html.ValidationMessageFor(model => model.mailKonu, "", new { @class = "text-danger" })
                     </div>
-                    @Html.ValidationMessageFor(model => model.mailIcerik, "", new { @class = "text-danger" })
                 </div>
 
-                <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary">Gönder</button>
+                <div class="row">
+                    <div class="col-sm-11 ml-auto">
+                        <div class="toolbar" role="toolbar">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-light">
+                                    <span class="fa fa-bold"></span>
+                                </button>
+                                <button type="button" class="btn btn-light">
+                                    <span class="fa fa-italic"></span>
+                                </button>
+                                <button type="button" class="btn btn-light">
+                                    <span class="fa fa-underline"></span>
+                                </button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-light">
+                                    <span class="fa fa-align-left"></span>
+                                </button>
+                                <button type="button" class="btn btn-light">
+                                    <span class="fa fa-align-right"></span>
+                                </button>
+                                <button type="button" class="btn btn-light">
+                                    <span class="fa fa-align-center"></span>
+                                </button>
+                                <button type="button" class="btn btn-light">
+                                    <span class="fa fa-align-justify"></span>
+                                </button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-light">
+                                    <span class="fa fa-indent"></span>
+                                </button>
+                                <button type="button" class="btn btn-light">
+                                    <span class="fa fa-outdent"></span>
+                                </button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-light">
+                                    <span class="fa fa-list-ul"></span>
+                                </button>
+                                <button type="button" class="btn btn-light">
+                                    <span class="fa fa-list-ol"></span>
+                                </button>
+                            </div>
+                            <button type="button" class="btn btn-light">
+                                <span class="fa fa-trash-o"></span>
+                            </button>
+                            <button type="button" class="btn btn-light">
+                                <span class="fa fa-paperclip"></span>
+                            </button>
+                        </div>
+                        <div class="form-group mt-4">
+                            @Html.TextAreaFor(model => model.mailIcerik, new { @class = "form-control", rows = "12", placeholder = "Mail içeriğini girin" })
+                            @Html.ValidationMessageFor(model => model.mailIcerik, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success">Gönder</button>
+                        </div>
+                    </div>
                 </div>
             }
-        </div>
+        </main>
     </div>
 </div>
 
@@ -130,13 +182,27 @@
 </script>
 
 <style>
-    .container {
-        max-width: 800px;
+    .email-app {
+        display: flex;
+        flex-direction: row;
+        background: #fff;
+        border: 1px solid #e1e6ef;
     }
 
-    .card {
-        border-radius: 10px;
-    }
+        .email-app main {
+            min-width: 0;
+            flex: 1;
+            padding: 1rem;
+        }
+
+        .email-app .toolbar {
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e1e6ef;
+        }
+
+        .email-app .btn-group .btn-light {
+            margin-right: 5px;
+        }
 
     .form-label {
         color: #343a40;
@@ -152,94 +218,16 @@
             box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
         }
 
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    .btn-primary, .btn-secondary {
-        border-radius: 5px;
-        padding: 10px 20px;
-        transition: background-color 0.3s ease, transform 0.3s ease;
-    }
-
-    .btn-primary {
-        background-color: #007bff;
-        border: none;
-    }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
-        }
-
-    .btn-secondary {
-        background-color: #6c757d;
-        border: none;
-    }
-
-        .btn-secondary:hover {
-            background-color: #5a6268;
-            transform: scale(1.05);
-        }
-
-    .btn-outline-secondary {
-        color: #6c757d;
-        border-color: #6c757d;
-    }
-
-        .btn-outline-secondary:hover {
-            color: #fff;
-            background-color: #6c757d;
-            border-color: #6c757d;
-        }
-
-    .text-danger {
-        font-size: 0.875rem;
-    }
-
-    h2 {
-        margin-bottom: 20px;
-        color: #343a40;
-    }
-
-    .input-group {
-        display: flex;
-        align-items: center;
-    }
-
-    .form-check-group {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .dropdown-menu {
-        max-height: 300px;
+    .sidebar {
+        width: 250px;
+        background-color: #f5f5f5;
+        padding: 20px;
+        position: fixed;
+        height: 100%;
         overflow-y: auto;
-        border-radius: 10px;
-        width: 100%;
-        min-width: 275px;
-    }
-
-    .dropdown-item {
-        cursor: pointer;
-        padding: 8px 16px;
-        border-radius: 5px;
-        width: 100%;
-    }
-
-        .dropdown-item:hover {
-            background-color: #e9ecef;
-        }
-
-    #recipientSearch {
-        width: 100%;
-    }
-
-   
-
-    body {
-        font-family: Arial, sans-serif;
+        border-right: 1px solid #ddd;
+        text-align: center;
+        top: 71px;
     }
 
     .custom-button {
@@ -276,16 +264,4 @@
             background-color: #e8f0fe;
             color: #1a73e8;
         }
-
-    .sidebar {
-        width: 250px;
-        background-color: #f5f5f5;
-        padding: 20px;
-        position: fixed;
-        height: 100%;
-        overflow-y: auto;
-        border-right: 1px solid #ddd;
-        text-align: center;
-    }
 </style>
-

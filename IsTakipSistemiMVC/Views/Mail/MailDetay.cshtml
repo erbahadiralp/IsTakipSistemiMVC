@@ -5,89 +5,244 @@
     Layout = ViewBag.Layout;
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Mail Detay</title>
-    <link rel="stylesheet" type="text/css" href="~/Content/Site.css" />
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #ffffff;
-            margin: 0;
-            padding: 0;
+
+<style>
+    body {
+        display: flex;
+        min-height: 100vh; /* Yüksekliği tam ekran yapar */
+        flex-direction: column;
+        background-color: #f9fafb;
+    }
+
+    .content {
+        margin-left: 250px; /* Sidebar genişliği */
+        padding: 20px;
+        padding-top: 100px; /* Margin-top yerine padding-top */
+        background-color: #f7f7f7;
+        min-height: 100vh;
+    }
+
+    .inbox-wrapper .email-head {
+        background-color: transparent;
+    }
+
+    .inbox-wrapper .email-head-subject {
+        padding: 25px 25px;
+        border-bottom: 1px solid #e8ebf1;
+    }
+
+        .inbox-wrapper .email-head-subject .title {
+            font-size: .99rem;
         }
 
-        .container {
-            max-width: 900px;
-            margin: 20px auto;
-            background-color: #f9f9f9;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+        .inbox-wrapper .email-head-subject .icons .icon {
+            color: #000;
+            margin-left: 12px;
+            width: 18px;
         }
 
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
+    .inbox-wrapper .email-head-sender {
+        padding: 13px 25px;
+    }
+
+        .inbox-wrapper .email-head-sender .avatar img {
+            width: 36px;
         }
 
-            .header h2 {
-                margin: 0;
-                font-size: 18px;
-                font-weight: normal;
-            }
-
-        .info {
-            margin-bottom: 20px;
+        .inbox-wrapper .email-head-sender .sender > a {
+            color: #000;
         }
 
-            .info div {
-                margin-bottom: 10px;
-            }
-
-            .info span {
-                font-weight: bold;
-                display: inline-block;
-                width: 150px;
-            }
-
-        .content {
-            white-space: pre-wrap; /* For preserving line breaks */
-            padding: 10px 0;
-            border-top: 1px solid #ddd;
-            border-bottom: 1px solid #ddd;
+        .inbox-wrapper .email-head-sender .sender span {
+            margin-right: 5px;
+            margin-left: 5px;
         }
 
-        .footer {
-            text-align: right;
-            font-size: 12px;
-            color: #888;
-            margin-top: 20px;
+        .inbox-wrapper .email-head-sender .sender .actions .icon {
+            color: #686868;
+            margin-left: 7px;
+            width: 18px;
         }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h2>@Model.Konu</h2>
-        </div>
-        <div class="info">
-            <div><span>Gönderen:</span> @Model.GondericiAdSoyad</div>
-            <div><span>Alıcı:</span> @Model.AliciAdSoyad</div>
-            <div><span>Gönderilme Tarihi:</span> @Model.GonderilmeTarihi</div>
-        </div>
-        <div class="content">
-            @Html.Raw(@Model.Icerik.Replace("\n", "<br/>"))
-        </div>
-        <div class="footer">
-            <p>Çağrıyla ilgili ya da projelerinizle ilgili desteğe ihtiyacınız olduğunda info@birunitenokpark.com adresine e-posta atabilirsiniz. Aşağıdaki iletişim numarasından da bizlere ulaşabilirsiniz.</p>
+
+    .inbox-wrapper .email-body {
+        background-color: transparent;
+        border-top: 1px solid #e8ebf1;
+        padding: 30px 28px;
+    }
+
+
+    .sidebar {
+        width: 250px;
+        background-color: #f5f5f5;
+        padding: 20px;
+        position: fixed;
+        height: 100%;
+        overflow-y: auto;
+        border-right: 1px solid #ddd;
+        text-align: center;
+        top: 71px;
+    }
+
+    .custom-button {
+        width: 100%;
+        background-color: #1a73e8;
+        color: white;
+        border-radius: 25px;
+        text-align: center;
+        padding-left: 15px;
+        font-size: 16px;
+        margin-bottom: 15px;
+        transition: background-color 0.3s ease;
+    }
+
+        .custom-button i {
+            margin-right: 10px;
+        }
+
+        .custom-button:hover {
+            background-color: #135ab2;
+            color: white;
+        }
+
+    .nav-link {
+        color: #202124;
+        font-weight: 500;
+        padding: 10px;
+        border-radius: 25px;
+        margin-bottom: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+        .nav-link.active, .nav-link:hover {
+            background-color: #e8f0fe;
+            color: #1a73e8;
+        }
+</style>
+
+<div class="sidebar">
+    <a href="@Url.Action("MailOlustur", "Mail")" class="btn btn-primary custom-button">Oluştur</a>
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("Index", "Mail")">
+                <i class="bi bi-inbox"></i> Gelen Kutusu
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("GidenMailler", "Mail")">
+                <i class="bi bi-send"></i> Gönderilmiş Postalar
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("ArsivGoster", "Mail")">
+                <i class="bi bi-archive"></i> Arşivlenmiş Postalar
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("SilinmisMailler", "Mail")">
+                <i class="bi bi-trash"></i> Silinmiş Postalar
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div class="container" style="margin-right: 150px; margin-top:100px">
+    <div class="row inbox-wrapper">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-12 email-content">
+                            <div class="email-head">
+                                <div class="email-head-subject">
+                                    <div class="title d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center" style="font-weight:bold">
+                                            <span>@Model.Konu</span>
+                                        </div>
+                                        <div class="icons">
+                                            <button id="deleteSelected" class="btn btn-danger">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="email-head-sender d-flex align-items-center justify-content-between flex-wrap">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar">
+                                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Avatar" class="rounded-circle user-avatar-md">
+                                        </div>
+                                        <div class="sender d-flex align-items-center" style="margin-left:10px">
+                                            <a href="#">@Model.GondericiAdSoyad</a> <span>to</span><a href="#">@Model.AliciAdSoyad</a>
+                                        </div>
+                                    </div>
+                                    <div class="date">@Model.GonderilmeTarihi</div>
+                                </div>
+                            </div>
+                            <div class="email-body">
+                                @Html.Raw(@Model.Icerik.Replace("\n", "<br/>"))
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</body>
-</html>
+</div>
+
+<script>
+    $('#deleteSelected').on('click', function () {
+        // E-posta ID'sini al
+        var mailId = '@Model.MailId'; // Model'e e-posta ID'sini eklemelisiniz
+
+        if (mailId) {
+            $.ajax({
+                url: '@Url.Action("MailSil", "Mail")',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ id: mailId }), // ID'yi JSON olarak gönder
+                success: function (data) {
+                    if (data.success) {
+                        // Başarıyla silindiyse sayfayı yeniden yükle
+                        location.href = '@Url.Action("Index", "Mail")';
+                    } else {
+                        // Hata durumunda kullanıcıya bilgi ver
+                        alert(data.message);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error('Error deleting mail: ', textStatus, errorThrown);
+                }
+            });
+        } else {
+            alert('Mail ID bulunamadı.');
+        }
+    });
+</script>
+<script>
+    $('#deleteSelected').on('click', function () {
+    // E-posta ID'sini al
+    var mailId = '@Model.MailId'; // Model'e e-posta ID'sini eklemelisiniz
+
+    if (mailId) {
+        $.ajax({
+            url: '@Url.Action("MailSil", "Mail")',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ id: mailId }), // ID'yi JSON olarak gönder
+            success: function (data) {
+                if (data.success) {
+                    // Başarıyla silindiyse sayfayı yeniden yükle
+                    location.reload();
+                } else {
+                    // Hata durumunda kullanıcıya bilgi ver
+                    alert(data.message);
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error('Error deleting mail: ', textStatus, errorThrown);
+            }
+        });
+    } else {
+        alert('Mail ID bulunamadı.');
+    }
+});
+</script>

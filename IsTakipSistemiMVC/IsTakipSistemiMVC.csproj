@@ -324,6 +324,7 @@
     </Compile>
     <Compile Include="Models\MailViewModel.cs" />
     <Compile Include="Models\Menu.cs" />
+    <Compile Include="Models\PersonelIslerViewModel.cs" />
     <Compile Include="Models\Personeller.cs">
       <DependentUpon>IsTakipModel.tt</DependentUpon>
     </Compile>

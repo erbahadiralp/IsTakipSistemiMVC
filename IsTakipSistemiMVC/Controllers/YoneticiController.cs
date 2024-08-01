@@ -206,13 +206,18 @@ namespace IsTakipSistemiMVC.Controllers
 
                 try
                 {
-                    var isler = (from i in entity.Isler where i.isPersonelId == secilenPersoneller.personelId select i).ToList().OrderByDescending(i => i.iletilenTarih);
+                    var isler = (from i in entity.Isler
+                                 where i.isPersonelId == secilenPersoneller.personelId
+                                 select i).ToList().OrderByDescending(i => i.iletilenTarih).ToList();
 
-                    ViewBag.isler = isler;
-                    ViewBag.personel = secilenPersoneller;
-                    ViewBag.isSayisi = isler.Count();
+                    var model = new PersonelIslerViewModel
+                    {
+                        Personel = secilenPersoneller,
+                        Isler = isler,
+                        IsSayisi = isler.Count()
+                    };
 
-                    return View();
+                    return View(model);
 
                 }
                 catch (Exception)
@@ -226,7 +231,8 @@ namespace IsTakipSistemiMVC.Controllers
                 return RedirectToAction("Index", "Login");
             }
         }
-       
+
+
 
         [HttpPost]
         public ActionResult AyinElemani(int aylar, int yillar)
