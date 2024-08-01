@@ -1,6 +1,8 @@
 ﻿@{
     string birimAd = (string)Session["BirimAd"]; // Retrieve the department name from the session
+    string personelFoto = Session["PersonelFotograf"] != null ? Url.Content((string)Session["PersonelFotograf"]) : Url.Content("~/theme/assets/avatars/default-avatar.jpg");
 }
+
 
 @{
     Layout = null;
@@ -130,7 +132,7 @@
                 }
 
         .navbar-brand:hover img {
-            opacity: 0.8;  /*Add a hover effect to change the logo opacity */
+            opacity: 0.8; /*Add a hover effect to change the logo opacity */
             transition: opacity 0.3s ease;
             transform: scale(1.1);
         }
@@ -187,7 +189,7 @@
                     <li class="nav-item dropdown ml-lg-0">
                         <a class="nav-link dropdown-toggle text-muted" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="avatar avatar-sm mt-2">
-                                <img src="~/theme/assets/avatars/face-1.jpg" alt="..." class="avatar-img rounded-circle">
+                                <img src="@personelFoto" alt="Kullanıcı Fotoğrafı" class="avatar-img rounded-circle">
                                 <div class="avatar-text">
                                     <h6 class="mb-0 font-weight-normal">@Session["PersonelAdSoyad"]</h6>
                                     <span>@birimAd - Yönetici</span>

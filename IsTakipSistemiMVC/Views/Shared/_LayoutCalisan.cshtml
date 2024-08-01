@@ -1,9 +1,7 @@
 ﻿@{
     string birimAd = (string)Session["BirimAd"]; // Retrieve the department name from the session
-}
-
-@{
-    Layout = null;
+    string personelFoto = Session["PersonelFotograf"] != null ? Url.Content((string)Session["PersonelFotograf"]) : Url.Content("~/theme/assets/avatars/default-avatar.jpg");
+    Layout = ViewBag.Layout;
 }
 
 <!doctype html>
@@ -41,6 +39,7 @@
                 margin-left: auto !important;
             }
 
+
         .avatar {
             display: flex;
             align-items: center;
@@ -48,6 +47,10 @@
 
         .avatar-img {
             margin-right: 10px;
+            width: 32px;
+            height: 32px;
+            object-fit: cover;
+        
         }
 
         .avatar-text {
@@ -187,10 +190,10 @@
                     <li class="nav-item dropdown ml-lg-0">
                         <a class="nav-link dropdown-toggle text-muted" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="avatar avatar-sm mt-2">
-                                <img src="~/theme/assets/avatars/face-1.jpg" alt="..." class="avatar-img rounded-circle">
+                                <img src="@personelFoto" alt="Kullanıcı Fotoğrafı" class="avatar-img rounded-circle">
                                 <div class="avatar-text">
                                     <h6 class="mb-0 font-weight-normal">@Session["PersonelAdSoyad"]</h6>
-                                    <span>@birimAd - Çalışan</span>
+                                    <span>@birimAd - Yönetici</span>
                                 </div>
                             </span>
                         </a>

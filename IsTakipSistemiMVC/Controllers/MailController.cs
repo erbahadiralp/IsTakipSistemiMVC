@@ -247,5 +247,29 @@ namespace IsTakipSistemiMVC.Controllers
 
             return View(silinmisMailler);
         }
+
+
+        [HttpPost]
+        public ActionResult MailiOkunduYap(List<int> ids)
+        {
+            try
+            {
+                foreach (var id in ids)
+                {
+                    var mail = entity.Mailler.Find(id);
+                    if (mail != null)
+                    {
+                        mail.mailOkunma = true;
+                    }
+                }
+                entity.SaveChanges();
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                // Hata durumunda hata mesajını geri döndür
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
     }
 }

@@ -35,6 +35,7 @@ namespace IsTakipSistemiMVC.Controllers
                 Session["PersonelId"] = personel.personelId;
                 Session["PersonelBirimId"] = personel.personelBirimId;
                 Session["PersonelYetkiTurId"] = personel.personelYetkiTurId;
+                Session["PersonelFotograf"] = personel.personelFotograf;
 
                 //if (birim == null)
                 //{

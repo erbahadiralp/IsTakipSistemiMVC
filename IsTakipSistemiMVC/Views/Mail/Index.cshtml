@@ -184,11 +184,12 @@
                     <tbody>
                         @foreach (var mail in Model)
                         {
-                            <tr class="text-center" data-mail-id="@mail.MailId">
+                            string rowClass = mail.mailOkunma ? "" : "font-weight-bold";
+                            <tr class="text-center @rowClass" data-mail-id="@mail.MailId">
                                 <td><input type="checkbox" class="select-mail" data-mail-id="@mail.MailId"></td>
                                 <td>@mail.GondericiAdSoyad</td>
                                 <td>@mail.Konu</td>
-                                <td>@mail.GonderilmeTarihi</td>
+                                <td>@mail.GonderilmeTarihi.ToShortDateString()</td>
                             </tr>
                         }
                     </tbody>
@@ -202,112 +203,120 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
-        // Arama çubuğu
-        $('#searchInput').on('keyup', function () {
-            var input = $(this).val().toLowerCase();
-            $('table tbody tr').filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(input) > -1)
-            });
-        });
-
-        // Tüm mailleri seçme
-        $('#selectAll').on('change', function () {
-            $('.select-mail').prop('checked', this.checked);
-            toggleActionButtons();
-        });
-
-        // Bireysel mail seçme
-        $('.select-mail').on('change', function () {
-            if (!this.checked) {
-                $('#selectAll').prop('checked', false);
-            }
-            toggleActionButtons();
-        });
-
-        // Butonların görünürlüğünü yönetme
-        function toggleActionButtons() {
-            var selected = $('.select-mail:checked').length > 0;
-            var actionButtons = $('#actionButtons');
-            if (selected) {
-                actionButtons.addClass('visible');
-            } else {
-                actionButtons.removeClass('visible');
-            }
-        }
-
-        // Seçili mailleri silme
-        $('#deleteSelected').on('click', function () {
-            var ids = $('.select-mail:checked').map(function () {
-                return $(this).data('mail-id');
-            }).get();
-            if (ids.length > 0) {
-                $.ajax({
-                    url: '@Url.Action("MailSil", "Mail")',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(ids),
-                    success: function (data) {
-                        if (data.success) {
-                            location.reload();
-                        } else {
-                            alert(data.message);
-                        }
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.error('Error deleting mails: ', textStatus, errorThrown);
-                    }
-                });
-            }
-        });
-
-        // Seçili mailleri arşivleme
-        $('#archiveSelected').on('click', function () {
-            var ids = $('.select-mail:checked').map(function () {
-                return $(this).data('mail-id');
-            }).get();
-            if (ids.length > 0) {
-                $.ajax({
-                    url: '@Url.Action("MailArsivle", "Mail")',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(ids),
-                    success: function (data) {
-                        if (data.success) {
-                            location.reload();
-                        } else {
-                            alert(data.message);
-                        }
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.error('Error archiving mails: ', textStatus, errorThrown);
-                    }
-                });
-            }
-        });
-
-        // Seçili mailleri okundu olarak işaretleme
-        $('#markReadSelected').on('click', function () {
-            var ids = $('.select-mail:checked').map(function () {
-                return $(this).data('mail-id');
-            }).get();
-            if (ids.length > 0) {
-                $.ajax({
-                    url: '@Url.Action("MailiOkunduYap", "Mail")',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(ids),
-                    success: function (data) {
-                        if (data.success) {
-                            location.reload();
-                        } else {
-                            alert(data.message);
-                        }
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.error('Error marking mails as read: ', textStatus, errorThrown);
-                    }
-                });
-            }
+    // Arama çubuğu
+    $('#searchInput').on('keyup', function () {
+        var input = $(this).val().toLowerCase();
+        $('table tbody tr').filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(input) > -1);
         });
     });
+
+    // Tüm mailleri seçme
+    $('#selectAll').on('change', function () {
+        $('.select-mail').prop('checked', this.checked);
+        toggleActionButtons();
+    });
+
+    // Bireysel mail seçme
+    $('.select-mail').on('change', function () {
+        if (!this.checked) {
+            $('#selectAll').prop('checked', false);
+        }
+        toggleActionButtons();
+    });
+
+    // Butonların görünürlüğünü yönetme
+    function toggleActionButtons() {
+        var selected = $('.select-mail:checked').length > 0;
+        var actionButtons = $('#actionButtons');
+        if (selected) {
+            actionButtons.addClass('visible');
+        } else {
+            actionButtons.removeClass('visible');
+        }
+    }
+
+    // Seçili mailleri silme
+    $('#deleteSelected').on('click', function () {
+        var ids = $('.select-mail:checked').map(function () {
+            return $(this).data('mail-id');
+        }).get();
+        if (ids.length > 0) {
+            $.ajax({
+                url: '@Url.Action("MailSil", "Mail")',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(ids),
+                success: function (data) {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error('Error deleting mails: ', textStatus, errorThrown);
+                }
+            });
+        }
+    });
+
+    // Seçili mailleri arşivleme
+    $('#archiveSelected').on('click', function () {
+        var ids = $('.select-mail:checked').map(function () {
+            return $(this).data('mail-id');
+        }).get();
+        if (ids.length > 0) {
+            $.ajax({
+                url: '@Url.Action("MailArsivle", "Mail")',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(ids),
+                success: function (data) {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error('Error archiving mails: ', textStatus, errorThrown);
+                }
+            });
+        }
+    });
+
+    // Seçili mailleri okundu olarak işaretleme
+    $('#markReadSelected').on('click', function () {
+        var ids = $('.select-mail:checked').map(function () {
+            return $(this).data('mail-id');
+        }).get();
+        if (ids.length > 0) {
+            $.ajax({
+                url: '@Url.Action("MailiOkunduYap", "Mail")',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(ids),
+                success: function (data) {
+                    if (data.success) {
+                        // Güncellenen maillerin stilini değiştirme
+                        ids.forEach(function (id) {
+                            $('tr[data-mail-id="' + id + '"]').removeClass('font-weight-bold');
+                        });
+                        toggleActionButtons();
+                    } else {
+                        alert(data.message);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error('Error marking mails as read: ', textStatus, errorThrown);
+                }
+            });
+        }
+    });
+
+    // Sayfa yüklendiğinde butonların durumunu kontrol edelim
+    toggleActionButtons();
+});
+
 </script>
