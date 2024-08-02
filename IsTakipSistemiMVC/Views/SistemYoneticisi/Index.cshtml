@@ -13,99 +13,123 @@
 <div class="container mt-4">
     <!-- Üstte Üç Bilgi Kartı -->
     <div class="row mb-4">
+
+
+
         <div class="col-lg-4 col-md-6 mb-3">
-            <div class="card shadow-sm small-card card-color-1">
+            <div class="card">
+                <div class="card-header text-center">
+                    Toplam Çalışan Sayısı
+                </div>
                 <div class="card-body text-center">
-                    <h5 class="card-title">Toplam Çalışan Sayısı</h5>
-                    <p class="card-text">
+                    <h3>
                         @ViewBag.TotalEmployees
-                    </p>
+                    </h3>
                 </div>
             </div>
         </div>
+
+
         <div class="col-lg-4 col-md-6 mb-3">
-            <div class="card shadow-sm small-card card-color-2">
+            <div class="card">
+                <div class="card-header text-center">
+                    Son Eklenen Çalışan
+                </div>
                 <div class="card-body text-center">
-                    <h5 class="card-title">Son Eklenen Çalışan</h5>
-                    <p class="card-text">
-                        @if (ViewBag.LastAddedEmployee != null)
+
+                    <h4>
+                      Hoş Geldin  <b>@ViewBag.SonPersonel !</b>
+                    </h4>
+                </div>
+            </div>
+        </div>
+
+            <div class="col-lg-4 col-md-6 mb-3">
+                <div class="card">
+                    <div class="card-header text-center">
+                        En Fazla İş Yapan Kişi
+                    </div>
+                    <div class="card-body">
+                        @if (ViewBag.EnFazlaIsYapanKisiAdSoyad != null)
                         {
-                            <img src="@ViewBag.LastAddedEmployee.FotoUrl" alt="Çalışan Foto" class="img-thumbnail mb-2">
-                            <strong>Ad:</strong> @ViewBag.LastAddedEmployee.personelAdSoyad<br>
-                            <strong>Pozisyon:</strong> @ViewBag.LastAddedEmployee.personelPozisyon<br>
-                            <strong>Eklenme Tarihi:</strong> @ViewBag.LastAddedEmployee.eklenmeTarihi.ToShortDateString()
+                            <h3 class="card-title text-center">@ViewBag.EnFazlaIsYapanKisiAdSoyad</h3>
+                            <h4 class="card-text text-center">Birim: @ViewBag.EnFazlaIsYapanKisiBirim</h4>
+                            <h4 class="card-text text-center">Toplam İş Sayısı: @ViewBag.EnFazlaIsYapanKisiIsSayisi</h4>
                         }
                         else
                         {
-                            <span>Son eklenen çalışan bilgisi mevcut değil.</span>
+                            <h5 class="card-title">No data</h5>
+                            <p class="card-text">Birim: No data</p>
+                            <p class="card-text">Toplam İş Sayısı: 0</p>
                         }
-                    </p>
+                    </div>
                 </div>
             </div>
+
+
+            @*<div class="col-lg-4 col-md-6 mb-3">
+                <div class="card shadow-sm small-card card-color-3">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">En Yüksek Performans Gösteren Çalışan</h5>
+                        <p class="card-text">
+                            @if (ViewBag.TopPerformer != null)
+                            {
+                                <strong>Ad:</strong> @ViewBag.TopPerformer.personelAdSoyad<br>
+                                <strong>Pozisyon:</strong> @ViewBag.TopPerformer.personelPozisyon<br>
+                                <strong>Performans Puanı:</strong> @ViewBag.TopPerformer.performansPuani
+                                <div class="progress mt-2">
+                                    <div class="progress-bar" role="progressbar" style="width: @ViewBag.TopPerformer.performansPuani%;" aria-valuenow="@ViewBag.TopPerformer.performansPuani" aria-valuemin="0" aria-valuemax="100">@ViewBag.TopPerformer.performansPuani%</div>
+                                </div>
+                            }
+                            else
+                            {
+                                <span>En yüksek performans gösteren çalışan bilgisi mevcut değil.</span>
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>*@
         </div>
-        <div class="col-lg-4 col-md-6 mb-3">
-            <div class="card shadow-sm small-card card-color-3">
-                <div class="card-body text-center">
-                    <h5 class="card-title">En Yüksek Performans Gösteren Çalışan</h5>
-                    <p class="card-text">
-                        @if (ViewBag.TopPerformer != null)
+
+        <!-- Altında Grafik ve Yanında Duyuru Kartı -->
+        <div class="row">
+            <div class="col-lg-8 col-md-12 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Birimlerin Toplam İşleri</h5>
+                        <canvas id="myChart" class="chart-canvas"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-12 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Duyurular</h5>
+                        @if (sonDuyurular != null && sonDuyurular.Any())
                         {
-                            <strong>Ad:</strong> @ViewBag.TopPerformer.personelAdSoyad<br>
-                            <strong>Pozisyon:</strong> @ViewBag.TopPerformer.personelPozisyon<br>
-                            <strong>Performans Puanı:</strong> @ViewBag.TopPerformer.performansPuani
-                            <div class="progress mt-2">
-                                <div class="progress-bar" role="progressbar" style="width: @ViewBag.TopPerformer.performansPuani%;" aria-valuenow="@ViewBag.TopPerformer.performansPuani" aria-valuemin="0" aria-valuemax="100">@ViewBag.TopPerformer.performansPuani%</div>
+                            foreach (var duyuru in sonDuyurular)
+                            {
+                                <div class="announcement-card mb-3">
+                                    <h6>@duyuru.duyuruBaslik</h6>
+                                    <p class="card-text">@duyuru.duyuruIcerik</p>
+                                    <p class="card-text"><small class="text-muted">@duyuru.duyuruTarih.ToShortDateString()</small></p>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="announcement-card">
+                                <p class="card-text">Henüz duyuru bulunmamaktadır.</p>
                             </div>
                         }
-                        else
-                        {
-                            <span>En yüksek performans gösteren çalışan bilgisi mevcut değil.</span>
-                        }
-                    </p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Altında Grafik ve Yanında Duyuru Kartı -->
-    <div class="row">
-        <div class="col-lg-8 col-md-12 mb-4">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Birimlerin Toplam İşleri</h5>
-                    <canvas id="myChart" class="chart-canvas"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-12 mb-4">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Duyurular</h5>
-                    @if (sonDuyurular != null && sonDuyurular.Any())
-                    {
-                        foreach (var duyuru in sonDuyurular)
-                        {
-                            <div class="announcement-card mb-3">
-                                <h6>@duyuru.duyuruBaslik</h6>
-                                <p class="card-text">@duyuru.duyuruIcerik</p>
-                                <p class="card-text"><small class="text-muted">@duyuru.duyuruTarih.ToShortDateString()</small></p>
-                            </div>
-                        }
-                    }
-                    else
-                    {
-                        <div class="announcement-card">
-                            <p class="card-text">Henüz duyuru bulunmamaktadır.</p>
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script src="~/Scripts/chart.min.js"></script>
-<script>
+    <script src="~/Scripts/chart.min.js"></script>
+    <script>
     const ctx = document.getElementById('myChart').getContext('2d');
     const myChart = new Chart(ctx, {
         type: 'bar',
@@ -120,99 +144,99 @@
             }]
         }
     });
-</script>
+    </script>
 
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f8f9fa;
-        color: #333;
-        margin: 0;
-        padding: 0;
-    }
-
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-    }
-
-    /* Kart Stilleri */
-    .card {
-        border-radius: 10px;
-        overflow: hidden;
-        transition: transform 0.2s ease-in-out;
-        background-color: #e3f2fd;
-    }
-
-        .card:hover {
-            transform: scale(1.02);
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            margin: 0;
+            padding: 0;
         }
 
-    .card-title {
-        font-size: 1rem;
-        font-weight: 600;
-        color: #22333b;
-    }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-    .card-text {
-        font-size: 0.75rem;
-        color: #555;
-    }
+        /* Kart Stilleri */
+        .card {
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.2s ease-in-out;
+            background-color: #e3f2fd;
+        }
 
-    /* Küçük Kartlar */
-    .small-card {
-        padding: 20px;
-        text-align: center;
-        height: 125px; /* Kartların yüksekliğini aynı yapmak için eklendi */
-    }
+            .card:hover {
+                transform: scale(1.02);
+            }
 
-    .card-color-1 {
-        background-color: #d1e7dd;
-    }
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #22333b;
+        }
 
-    .card-color-2 {
-        background-color: #f0f4c3;
-    }
+        .card-text {
+            font-size: 0.75rem;
+            color: #555;
+        }
 
-    .card-color-3 {
-        background-color: #f8d7da;
-    }
+        /* Küçük Kartlar */
+        .small-card {
+            padding: 20px;
+            text-align: center;
+            height: 125px; /* Kartların yüksekliğini aynı yapmak için eklendi */
+        }
 
-    .announcement-card {
-        padding: 15px;
-        background-color: #f8f9fa;
-        border-radius: 10px;
-        border-left: 5px solid #007bff;
-    }
+        .card-color-1 {
+            background-color: #d1e7dd;
+        }
 
-    /* Resim Stili */
-    .img-thumbnail {
-        max-width: 100%;
-        height: auto;
-        border-radius: 5px;
-    }
+        .card-color-2 {
+            background-color: #f0f4c3;
+        }
 
-    /* Progress Bar Stili */
-    .progress {
-        height: 20px;
-        border-radius: 10px;
-        background-color: #e9ecef;
-    }
+        .card-color-3 {
+            background-color: #f8d7da;
+        }
 
-    .progress-bar {
-        background-color: #22333b;
-        font-weight: bold;
-    }
+        .announcement-card {
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #007bff;
+        }
 
-    /* Grafik Stili */
-    .chart-canvas {
-        max-width: 100%;
-        height: 400px;
-    }
+        /* Resim Stili */
+        .img-thumbnail {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
 
-    .col-md-6,
-    .col-md-12 {
-        max-width: 100%;
-    }
-</style>
+        /* Progress Bar Stili */
+        .progress {
+            height: 20px;
+            border-radius: 10px;
+            background-color: #e9ecef;
+        }
+
+        .progress-bar {
+            background-color: #22333b;
+            font-weight: bold;
+        }
+
+        /* Grafik Stili */
+        .chart-canvas {
+            max-width: 100%;
+            height: 400px;
+        }
+
+        .col-md-6,
+        .col-md-12 {
+            max-width: 100%;
+        }
+    </style>

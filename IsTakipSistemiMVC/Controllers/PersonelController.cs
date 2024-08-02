@@ -86,6 +86,8 @@ namespace IsTakipSistemiMVC.Controllers
                 yeniPersonel.personelAdres = fc["adres"];
                 yeniPersonel.personelTelefon = fc["telefon"];
                 yeniPersonel.personelDahili = fc["dahiliTelefon"];
+                yeniPersonel.personelIzın = 30;
+
 
                 entity.Personeller.Add(yeniPersonel);
                 entity.SaveChanges();

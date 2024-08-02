@@ -100,7 +100,7 @@
     <div class="row mb-4">
         <div class="col-lg-6">
             <div class="card shadow-sm">
-                <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                <div class="card-body d-flex flex-column align-items-center justify-content-center" style="background-color: khaki">
                     <h5 class="card-title">Döviz Bilgileri</h5>
                     <div id="currency-widget" class="d-flex justify-content-center" style="width:300px;">
                         <script type="text/javascript" src="https://finanswebde.com/fwebdev2/js/fwidget.js"></script>
@@ -116,37 +116,37 @@
         </div>
 
 
-    <div class="col-lg-6 col-md-12 mb-4">
-        <div class="card shadow-sm card-color-2">
-            <div class="card-body text-center" style="height:460px">
-                <h5 class="card-title">Birim Personel</h5>
-                <div id="personelCarousel" class="carousel slide" data-ride="carousel">
-                    <div class="carousel-inner">
-                        @for (int i = 0; i < Model.Count(); i++)
-                        {
-                            var personel = Model.ElementAt(i);
-                            <div class="carousel-item @(i == 0 ? "active" : "")">
-                                <img src="@personel.personelFotograf" class="d-block carousel-image" alt="@personel.personelAdSoyad" onerror="this.onerror=null; this.src='path/to/placeholder.jpg'; console.error('Image not found: @personel.personelFotograf')">
-                                <div class="carousel-caption-bottom">
-                                    <h5>@personel.personelAdSoyad</h5>
-                                    <h5>@personel.personelDahili</h5>
+        <div class="col-lg-6 col-md-12 mb-4">
+            <div class="card shadow-sm card-color-2">
+                <div class="card-body text-center" style="height:460px">
+                    <h5 class="card-title">Birim Personel</h5>
+                    <div id="personelCarousel" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                            @for (int i = 0; i < Model.Count(); i++)
+                            {
+                                var personel = Model.ElementAt(i);
+                                <div class="carousel-item @(i == 0 ? "active" : "")">
+                                    <img src="@personel.personelFotograf" class="d-block carousel-image" alt="@personel.personelAdSoyad" onerror="this.onerror=null; this.src='path/to/placeholder.jpg'; console.error('Image not found: @personel.personelFotograf')">
+                                    <div class="carousel-caption-bottom">
+                                        <h5>@personel.personelAdSoyad</h5>
+                                        <h5>@personel.personelDahili</h5>
+                                    </div>
                                 </div>
-                            </div>
-                        }
+                            }
+                        </div>
+                        <a class="carousel-control-prev" href="#personelCarousel" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#personelCarousel" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
                     </div>
-                    <a class="carousel-control-prev" href="#personelCarousel" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="carousel-control-next" href="#personelCarousel" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 
     <!-- En Alt Kısım: Günün Menüsü -->
@@ -181,9 +181,9 @@
                 </div>
             </div>
 
-            
+
         </div>
-        </div>
+    </div>
 
 
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -191,47 +191,30 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
 
     <script>
-        $(document).ready(function () {
-            // Perform initialization here
-            $('#personelCarousel').carousel();
-
-            // Initialize the performance chart
-            var ctx = document.getElementById('performanceChart').getContext('2d');
-            var performanceChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Çalışan 1', 'Çalışan 2', 'Çalışan 3', 'Çalışan 4'],
-                    datasets: [{
-                        label: 'Performans',
-                        data: [12, 19, 3, 5],
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)'
-                        ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    }
-                }
-            });
-        });
+var ctx = document.getElementById('performanceChart').getContext('2d');
+var performanceChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: @Html.Raw(Json.Encode(Model.Select(m => m.personelAdSoyad))),
+        datasets: [{
+            label: 'Toplam İş',
+            data: @Html.Raw(Json.Encode(Model.Select(m => m.toplamIs))),
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
     </script>
-    </div>
+
 
 
 
@@ -255,17 +238,17 @@
 
         /* Renk Paleti */
         .card-color-1 {
-            background-color: #e3f2fd; /* Açık Mavi */
+            background-color: white; /* Açık Mavi */
             border: 1px solid #90caf9; /* Koyu Mavi */
         }
 
         .card-color-2 {
-            background-color: #e8f5e9; /* Açık Yeşil */
+            background-color: lightcyan; /* Açık Yeşil */
             border: 1px solid #81c784; /* Koyu Yeşil */
         }
 
         .card-color-3 {
-            background-color: #81c784; /*  */
+            background-color: #c8e6c9; /*  */
             border: 1px solid #ffb74d; /* Koyu Turuncu */
         }
 

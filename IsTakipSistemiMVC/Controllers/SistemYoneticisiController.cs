@@ -73,6 +73,43 @@ namespace IsTakipSistemiMVC.Controllers
             // Toplam çalışan sayısını çekme
             ViewBag.TotalEmployees = entity.Personeller.Count(p => p.aktiflik == true);
 
+            // En fazla iş yapan kişiyi bulma
+            var enFazlaIsYapanKisi = (from p in entity.Personeller
+                                      join i in entity.Isler on p.personelId equals i.isPersonelId
+                                      join b in entity.Birimler on p.personelBirimId equals b.birimId
+                                      where p.aktiflik == true
+                                      group new { p, b } by new { p.personelAdSoyad, b.birimAd } into g
+                                      orderby g.Count() descending
+                                      select new
+                                      {
+                                          AdSoyad = g.Key.personelAdSoyad,
+                                          BirimAd = g.Key.birimAd,
+                                          IsSayisi = g.Count()
+                                      }).FirstOrDefault();
+
+            if (enFazlaIsYapanKisi != null)
+            {
+                ViewBag.EnFazlaIsYapanKisiAdSoyad = enFazlaIsYapanKisi.AdSoyad;
+                ViewBag.EnFazlaIsYapanKisiBirim = enFazlaIsYapanKisi.BirimAd;
+                ViewBag.EnFazlaIsYapanKisiIsSayisi = enFazlaIsYapanKisi.IsSayisi;
+            }
+            else
+            {
+                ViewBag.EnFazlaIsYapanKisiAdSoyad = "No data";
+                ViewBag.EnFazlaIsYapanKisiBirim = "No data";
+                ViewBag.EnFazlaIsYapanKisiIsSayisi = 0;
+            }
+
+            //son eklenen personel
+            var sonEklenenPersonel = (from p in entity.Personeller
+                                      orderby p.personelIseGiris descending
+                                      select p.personelAdSoyad).FirstOrDefault();
+            {
+                ViewBag.SonPersonel = sonEklenenPersonel;
+
+            }
+
+
             // En son tarihli duyuruyu al
             var sonDuyurular = entity.Duyurular
     .Where(d => d.aktiflik == true && d.goruntuleyenBirimId == birimId)
