@@ -2,19 +2,20 @@
     ViewBag.Title = "Olustur";
     Layout = "~/Views/Shared/_LayoutSistemYoneticisi.cshtml";
 }
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
 <div class="container mt-5">
     <div class="card shadow-sm">
         <div class="card-body">
             <h3 class="card-title text-center">Yeni Birim Ekleme İşlemi</h3>
             <hr />
-            @using (Html.BeginForm("Olustur", "SistemYoneticisi", FormMethod.Post)) 
-            { 
+            @using (Html.BeginForm("Olustur", "SistemYoneticisi", FormMethod.Post))
+            {
                 <div class="row mb-3">
                     <label for="birimAd" class="col-sm-3 col-form-label text-end">Birim Adı:</label>
 
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" id="birimAd" name="birimAd" placeholder="Birim adı girin"/>
+                        <input type="text" class="form-control" id="birimAd" name="birimAd" placeholder="Birim adı girin" />
                     </div>
                 </div>
 
@@ -51,7 +52,7 @@
         transition: background-color 0.3s ease;
     }
 
-    .btn-primary:hover {
-        background-color: #0056b3;
-    }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
 </style>

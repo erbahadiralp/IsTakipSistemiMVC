@@ -50,6 +50,7 @@ namespace IsTakipSistemiMVC.Controllers
         }
 
         [HttpPost, ActFilter("Mail Gönderildi")]
+        [ValidateInput(false)]
         public ActionResult MailOlustur(Mailler mail)
         {
             if (ModelState.IsValid)

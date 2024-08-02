@@ -9,6 +9,8 @@ namespace IsTakipSistemiMVC.Models
     {
         public string personelAdSoyad { get; set; }
         public string personelFotograf { get; set; }
+        public string personelDahili { get; set; }
+
         public int toplamIs { get; set; }
     }
 }

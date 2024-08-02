@@ -87,15 +87,26 @@ namespace IsTakipSistemiMVC.Controllers
                 ViewBag.BugunYemek = bugunYemek;
 
                 var sonDuyurular = entity.Duyurular
-    .Where(d => d.aktiflik == true && d.goruntuleyenBirimId == birimId)
-    .OrderByDescending(d => d.duyuruTarih)
-    .Take(3)
-    .ToList();
+                    .Where(d => d.aktiflik == true && d.goruntuleyenBirimId == birimId)
+                    .OrderByDescending(d => d.duyuruTarih)
+                    .Take(3)
+                    .ToList();
                 ViewBag.SonDuyurular = sonDuyurular;
 
-                var calisanlar = (from p in entity.Personeller where p.personelBirimId == birimId && p.personelYetkiTurId == 2 && p.aktiflik == true select p).ToList();
-
+                var calisanlar = (from p in entity.Personeller
+                                  where p.personelBirimId == birimId && p.personelYetkiTurId == 2 && p.aktiflik == true
+                                  select p).ToList();
                 ViewBag.personeller = calisanlar;
+
+                // BirimPersonelCarousel işlevselliği
+                var carouselPersoneller = (from p in entity.Personeller
+                                           where p.personelBirimId == birimId && p.personelYetkiTurId == 2 && p.aktiflik == true
+                                           select new CalisanViewModel
+                                           {
+                                               PersonelAdSoyad = p.personelAdSoyad,
+                                               PersonelFotograf = p.personelFotograf
+                                           }).ToList();
+                ViewBag.CarouselPersoneller = carouselPersoneller;
 
                 return View(siraliListe);
             }
@@ -104,7 +115,6 @@ namespace IsTakipSistemiMVC.Controllers
                 return RedirectToAction("Index", "Login");
             }
         }
-
 
         public ActionResult Ata()
         {
@@ -292,7 +302,7 @@ namespace IsTakipSistemiMVC.Controllers
         {
             int personelBirimId = Convert.ToInt32(Session["PersonelBirimId"]);
             var izinler = entity.Izinler
-                .Where(i => i.Personeller.personelBirimId == personelBirimId )
+                .Where(i => i.Personeller.personelBirimId == personelBirimId)
                 .ToList();
 
             return View(izinler);
@@ -337,7 +347,30 @@ namespace IsTakipSistemiMVC.Controllers
             return RedirectToAction("IzinGoruntule");
         }
 
-        
+        //public ActionResult BirimPersonelCarousel()
+        //{
+        //    int yetkiTurId = Convert.ToInt32(Session["PersonelYetkiTurId"]);
+
+        //    if (yetkiTurId == 1)
+        //    {
+        //        int birimId = Convert.ToInt32(Session["PersonelBirimId"]);
+
+        //        var personeller = (from p in entity.Personeller
+        //                           where p.personelBirimId == birimId && p.personelYetkiTurId == 2 && p.aktiflik == true
+        //                           select new CalisanViewModel
+        //                           {
+        //                               PersonelAdSoyad = p.personelAdSoyad,
+        //                               PersonelFotograf = p.personelFotograf
+        //                           }).ToList();
+
+        //        return View(personeller);
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("Index", "Login");
+        //    }
+        //}
+
 
     }
 }

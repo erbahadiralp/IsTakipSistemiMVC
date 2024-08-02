@@ -9,95 +9,17 @@
 
 @model IEnumerable<IsTakipSistemiMVC.Models.ToplamIs>
 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+
 <div class="container mt-4">
+    <!-- Üst Kısım: Duyurular ve Çalışan Performans -->
     <div class="row mb-4">
-        <!-- Sol Sütun -->
-        <div class="col-lg-6 col-md-12 mb-4">
-            <!-- Chart Card -->
-            <div class="card shadow-sm mb-4">
+        <!-- Sol Sütun: Duyurular -->
+        <div class="col-lg-4 col-md-12 mb-4">
+            <div class="card shadow-sm card-color-3">
                 <div class="card-body">
-                    <h5 class="card-title">Çalışan Performans</h5>
-                    <canvas id="performanceChart" class="chart-canvas"></canvas>
-                </div>
-            </div>
-
-            <!-- Ayın Elemanı Card -->
-            <div class="card shadow-sm ayin-elemani-card">
-                <div class="card-body text-center">
-                    <h4 class="card-title">Ayın Elemanı</h4>
-                    <div class="alert alert-dark" role="alert">
-                        @using (Html.BeginForm("AyinElemani", "Yonetici", FormMethod.Post, new { @class = "row gx-3 gy-2 align-items-center justify-content-center" }))
-                        {
-                            <div class="col-auto">
-                                @Html.Partial("_PartialAylarSelect", null, new ViewDataDictionary { { "class", "form-select" } })
-                            </div>
-                            <div class="col-auto">
-                                <select class="form-select" name="yillar">
-                                    @foreach (var yil in ViewBag.yillar)
-                                    {
-                                        <option value="@yil">@yil</option>
-                                    }
-                                </select>
-                            </div>
-                            <div class="col-auto">
-                                <button class="btn btn-primary">Ayın Elemanını Getir</button>
-                            </div>
-                        }
-                    </div>
-
-                    @if (ViewBag.ayinElemani != null)
-                    {
-                        <div class="alert alert-success mt-4" role="alert">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    @ViewBag.ayinElemani.personelAdSoyad
-                                    <span class="badge bg-primary rounded-pill">Yapılan İş Toplamı: @ViewBag.ayinElemani.toplamIs</span>
-                                </li>
-                            </ul>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="alert alert-dark mt-4" role="alert">
-                            Herhangi bir çalışan bulunamadı
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
-
-        <!-- Sağ Sütun -->
-        <div class="col-lg-6 col-md-12 mb-4">
-            <!-- Çalışanlarım Card -->
-            <div class="card shadow-sm small-card card-color-2 mb-4">
-                <div class="card-body text-center">
-                    <h6 class="card-title">Çalışanlarım</h6>
-                    <div class="table-responsive">
-                        <table class="table table-hover employee-table">
-                            <thead class="employee-table-header">
-                                <tr class="text-center">
-                                    <th>Ad Soyad</th>
-                                    <th>Dahili Telefon</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var personel in ViewBag.personeller)
-                                {
-                                    <tr class="text-center">
-                                        <td>@personel.personelAdSoyad</td>
-                                        <td>@personel.personelDahili</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Duyurular Card -->
-            <div class="card shadow-sm small-card card-color-1">
-                <div class="card-body text-center">
-                    <h4 class="card-title">Duyurular</h4>
+                    <h5 class="card-title">Duyurular</h5>
                     @if (sonDuyurular != null && sonDuyurular.Any())
                     {
                         foreach (var duyuru in sonDuyurular)
@@ -116,11 +38,120 @@
                 </div>
             </div>
         </div>
+
+        <!-- Sağ Sütun: Çalışan Performans -->
+        <div class="col-lg-8 col-md-12 mb-4">
+            <div class="card shadow-sm card-color-1">
+                <div class="card-body" style="height:515px">
+                    <h5 class="card-title">Çalışan Performans</h5>
+                    <canvas id="performanceChart" class="chart-canvas"></canvas>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Günün Menüsü Card -->
+    <!-- Orta Kısım: Ayın Elemanı -->
     <div class="row mb-4">
-        <div class="col-12 mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm ayin-elemani-card card-color-2">
+                <div class="card-body">
+                    <h5 class="card-title">Ayın Elemanı</h5>
+                    @using (Html.BeginForm("AyinElemani", "Yonetici", FormMethod.Post, new { @class = "row gx-3 gy-2 align-items-center justify-content-center" }))
+                    {
+                        <div class="col-auto">
+                            @Html.Partial("_PartialAylarSelect", null, new ViewDataDictionary { { "class", "form-select" } })
+                        </div>
+                        <div class="col-auto">
+                            <select class="form-select" name="yillar">
+                                @foreach (var yil in ViewBag.yillar)
+                                {
+                                    <option value="@yil">@yil</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-primary">Ayın Elemanını Getir</button>
+                        </div>
+                    }
+
+                    @if (ViewBag.ayinElemani != null)
+                    {
+                        <div class="alert alert-success mt-4" role="alert">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between align-items-center" style="color:black">
+                                    @ViewBag.ayinElemani.personelAdSoyad
+                                    <span class="badge bg-primary rounded-pill">Yapılan İş Toplamı: @ViewBag.ayinElemani.toplamIs</span>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-dark mt-4" role="alert">
+                            Herhangi bir çalışan bulunamadı
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alt Kısım: Çalışanlarım ve Birim Personel -->
+    <div class="row mb-4">
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                    <h5 class="card-title">Döviz Bilgileri</h5>
+                    <div id="currency-widget" class="d-flex justify-content-center" style="width:300px;">
+                        <script type="text/javascript" src="https://finanswebde.com/fwebdev2/js/fwidget.js"></script>
+                        <div id="fwebdecurrency" style="width:300px;">
+                            <a title="Güncel Dolar,Altın ve Bitcoin Yorumları - Fiyatları" style="font-size:10;text-decoration:none;color:black" href="//finanswebde.com/"></a>
+                        </div>
+                        <script type="text/javascript">
+                            _fcepte.createWidget("/eklenti/currency?codes=USD,EUR,GBP,JPY,CAD,DKK,SEK,CHF,NOK,AED", 300, 300);
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    <div class="col-lg-6 col-md-12 mb-4">
+        <div class="card shadow-sm card-color-2">
+            <div class="card-body text-center" style="height:460px">
+                <h5 class="card-title">Birim Personel</h5>
+                <div id="personelCarousel" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        @for (int i = 0; i < Model.Count(); i++)
+                        {
+                            var personel = Model.ElementAt(i);
+                            <div class="carousel-item @(i == 0 ? "active" : "")">
+                                <img src="@personel.personelFotograf" class="d-block carousel-image" alt="@personel.personelAdSoyad" onerror="this.onerror=null; this.src='path/to/placeholder.jpg'; console.error('Image not found: @personel.personelFotograf')">
+                                <div class="carousel-caption-bottom">
+                                    <h5>@personel.personelAdSoyad</h5>
+                                    <h5>@personel.personelDahili</h5>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <a class="carousel-control-prev" href="#personelCarousel" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#personelCarousel" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <!-- En Alt Kısım: Günün Menüsü -->
+    <div class="row mb-4">
+        <div class="col-12">
             <div class="card shadow-sm meal-card">
                 <div class="card-body text-center">
                     <h5 class="card-title">Günün Menüsü</h5>
@@ -149,34 +180,60 @@
                     </div>
                 </div>
             </div>
+
+            
         </div>
+        </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Perform initialization here
+            $('#personelCarousel').carousel();
+
+            // Initialize the performance chart
+            var ctx = document.getElementById('performanceChart').getContext('2d');
+            var performanceChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Çalışan 1', 'Çalışan 2', 'Çalışan 3', 'Çalışan 4'],
+                    datasets: [{
+                        label: 'Performans',
+                        data: [12, 19, 3, 5],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+    </script>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-var ctx = document.getElementById('performanceChart').getContext('2d');
-var performanceChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: @Html.Raw(Json.Encode(Model.Select(m => m.personelAdSoyad))),
-        datasets: [{
-            label: 'Toplam İş',
-            data: @Html.Raw(Json.Encode(Model.Select(m => m.toplamIs))),
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
-        }]
-    },
-    options: {
-        responsive: true,
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        }
-    }
-});
-    </script>
+
 
     <style>
         .container {
@@ -185,28 +242,57 @@ var performanceChart = new Chart(ctx, {
         }
 
         .card {
-            border-radius: 15px;
+            border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            margin-bottom: 20px;
         }
 
             .card:hover {
-                transform: scale(1.05);
+                transform: scale(1.02);
                 box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
             }
+
+        /* Renk Paleti */
+        .card-color-1 {
+            background-color: #e3f2fd; /* Açık Mavi */
+            border: 1px solid #90caf9; /* Koyu Mavi */
+        }
+
+        .card-color-2 {
+            background-color: #e8f5e9; /* Açık Yeşil */
+            border: 1px solid #81c784; /* Koyu Yeşil */
+        }
+
+        .card-color-3 {
+            background-color: #81c784; /*  */
+            border: 1px solid #ffb74d; /* Koyu Turuncu */
+        }
+
+        .card-color-4 {
+            background-color: #f0f4c3; /* Açık Yeşilimsi */
+            border: 1px solid #cddc39; /* Koyu Yeşilimsi */
+        }
 
         .small-card {
             padding: 20px;
             text-align: center;
             min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
-        .card h6, .card h5 {
+        .card h5, .card h6 {
             font-weight: bold;
+            margin-bottom: 15px;
+            color: #333333; /* Dark gray text */
         }
 
         .card p {
             margin: 0;
+            color: #666666; /* Medium gray text */
         }
 
         .employee-table {
@@ -214,7 +300,7 @@ var performanceChart = new Chart(ctx, {
         }
 
         .employee-table-header {
-            background-color: #007bff;
+            background-color: #0d6efd; /* Primary Blue */
             color: white;
         }
 
@@ -224,13 +310,16 @@ var performanceChart = new Chart(ctx, {
 
         .announcement-card {
             padding: 15px;
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            border-left: 5px solid #007bff;
+            background-color: #e8f5e9; /* Açık Yeşil */
+            border: 1px solid #81c784; /* Koyu Yeşil */
+            border-left: 5px solid #81c784; /* Koyu Yeşil */
         }
 
         .meal-card {
-            background-color: #e9ecef;
+            padding: 15px;
+            background-color: #f3e5f5; /* Açık Menekşe */
+            border: 1px solid #ab47bc; /* Koyu Menekşe */
+            border-left: 5px solid #ab47bc; /* Koyu Menekşe */
         }
 
             .meal-card ul {
@@ -239,26 +328,60 @@ var performanceChart = new Chart(ctx, {
             }
 
             .meal-card li {
-                background-color: #fff;
+                background-color: #ffffff; /* White */
                 margin-bottom: 5px;
                 padding: 10px;
                 border-radius: 5px;
-                border-left: 5px solid #28a745;
+                border-left: 5px solid #ab47bc; /* Koyu Menekşe */
             }
 
         .ayin-elemani-card {
             padding: 20px;
             text-align: center;
-            min-height: 400px;
-            background-color: #ffefc1;
-            border-left: 5px solid #ffc107;
+            background-color: #fffde7; /* Açık Sarı */
+            border-left: 5px solid #ffd600; /* Koyu Sarı */
+            border: 1px solid #ffd600; /* Koyu Sarı */
         }
 
-        .card-color-1 {
-            background-color: #e3f2fd;
+        .carousel-item {
+            position: relative;
+            text-align: center;
         }
 
-        .card-color-2 {
-            background-color: #ffebee;
+        .carousel-image {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin: 0 auto;
+        }
+
+        .carousel-caption-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .btn-primary {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+
+        .alert-success {
+            background-color: #198754;
+            border-color: #198754;
+            color: #ffffff;
+        }
+
+        .alert-dark {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            color: #ffffff;
         }
     </style>

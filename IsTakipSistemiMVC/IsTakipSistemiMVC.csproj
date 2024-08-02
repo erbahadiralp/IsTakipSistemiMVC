@@ -428,6 +428,7 @@
     <Content Include="theme\fonts\feather.woff" />
     <Content Include="Views\Shared\_PartialTitle.cshtml" />
     <Content Include="Views\Mail\SilinmisMailler.cshtml" />
+    <Content Include="Views\Yonetici\BirimPersonelCarousel.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -12,6 +12,7 @@ namespace IsTakipSistemiMVC.Models
         public int TotalJobs { get; set; }
         public int CompletedJobs { get; set; }
         public int UncompletedJobs { get; set; }
+        public string PersonelFotograf { get; set; }
     }
 
 }
